@@ -3,5 +3,14 @@ name = "kalkulator_do_szkol_sredniej"
 version = "0.1.0"
 edition = "2021"
 
+[package.metadata.android]
+res = "android_res"
+icon = "@mipmap/skm_launcher"
+[package.metadata.android.activity_attributes]
+"android:exported" =  "true"
+"android:screenOrientation" = "userLandscape"
+
 [dependencies]
-#eframe = "0.31.1"
+egui-macroquad = "0.17.3"
+egui_plot = "0.32.1"
+macroquad = "0.4.14"

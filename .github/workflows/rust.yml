@@ -1,0 +1,82 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: |
+        sudo apt-get update
+        sudo apt install libasound2-dev -y
+        cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+
+
+  build_for_android:
+     name: Android Building
+     runs-on: ubuntu-latest
+     env:
+       JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+       
+     steps:
+       - uses: actions/checkout@v4
+       - name: Install Rust
+         uses: actions-rs/toolchain@v1
+         with:
+           toolchain: stable
+           target: x86_64-unknown-linux-gnu
+           profile: minimal
+           override: true       
+       - name: Install system dependencies
+         run: |
+           sudo apt-get update
+           sudo apt install openjdk-8-jdk libasound2-dev -y
+           pwd
+           ls
+           rustup target add armv7-linux-androideabi
+           rustup target add aarch64-linux-android
+           rustup target add i686-linux-android
+           rustup target add x86_64-linux-android
+           cargo install --git https://github.com/not-fl3/cargo-quad-apk
+
+       - uses: actions/checkout@v4
+       - name: Build
+         run: |
+           wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+           unzip -q sdk-tools-linux-4333796.zip
+           rm sdk-tools-linux-4333796.zip
+           yes | tools/bin/sdkmanager "platform-tools"
+           yes | tools/bin/sdkmanager "platforms;android-29"
+           yes | tools/bin/sdkmanager "build-tools;29.0.0"
+           yes | tools/bin/sdkmanager "platforms;android-36"
+           yes | tools/bin/sdkmanager "build-tools;36.0.0"
+           tools/bin/sdkmanager --update
+           wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
+           unzip android-ndk-r25c-linux.zip
+           rm android-ndk-r25c-linux.zip
+           export ANDROID_SDK_ROOT=$PWD
+           export ANDROID_HOME=$ANDROID_SDK_ROOT
+           export ANDROID_NDK_ROOT=$PWD/android-ndk-r25c
+           export NDK_HOME=$ANDROID_NDK_ROOT
+           cargo quad-apk build --release --verbose
+       - name: Run tests
+         run: cargo test --verbose
+       - name: Upload APK
+         uses: actions/upload-artifact@v4
+         with:
+          name: kalkulator-do-szkol-srednich
+          path: target/android-artifacts/release/apk/*.apk
