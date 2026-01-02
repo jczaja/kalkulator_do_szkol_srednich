@@ -5,7 +5,22 @@
 // Ref: https://www.otouczelnie.pl/kalkulator/osmoklasista
 
 // TODO: Add GUI using macroquad and egui
+// TODO: exit when clicked into button
 // TODO: zwolnienie z egzaminu
+
+//
+struct Threshold<'a> {
+    base_name: &'a str,
+    points: f32,
+}
+impl Threshold<'_> {
+    pub fn new(base_name: &str, points: f32) -> Threshold {
+        Threshold { base_name, points }
+    }
+    pub fn get_full_name(&self) -> String {
+        format!("{} - {} pkt", self.base_name, self.points)
+    }
+}
 
 // Each tuple is representing score (in percentage) of given exam and name of topic
 struct ExamResults<'a> {
@@ -144,9 +159,9 @@ impl CertificateResults<'_> {
 fn main() -> Result<(), String> {
     //env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
 
-    let mut pol_value: u8 = 3;
-    let mut ang_value: u8 = 3;
-    let mut mat_value: u8 = 3;
+    let mut pol_value: u8 = 50;
+    let mut ang_value: u8 = 50;
+    let mut mat_value: u8 = 50;
     let mut initialization = true;
 
     let mut cpol_value: u8 = 3;
@@ -156,6 +171,12 @@ fn main() -> Result<(), String> {
     let mut achv_value: u8 = 0;
     let mut vol_value: bool = false;
     let mut hon_value: bool = false;
+
+    let mut selected = 0;
+    let schools = vec![
+        Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65),
+        Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25),
+    ];
 
     eframe::run_simple_native(
         "Kalkulator punktow do szkol srednich",
@@ -169,185 +190,220 @@ fn main() -> Result<(), String> {
                 let font_size = widget_height / 4.0;
 
                 // język polski
-                ui.vertical(|ui| {
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Egzamin Język polski:      "))
-                                .size(font_size),
-                        ));
-                        let pol_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut pol_value, 0..=100)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} %", pol_value)).size(font_size),
-                        ));
+                ui.horizontal(|ui| {
+                    ui.vertical(|ui| {
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Egzamin Język polski:      "))
+                                    .size(font_size),
+                            ));
+                            let pol_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut pol_value, 0..=100)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} %", pol_value)).size(font_size),
+                            ));
 
-                        if initialization {
-                            pol_slider.request_focus();
-                            initialization = false;
-                        }
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Egzamin Matematyka:     "))
-                                .size(font_size),
-                        ));
-                        let mat_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut mat_value, 0..=100)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} %", mat_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Egzamin Język angielski: "))
-                                .size(font_size),
-                        ));
-                        let ang_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut ang_value, 0..=100)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} %", ang_value)).size(font_size),
-                        ));
-                    });
-                    // Świadectwo
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Świadectwo Język polski:   "))
-                                .size(font_size),
-                        ));
-                        let cpol_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut cpol_value, 1..=6)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} ", cpol_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Świadectwo Matematyka:   "))
-                                .size(font_size),
-                        ));
-                        let cmat_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut cmat_value, 1..=6)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} ", cmat_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Świadectwo Język angielski: "))
-                                .size(font_size),
-                        ));
-                        let cang_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut cang_value, 1..=6)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} ", cang_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Świadectwo Informatyka: "))
-                                .size(font_size),
-                        ));
-                        let cinf_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut cinf_value, 1..=6)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} ", cinf_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Osiągnięcia: ")).size(font_size),
-                        ));
-                        let achv_slider = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Slider::new(&mut achv_value, 0..=18)
-                                .step_by(1.0)
-                                .show_value(false),
-                        );
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("{} punkty", achv_value)).size(font_size),
-                        ));
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Czerwony pasek: ")).size(font_size),
-                        ));
-                        let honors_checked = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Checkbox::new(&mut hon_value, ""),
-                        );
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add(egui::Label::new(
-                            egui::RichText::new(format!("Wolontariat: ")).size(font_size),
-                        ));
-                        let vol_checked = ui.add_sized(
-                            [widget_width, widget_height * 0.5],
-                            egui::Checkbox::new(&mut vol_value, ""),
-                        );
-                    });
-                    // Punkty
-                    ui.horizontal(|ui| {
-                        let exam_points = ExamResults {
-                            polish: (pol_value, "Polish"),
-                            math: (mat_value, "Math"),
-                            second_language: (ang_value, "English"),
-                        }
-                        .calculate_points()
-                        .unwrap();
+                            if initialization {
+                                pol_slider.request_focus();
+                                initialization = false;
+                            }
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Egzamin Matematyka:     "))
+                                    .size(font_size),
+                            ));
+                            let mat_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut mat_value, 0..=100)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} %", mat_value)).size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Egzamin Język angielski: "))
+                                    .size(font_size),
+                            ));
+                            let ang_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut ang_value, 0..=100)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} %", ang_value)).size(font_size),
+                            ));
+                        });
+                        // Świadectwo
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Świadectwo Język polski:   "))
+                                    .size(font_size),
+                            ));
+                            let cpol_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut cpol_value, 2..=6)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} ", cpol_value)).size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Świadectwo Matematyka:   "))
+                                    .size(font_size),
+                            ));
+                            let cmat_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut cmat_value, 2..=6)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} ", cmat_value)).size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Świadectwo Język angielski: "))
+                                    .size(font_size),
+                            ));
+                            let cang_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut cang_value, 2..=6)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} ", cang_value)).size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Świadectwo Informatyka: "))
+                                    .size(font_size),
+                            ));
+                            let cinf_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut cinf_value, 2..=6)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} ", cinf_value)).size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Osiągnięcia: ")).size(font_size),
+                            ));
+                            let achv_slider = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Slider::new(&mut achv_value, 0..=18)
+                                    .step_by(1.0)
+                                    .show_value(false),
+                            );
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("{} punkty", achv_value))
+                                    .size(font_size),
+                            ));
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Czerwony pasek: ")).size(font_size),
+                            ));
+                            let honors_checked = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Checkbox::new(&mut hon_value, ""),
+                            );
+                        });
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Wolontariat: ")).size(font_size),
+                            ));
+                            let vol_checked = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui::Checkbox::new(&mut vol_value, ""),
+                            );
+                        });
+                        // Punkty
+                        ui.horizontal(|ui| {
+                            let exam_points = ExamResults {
+                                polish: (pol_value, "Polish"),
+                                math: (mat_value, "Math"),
+                                second_language: (ang_value, "English"),
+                            }
+                            .calculate_points()
+                            .unwrap();
 
-                        let certificate_points = CertificateResults {
-                            polish: (cpol_value, "jezyk polski"),
-                            math: (cmat_value, "matematyka"),
-                            first_addtional_course: (cang_value, "jezyk angielski"),
-                            second_addtional_course: (cinf_value, "informatyka"),
-                            achievements: achv_value,
-                            honors: hon_value,
-                            volounteering: vol_value,
-                        }
-                        .calculate_points()
-                        .unwrap();
+                            let certificate_points = CertificateResults {
+                                polish: (cpol_value, "jezyk polski"),
+                                math: (cmat_value, "matematyka"),
+                                first_addtional_course: (cang_value, "jezyk angielski"),
+                                second_addtional_course: (cinf_value, "informatyka"),
+                                achievements: achv_value,
+                                honors: hon_value,
+                                volounteering: vol_value,
+                            }
+                            .calculate_points()
+                            .unwrap();
 
-                        let total_points = certificate_points + exam_points;
-                        ui.label(egui::RichText::new(format!("Punkty: ")).size(font_size));
-                        ui.label(
-                            egui::RichText::new(format!("{}", total_points))
-                                .color(if total_points <= 100.0 {
-                                    egui::Color32::RED
-                                } else if total_points <= 150.0 {
-                                    egui::Color32::YELLOW
-                                } else {
-                                    egui::Color32::GREEN
-                                })
-                                .size(font_size),
-                        );
+                            let total_points = certificate_points + exam_points;
+                            ui.label(
+                                egui::RichText::new(format!("Punkty Do Szkoły średniej: "))
+                                    .size(font_size),
+                            );
+                            ui.label(
+                                egui::RichText::new(format!("{}", total_points))
+                                    .color(if total_points <= 100.0 {
+                                        egui::Color32::RED
+                                    } else if total_points <= 150.0 {
+                                        egui::Color32::YELLOW
+                                    } else {
+                                        egui::Color32::GREEN
+                                    })
+                                    .size(font_size),
+                            );
+                        });
+                        ui.horizontal(|ui| {
+                            if ui
+                                .add(egui::Button::new(
+                                    egui::RichText::new(format!("Exit")).size(font_size),
+                                ))
+                                .clicked()
+                            {
+                                todo!("Implement Exit");
+                                return;
+                            };
+                        });
+                    });
+                    // List of secondary schools
+                    ui.vertical(|ui| {
+                        ui.horizontal(|ui| {
+                            ui.add(egui::Label::new(
+                                egui::RichText::new(format!("Wybór szkoły: ")).size(font_size),
+                            ));
+                        });
+
+                        ui.horizontal(|ui| {
+                            egui::ComboBox::from_label("")
+                                .selected_text(schools[selected].get_full_name())
+                                .show_ui(ui, |ui| {
+                                    for (i, item) in schools.iter().enumerate() {
+                                        ui.selectable_value(&mut selected, i, item.get_full_name());
+                                    }
+                                });
+                        });
                     });
                 });
             });
