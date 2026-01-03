@@ -4,21 +4,27 @@
 //use eframe::egui;
 // Ref: https://www.otouczelnie.pl/kalkulator/osmoklasista
 
+// I LO Szczecinek : https://cloud-d.edupage.org/cloud/Regulamin_i_harmonogram_rekrutacji_2025_2026_do_I_LO_Szczecinek.pdf?z%3A0mYjQe50qOoFEVT1pUcg5F%2BU1Qs%2BV%2FKMV5Rnq4AztxBI4PNFFctdFVyIc46bQWYEnD07Yx83qP7RLhSDLOMznQ%3D%3D
+// XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
+
 // TODO: Add GUI using macroquad and egui
 // TODO: exit when clicked into button
+// TODO: make a plot range of Y from 0 to 200
 // TODO: zwolnienie z egzaminu
 
+use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 //
 struct Threshold<'a> {
     base_name: &'a str,
     points: f32,
+    second_course: &'a str,
 }
-impl Threshold<'_> {
-    pub fn new(base_name: &str, points: f32) -> Threshold {
-        Threshold { base_name, points }
+impl<'a> Threshold<'a> {
+    pub fn new(base_name: &'a str, points: f32, second_course : &'a str) -> Threshold<'a> {
+        Threshold { base_name, points, second_course }
     }
     pub fn get_full_name(&self) -> String {
-        format!("{} - {} pkt", self.base_name, self.points)
+        format!("{} (przedmiot: {}) - {} pkt", self.base_name, self.second_course,self.points)
     }
 }
 
@@ -174,9 +180,10 @@ fn main() -> Result<(), String> {
 
     let mut selected = 0;
     let schools = vec![
-        Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65),
-        Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25),
+        Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65, "Fizyka"),
+        Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25, "Geografia"),
     ];
+    let mut total_points : f32 = 0.0;
 
     eframe::run_simple_native(
         "Kalkulator punktow do szkol srednich",
@@ -290,7 +297,7 @@ fn main() -> Result<(), String> {
                         });
                         ui.horizontal(|ui| {
                             ui.add(egui::Label::new(
-                                egui::RichText::new(format!("Świadectwo Informatyka: "))
+                                egui::RichText::new(format!("Świadectwo {}: ", schools[selected].second_course))
                                     .size(font_size),
                             ));
                             let cinf_slider = ui.add_sized(
@@ -358,7 +365,7 @@ fn main() -> Result<(), String> {
                             .calculate_points()
                             .unwrap();
 
-                            let total_points = certificate_points + exam_points;
+                            total_points = certificate_points + exam_points;
                             ui.label(
                                 egui::RichText::new(format!("Punkty Do Szkoły średniej: "))
                                     .size(font_size),
@@ -387,6 +394,9 @@ fn main() -> Result<(), String> {
                             };
                         });
                     });
+
+
+
                     // List of secondary schools
                     ui.vertical(|ui| {
                         ui.horizontal(|ui| {
@@ -403,6 +413,29 @@ fn main() -> Result<(), String> {
                                         ui.selectable_value(&mut selected, i, item.get_full_name());
                                     }
                                 });
+                        });
+                    });
+                    ui.vertical(|ui| {
+
+                    let points = PlotPoints::from_iter(vec![
+                        [0.0, schools[selected].points as f64],
+                        [4.0, schools[selected].points as f64],
+                    ]);
+                    let target = egui_plot::Line::new(schools[selected].get_full_name(), points);
+
+
+                    let points_bar = Bar::new(2.0, total_points.into()).width(0.5);
+                    let barchart = BarChart::new("Punkty",vec![points_bar]);
+
+                    Plot::new("Punkty do szkoły średniej")
+                        .legend(egui_plot::Legend::default()) 
+                        .y_axis_label("Punkty")
+                        .include_y(0.0)
+                        .include_x(0.0)
+                        .include_y(200.0)
+                        .show(ui, |plot_ui| {
+                            plot_ui.bar_chart(barchart);
+                            plot_ui.line(target);
                         });
                     });
                 });
