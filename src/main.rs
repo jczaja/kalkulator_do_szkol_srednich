@@ -297,7 +297,7 @@ fn main() -> Result<(), String> {
                         });
                         ui.horizontal(|ui| {
                             ui.add(egui::Label::new(
-                                egui::RichText::new(format!("Świadectwo {}: ", schools[selected].second_course))
+                                egui::RichText::new(format!("Świadectwo {}:              ", schools[selected].second_course))
                                     .size(font_size),
                             ));
                             let cinf_slider = ui.add_sized(
@@ -312,7 +312,7 @@ fn main() -> Result<(), String> {
                         });
                         ui.horizontal(|ui| {
                             ui.add(egui::Label::new(
-                                egui::RichText::new(format!("Osiągnięcia: ")).size(font_size),
+                                egui::RichText::new(format!("Osiągnięcia:                           ")).size(font_size),
                             ));
                             let achv_slider = ui.add_sized(
                                 [widget_width, widget_height * 0.5],
@@ -389,8 +389,7 @@ fn main() -> Result<(), String> {
                                 ))
                                 .clicked()
                             {
-                                todo!("Implement Exit");
-                                return;
+                                ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                             };
                         });
                     });
