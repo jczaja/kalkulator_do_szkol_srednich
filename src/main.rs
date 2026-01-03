@@ -349,6 +349,16 @@ async fn main() {
                                     .size(font_size),
                             ));
                         });
+                        ui.horizontal(|ui| {
+                            ui.add(egui_macroquad::egui::Label::new(
+                                egui_macroquad::egui::RichText::new(format!("Czerwony pasek: "))
+                                    .size(font_size),
+                            ));
+                            let honors_checked = ui.add_sized(
+                                [widget_width, widget_height * 0.5],
+                                egui_macroquad::egui::Checkbox::new(&mut hon_value, ""),
+                            );
+                        });
                     });
 
                     // List of secondary schools
@@ -371,16 +381,6 @@ async fn main() {
                                 ))
                                 .size(font_size),
                             ));
-                        });
-                        ui.horizontal(|ui| {
-                            ui.add(egui_macroquad::egui::Label::new(
-                                egui_macroquad::egui::RichText::new(format!("Czerwony pasek: "))
-                                    .size(font_size),
-                            ));
-                            let honors_checked = ui.add_sized(
-                                [widget_width, widget_height * 0.5],
-                                egui_macroquad::egui::Checkbox::new(&mut hon_value, ""),
-                            );
                         });
                         ui.horizontal(|ui| {
                             ui.add(egui_macroquad::egui::Label::new(
