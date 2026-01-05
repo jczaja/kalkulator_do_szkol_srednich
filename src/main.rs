@@ -185,6 +185,22 @@ async fn main() {
     let mut selected = 0;
     let mut should_exit = false;
     let schools = vec![
+        Threshold::new("LO II Gdansk - Klasa 1A (politechniczna)", 168.75, "Fizyka"),
+        Threshold::new(
+            "LO III Gdansk - Klasa 1A (ekonomiczna)",
+            166.74,
+            "Geografia",
+        ),
+        Threshold::new(
+            "LO III Gdansk - Klasa 1D-1 (politechniczna)",
+            171.64,
+            "Informatyka",
+        ),
+        Threshold::new(
+            "LO III Gdansk - Klasa 1D-2 (politechniczna)",
+            167.17,
+            "Informatyka",
+        ),
         Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65, "Fizyka"),
         Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25, "Geografia"),
         Threshold::new(
