@@ -169,18 +169,18 @@ impl CertificateResults<'_> {
 
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
-    let mut pol_value: u8 = 50;
-    let mut ang_value: u8 = 50;
-    let mut mat_value: u8 = 50;
+    let mut pol_value: u8 = 53;
+    let mut ang_value: u8 = 96;
+    let mut mat_value: u8 = 40;
     let mut initialization = true;
 
-    let mut cpol_value: u8 = 3;
-    let mut cang_value: u8 = 3;
-    let mut cmat_value: u8 = 3;
-    let mut cinf_value: u8 = 3;
+    let mut cpol_value: u8 = 4;
+    let mut cang_value: u8 = 6;
+    let mut cmat_value: u8 = 5;
+    let mut cinf_value: u8 = 6;
     let mut achv_value: u8 = 0;
-    let mut vol_value: bool = false;
-    let mut hon_value: bool = false;
+    let mut vol_value: bool = true;
+    let mut hon_value: bool = true;
 
     let mut selected = 0;
     let mut should_exit = false;
@@ -211,21 +211,13 @@ async fn main() {
             170.3,
             "Informatyka",
         ),
-        Threshold::new(
-            "LO IX Gdansk - Klasa 1A (mat-fiz)",
-            161.90,
-            "Fizyka",
-        ),
+        Threshold::new("LO IX Gdansk - Klasa 1A (mat-fiz)", 161.90, "Fizyka"),
         Threshold::new(
             "LO IX Gdansk - Klasa 1C (mat-fiz-inf)",
             144.90,
             "Informatyka",
         ),
-        Threshold::new(
-            "LO IX Gdansk - Klasa 1E (mat-fiz-inf)",
-            157.80,
-            "WOS",
-        ),
+        Threshold::new("LO IX Gdansk - Klasa 1E (mat-fiz-inf)", 157.80, "WOS"),
         Threshold::new(
             "LO X Gdansk - Klasa 1A (dwujezyczna politechniczna)",
             160.87,
