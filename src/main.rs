@@ -202,6 +202,31 @@ async fn main() {
             "Informatyka",
         ),
         Threshold::new(
+            "LO VIII Gdansk - Klasa 1BD-1 (mat-geo-ang)",
+            170.6,
+            "Geografia",
+        ),
+        Threshold::new(
+            "LO VIII Gdansk - Klasa 1BD-2 (mat-inf-ang)",
+            170.3,
+            "Informatyka",
+        ),
+        Threshold::new(
+            "LO IX Gdansk - Klasa 1A (mat-fiz)",
+            161.90,
+            "Fizyka",
+        ),
+        Threshold::new(
+            "LO IX Gdansk - Klasa 1C (mat-fiz-inf)",
+            144.90,
+            "Informatyka",
+        ),
+        Threshold::new(
+            "LO IX Gdansk - Klasa 1E (mat-fiz-inf)",
+            157.80,
+            "WOS",
+        ),
+        Threshold::new(
             "LO X Gdansk - Klasa 1A (dwujezyczna politechniczna)",
             160.87,
             "Fizyka",
