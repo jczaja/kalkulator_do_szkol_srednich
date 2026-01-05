@@ -187,6 +187,17 @@ async fn main() {
     let schools = vec![
         Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65, "Fizyka"),
         Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25, "Geografia"),
+        Threshold::new(
+            "LO XIX Gdansk - Klasa 1A (ekonomiczna)",
+            162.70,
+            "Geografia",
+        ),
+        Threshold::new(
+            "LO XIX Gdansk - Klasa 1B (artystyczna-muzyczna)",
+            136.20,
+            "Historia",
+        ),
+        Threshold::new("LO XIX Gdansk - Klasa 1E (mat-fiz-ang)", 167.70, "Fizyka"),
     ];
     let mut total_points: f32 = 0.0;
 
