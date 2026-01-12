@@ -261,6 +261,20 @@ async fn main() {
                         egui_macroquad::egui::FontFamily::Proportional,
                     ),
                 );
+                ui.style_mut().text_styles.insert(
+                    egui_macroquad::egui::TextStyle::Button,
+                    egui_macroquad::egui::FontId::new(
+                        font_size,
+                        egui_macroquad::egui::FontFamily::Proportional,
+                    ),
+                );
+                ui.style_mut().text_styles.insert(
+                    egui_macroquad::egui::TextStyle::Small,
+                    egui_macroquad::egui::FontId::new(
+                        font_size,
+                        egui_macroquad::egui::FontFamily::Proportional,
+                    ),
+                );
 
                 // język polski
                 ui.horizontal(|ui| {
