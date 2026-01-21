@@ -185,57 +185,57 @@ async fn main() {
     let mut selected = 0;
     let mut should_exit = false;
     let schools = vec![
-        Threshold::new("LO II Gdansk - Klasa 1A (politechniczna)", 168.75, "Fizyka"),
+        Threshold::new("LO II Gdansk - Klasa 1A (politechniczna)\n", 168.75, "Fizyka"),
         Threshold::new(
-            "LO III Gdansk - Klasa 1A (ekonomiczna)",
+            "LO III Gdansk - Klasa 1A (ekonomiczna)\n",
             166.74,
             "Geografia",
         ),
         Threshold::new(
-            "LO III Gdansk - Klasa 1D-1 (politechniczna)",
+            "LO III Gdansk - Klasa 1D-1(politechniczna)\n",
             171.64,
             "Informatyka",
         ),
         Threshold::new(
-            "LO III Gdansk - Klasa 1D-2 (politechniczna)",
+            "LO III Gdansk - Klasa 1D-2 (politechniczna)\n",
             167.17,
             "Informatyka",
         ),
         Threshold::new(
-            "LO VIII Gdansk - Klasa 1BD-1 (mat-geo-ang)",
+            "LO VIII Gdansk - Klasa 1BD-1 (mat-geo-ang)\n",
             170.6,
             "Geografia",
         ),
         Threshold::new(
-            "LO VIII Gdansk - Klasa 1BD-2 (mat-inf-ang)",
+            "LO VIII Gdansk - Klasa 1BD-2 (mat-inf-ang)\n",
             170.3,
             "Informatyka",
         ),
-        Threshold::new("LO IX Gdansk - Klasa 1A (mat-fiz)", 161.90, "Fizyka"),
+        Threshold::new("LO IX Gdansk - Klasa 1A (mat-fiz)\n", 161.90, "Fizyka"),
         Threshold::new(
             "LO IX Gdansk - Klasa 1C (mat-fiz-inf)",
             144.90,
             "Informatyka",
         ),
-        Threshold::new("LO IX Gdansk - Klasa 1E (mat-fiz-inf)", 157.80, "WOS"),
+        Threshold::new("LO IX Gdansk - Klasa 1E (mat-fiz-inf)\n", 157.80, "WOS"),
         Threshold::new(
-            "LO X Gdansk - Klasa 1A (dwujezyczna politechniczna)",
+            "LO X Gdansk - Klasa 1A (dwujezyczna politechniczna)\n",
             160.87,
             "Fizyka",
         ),
-        Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)", 147.65, "Fizyka"),
-        Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)", 155.25, "Geografia"),
+        Threshold::new("LO XV Gdansk - Klasa 1A (mat-inf-ang)\n", 147.65, "Fizyka"),
+        Threshold::new("LO XV Gdansk - Klasa 1D (mat-geo-ang)\n", 155.25, "Geografia"),
         Threshold::new(
-            "LO XIX Gdansk - Klasa 1A (ekonomiczna)",
+            "LO XIX Gdansk - Klasa 1A (ekonomiczna)\n",
             162.70,
             "Geografia",
         ),
         Threshold::new(
-            "LO XIX Gdansk - Klasa 1B (artystyczna-muzyczna)",
+            "LO XIX Gdansk - Klasa 1B (artystyczna-muzyczna)\n",
             136.20,
             "Historia",
         ),
-        Threshold::new("LO XIX Gdansk - Klasa 1E (mat-fiz-ang)", 167.70, "Fizyka"),
+        Threshold::new("LO XIX Gdansk - Klasa 1E (mat-fiz-ang)\n", 167.70, "Fizyka"),
     ];
     let mut total_points: f32 = 0.0;
 
