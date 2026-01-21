@@ -72,7 +72,7 @@ jobs:
            export ANDROID_HOME=$ANDROID_SDK_ROOT
            export ANDROID_NDK_ROOT=$PWD/android-ndk-r25c
            export NDK_HOME=$ANDROID_NDK_ROOT
-           cargo quad-apk build --release --verbose
+           cargo quad-apk build --release --verbose  --nosign
        - name: Run tests
          run: cargo test --verbose
        - name: Upload APK
