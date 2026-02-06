@@ -316,8 +316,12 @@ fn process_profil(
     ui.horizontal(|ui| {
         ui.vertical(|ui| {
             (0..profils.len()).for_each(|c| {
-                let alt_school = &profils[c];
-                ui.radio_value(&mut *selected_profil, c, format!("{}", alt_school.get_full_name()));
+                let alt_profil = &profils[c];
+                ui.radio_value(
+                    &mut *selected_profil,
+                    c,
+                    format!("{}", alt_profil.get_full_name()),
+                );
             });
         });
         if ui
@@ -343,9 +347,8 @@ fn process_none(
     initialization: &mut bool,
     city: &City,
     school: &School,
-    profil: usize,
+    profil: &Threshold,
 ) -> SelectionState {
-
     let mut state = SelectionState::None;
     let mut total_points = 0.0;
     // język polski
@@ -460,7 +463,7 @@ fn process_none(
                 ui.add(egui_macroquad::egui::Label::new(
                     egui_macroquad::egui::RichText::new(format!(
                         "Świadectwo {}:              ",
-                        school.profiles[profil].second_course
+                        profil.second_course
                     ))
                     .size(font_size),
                 ));
@@ -566,8 +569,7 @@ fn process_none(
 
                 if ui
                     .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("{school}"))
-                            .size(font_size),
+                        egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
                     ))
                     .clicked()
                 {
@@ -581,7 +583,7 @@ fn process_none(
                 ));
                 if ui
                     .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("{profil}"))
+                        egui_macroquad::egui::RichText::new(format!("{}", profil.get_full_name()))
                             .size(font_size),
                     ))
                     .clicked()
@@ -603,13 +605,10 @@ fn process_none(
         });
         ui.vertical(|ui| {
             let points = PlotPoints::from_iter(vec![
-                [0.0, school.profiles[profil].points as f64],
-                [4.0, school.profiles[profil].points as f64],
+                [0.0, profil.points as f64],
+                [4.0, profil.points as f64],
             ]);
-            let target = Line::new(
-                school.profiles[profil].get_full_name(),
-                points,
-            );
+            let target = Line::new(profil.get_full_name(), points);
             let points_bar = Bar::new(2.0, total_points.into()).width(0.5);
             let barchart = BarChart::new("Punkty", vec![points_bar]);
 
@@ -827,8 +826,7 @@ async fn main() {
                 );
                 match gamestate {
                     SelectionState::None => {
-
-                        let city =  &cities[selected_city];
+                        let city = &cities[selected_city];
                         gamestate = process_none(
                             ui,
                             font_size,
@@ -839,7 +837,7 @@ async fn main() {
                             &mut initialization,
                             city,
                             &city.get_schools()[selected_school],
-                            selected,
+                            &city.get_schools()[selected_school].profiles[selected],
                         );
                     }
                     SelectionState::City => {
