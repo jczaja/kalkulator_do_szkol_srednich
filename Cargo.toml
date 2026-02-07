@@ -6,7 +6,7 @@ edition = "2021"
 [package.metadata.android]
 res = "android_res"
 icon = "@mipmap/ic_launcher"
-version_code = 2
+version_code = 3
 version_name = "Initial"
 min_sdk_version = 21
 build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
