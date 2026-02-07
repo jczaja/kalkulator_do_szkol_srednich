@@ -8,9 +8,8 @@
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
 // TODO: zwolnienie z egzaminu
-// TODO: koszalin i poznan. Zobacz jak na komorce to wyglada
+// TODO: koszalin . Zobacz jak na komorce to wyglada
 // TODO: android TV
-// TODO: requet focus . make initalization each time when selection state changes
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -252,6 +251,7 @@ fn process_city(
     widget_height: f32,
     cities: &[City],
     selected_city: &mut usize,
+    initialization: &mut bool,
 ) -> SelectionState {
     let mut state = SelectionState::City;
 
@@ -261,13 +261,16 @@ fn process_city(
             ui.radio_value(&mut *selected_city, c, format!("{alt_city}"));
         });
     });
-    if ui
-        .add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ))
-        .clicked()
-    {
+    let ok_button = ui.add(egui_macroquad::egui::Button::new(
+        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+    ));
+    if *initialization {
+        ok_button.request_focus();
+        *initialization = false;
+    }
+    if ok_button.clicked() {
         state = SelectionState::None;
+        *initialization = true;
     };
 
     state
@@ -280,23 +283,28 @@ fn process_school(
     widget_height: f32,
     schools: &[School],
     selected_school: &mut usize,
+    initialization: &mut bool,
 ) -> SelectionState {
     let mut state = SelectionState::School;
 
-        ui.vertical(|ui| {
-            (0..schools.len()).for_each(|c| {
-                let alt_school = &schools[c];
-                ui.radio_value(&mut *selected_school, c, format!("{alt_school}"));
-            });
+    ui.vertical(|ui| {
+        (0..schools.len()).for_each(|c| {
+            let alt_school = &schools[c];
+            ui.radio_value(&mut *selected_school, c, format!("{alt_school}"));
         });
-        if ui
-            .add(egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-            ))
-            .clicked()
-        {
-            state = SelectionState::None;
-        };
+    });
+    let ok_button = ui.add(egui_macroquad::egui::Button::new(
+        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+    ));
+    if *initialization {
+        ok_button.request_focus();
+        *initialization = false;
+    }
+    if ok_button.clicked() {
+        state = SelectionState::None;
+        *initialization = true;
+    };
+
     state
 }
 
@@ -308,27 +316,31 @@ fn process_profil(
     widget_height: f32,
     profils: &[Threshold],
     selected_profil: &mut usize,
+    initialization: &mut bool,
 ) -> SelectionState {
     let mut state = SelectionState::Profil;
 
-        ui.vertical(|ui| {
-            (0..profils.len()).for_each(|c| {
-                let alt_profil = &profils[c];
-                ui.radio_value(
-                    &mut *selected_profil,
-                    c,
-                    format!("{}", alt_profil.get_full_name()),
-                );
-            });
+    ui.vertical(|ui| {
+        (0..profils.len()).for_each(|c| {
+            let alt_profil = &profils[c];
+            ui.radio_value(
+                &mut *selected_profil,
+                c,
+                format!("{}", alt_profil.get_full_name()),
+            );
         });
-        if ui
-            .add(egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-            ))
-            .clicked()
-        {
-            state = SelectionState::None;
-        };
+    });
+    let ok_button = ui.add(egui_macroquad::egui::Button::new(
+        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+    ));
+    if *initialization {
+        ok_button.request_focus();
+        *initialization = false;
+    }
+    if ok_button.clicked() {
+        state = SelectionState::None;
+        *initialization = true;
+    };
 
     state
 }
@@ -554,6 +566,7 @@ fn process_none(
                     .clicked()
                 {
                     state = SelectionState::City;
+                    *initialization = true;
                 };
             });
             //////////////////////////////////
@@ -570,6 +583,7 @@ fn process_none(
                     .clicked()
                 {
                     state = SelectionState::School;
+                    *initialization = true;
                 };
             });
 
@@ -585,6 +599,7 @@ fn process_none(
                     .clicked()
                 {
                     state = SelectionState::Profil;
+                    *initialization = true;
                 };
             });
 
@@ -625,9 +640,9 @@ fn process_none(
 
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
-    let mut pol_value: u8 = 53;
-    let mut ang_value: u8 = 96;
-    let mut mat_value: u8 = 40;
+    let mut pol_value: u8 = 69;
+    let mut ang_value: u8 = 100;
+    let mut mat_value: u8 = 60;
     let mut initialization = true;
 
     let mut cpol_value: u8 = 4;
@@ -850,6 +865,7 @@ async fn main() {
                             widget_height,
                             &cities,
                             &mut selected_city,
+                            &mut initialization,
                         );
                     }
                     SelectionState::School => {
@@ -860,6 +876,7 @@ async fn main() {
                             widget_height,
                             cities[selected_city].get_schools(),
                             &mut selected_school,
+                            &mut initialization,
                         );
                     }
                     SelectionState::Profil => {
@@ -870,6 +887,7 @@ async fn main() {
                             widget_height,
                             cities[selected_city].get_schools()[selected_school].profiles,
                             &mut selected,
+                            &mut initialization,
                         );
                     }
 
