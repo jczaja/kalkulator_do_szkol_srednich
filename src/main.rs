@@ -7,10 +7,10 @@
 // I LO Szczecinek : https://cloud-d.edupage.org/cloud/Regulamin_i_harmonogram_rekrutacji_2025_2026_do_I_LO_Szczecinek.pdf?z%3A0mYjQe50qOoFEVT1pUcg5F%2BU1Qs%2BV%2FKMV5Rnq4AztxBI4PNFFctdFVyIc46bQWYEnD07Yx83qP7RLhSDLOMznQ%3D%3D
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
-// TODO: finish refactor (process_profil)
-// TODO: klasa i profil jako label  i przycisk na nzwa miasta i wybrana klasa/profil a moze szkole
-// i profil rozdzielic
 // TODO: zwolnienie z egzaminu
+// TODO: koszalin i poznan. Zobacz jak na komorce to wyglada
+// TODO: android TV
+// TODO: requet focus . make initalization each time when selection state changes
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -283,7 +283,6 @@ fn process_school(
 ) -> SelectionState {
     let mut state = SelectionState::School;
 
-    ui.horizontal(|ui| {
         ui.vertical(|ui| {
             (0..schools.len()).for_each(|c| {
                 let alt_school = &schools[c];
@@ -298,7 +297,6 @@ fn process_school(
         {
             state = SelectionState::None;
         };
-    });
     state
 }
 
@@ -313,7 +311,6 @@ fn process_profil(
 ) -> SelectionState {
     let mut state = SelectionState::Profil;
 
-    ui.horizontal(|ui| {
         ui.vertical(|ui| {
             (0..profils.len()).for_each(|c| {
                 let alt_profil = &profils[c];
@@ -332,7 +329,6 @@ fn process_profil(
         {
             state = SelectionState::None;
         };
-    });
 
     state
 }
@@ -714,8 +710,8 @@ async fn main() {
     ];
 
     let k1 = &[Threshold::new(
-        "LO I - Klasa 1A (politechniczna)\n",
-        168.75,
+        "LO I - Klasa 1A (ABAKUS)\n",
+        163.85,
         "Fizyka",
     )];
 
@@ -730,28 +726,35 @@ async fn main() {
         "Geografia",
     )];
 
-    let p1 = &[Threshold::new(
-        "LO I - Klasa 1A (inżynierska)\n",
-        168.75,
-        "Fizyka",
-    )];
+    let p1 = &[
+        Threshold::new("LO I - Klasa 1 (ABAKUS)\n", 163.85, "Fizyka"),
+        Threshold::new("LO I - Klasa 1 (COLUMBUS)\n", 172.90, "Geografia"),
+        Threshold::new("LO I - Klasa 1 (SIGMA)\n", 165.00, "Chemia"),
+    ];
 
-    let p2 = &[Threshold::new(
-        "LO II - Klasa 1A (mat-fiz)\n",
-        161.90,
-        "Fizyka",
-    )];
-    let p3 = &[Threshold::new(
-        "LO III - Klasa 1D (mat-geo-ang)\n",
-        155.25,
-        "Geografia",
-    )];
-    let p4 = &[Threshold::new(
-        "LO IV - Klasa 1E (mat-fiz-ang)\n",
-        167.70,
-        "Fizyka",
-    )];
+    let p2 = &[
+        Threshold::new("LO VIII - Klasa 1A (informatyczna)\n", 172.20, "Fizyka"),
+        Threshold::new("LO VIII - Klasa 1C (fizyczna)\n", 163.95, "Fizyka"),
+        Threshold::new(
+            "LO VIII - Klasa 1D grupa 1 (ekonomiczna)\n",
+            173.30,
+            "Geografia",
+        ),
+        Threshold::new(
+            "LO VIII - Klasa 1D grupa 2 (ekonomiczna)\n",
+            163.85,
+            "Geografia",
+        ),
+    ];
 
+    let p3 = &[
+        Threshold::new(
+            "LO XVI - Klasa 1C (ekonomiczno-informatyczna)\n",
+            90.85,
+            "Geografia",
+        ),
+        Threshold::new("LO XVI - Klasa 1D (politechniczna)\n", 126.60, "Fizyka"),
+    ];
     let schools_gdansk = vec![
         School::new("LO II Gdańsk", g1),
         School::new("LO III Gdańsk", g2),
@@ -769,14 +772,13 @@ async fn main() {
     ];
 
     let schools_poznan = vec![
-        School::new("LO I Koszalin", p1),
-        School::new("LO II Koszalin", p2),
-        School::new("LO III Koszalin", p3),
-        School::new("LO IV Koszalin", p4),
+        School::new("LO I im. Karola Marcinkowskiego Poznań", p1),
+        School::new("LO VIII Liceum im. Adama Mickiewicza Poznań", p2),
+        School::new("LO XVI im. Charlesa de Gaulle Poznań", p3),
     ];
     let cities = [
         City::Gdansk(&schools_gdansk),
-        City::Koszalin(&schools_koszalin),
+        //  City::Koszalin(&schools_koszalin),
         City::Poznan(&schools_poznan),
     ];
     let mut gamestate = SelectionState::None;
