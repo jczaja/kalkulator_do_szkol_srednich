@@ -9,7 +9,6 @@
 
 // TODO: zwolnienie z egzaminu
 // TODO: koszalin . Zobacz jak na komorce to wyglada
-// TODO: android TV
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -353,12 +352,22 @@ fn process_none(
     exams: &mut ExamResults,
     certs: &mut CertificateResults,
     initialization: &mut bool,
+    prev_gamestate: &SelectionState,
     city: &City,
     school: &School,
     profil: &Threshold,
 ) -> SelectionState {
     let mut state = SelectionState::None;
     let mut total_points = 0.0;
+
+    let set_focus = |widget: &egui_macroquad::egui::Response, initialization: &mut bool| {
+        if *initialization {
+            // Make focus depending on previous selection state
+            widget.request_focus();
+            *initialization = false;
+        }
+    };
+
     // język polski
     ui.horizontal(|ui| {
         ui.vertical(|ui| {
@@ -378,9 +387,8 @@ fn process_none(
                         .size(font_size),
                 ));
 
-                if *initialization {
-                    pol_slider.request_focus();
-                    *initialization = false;
+                if let SelectionState::None = prev_gamestate {
+                    set_focus(&pol_slider, initialization);
                 }
             });
             ui.horizontal(|ui| {
@@ -559,29 +567,32 @@ fn process_none(
                     egui_macroquad::egui::RichText::new("Miasto: ".to_string()).size(font_size),
                 ));
 
-                if ui
-                    .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("{city}")).size(font_size),
-                    ))
-                    .clicked()
-                {
+                let city_button = ui.add(egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("{city}")).size(font_size),
+                ));
+
+                if let SelectionState::City = prev_gamestate {
+                    set_focus(&city_button, initialization);
+                }
+                if city_button.clicked() {
                     state = SelectionState::City;
                     *initialization = true;
                 };
             });
-            //////////////////////////////////
 
             ui.horizontal(|ui| {
                 ui.add(egui_macroquad::egui::Label::new(
                     egui_macroquad::egui::RichText::new("Szkoła: ".to_string()).size(font_size),
                 ));
 
-                if ui
-                    .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
-                    ))
-                    .clicked()
-                {
+                let school_button = ui.add(egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
+                ));
+
+                if let SelectionState::School = prev_gamestate {
+                    set_focus(&school_button, initialization);
+                }
+                if school_button.clicked() {
                     state = SelectionState::School;
                     *initialization = true;
                 };
@@ -591,13 +602,15 @@ fn process_none(
                 ui.add(egui_macroquad::egui::Label::new(
                     egui_macroquad::egui::RichText::new(format!("Profil: ")).size(font_size),
                 ));
-                if ui
-                    .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("{}", profil.get_full_name()))
-                            .size(font_size),
-                    ))
-                    .clicked()
-                {
+                let profil_button = ui.add(egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("{}", profil.get_full_name()))
+                        .size(font_size),
+                ));
+
+                if let SelectionState::Profil = prev_gamestate {
+                    set_focus(&profil_button, initialization);
+                }
+                if profil_button.clicked() {
                     state = SelectionState::Profil;
                     *initialization = true;
                 };
@@ -797,6 +810,7 @@ async fn main() {
         City::Poznan(&schools_poznan),
     ];
     let mut gamestate = SelectionState::None;
+    let mut prev_gamestate = SelectionState::None;
 
     let mut selected_city = 0;
     let mut selected_school = 0;
@@ -852,10 +866,12 @@ async fn main() {
                             &mut exam_points,
                             &mut certs,
                             &mut initialization,
+                            &prev_gamestate,
                             city,
                             &city.get_schools()[selected_school],
                             &city.get_schools()[selected_school].profiles[selected],
                         );
+                        prev_gamestate = SelectionState::None;
                     }
                     SelectionState::City => {
                         gamestate = process_city(
@@ -867,6 +883,7 @@ async fn main() {
                             &mut selected_city,
                             &mut initialization,
                         );
+                        prev_gamestate = SelectionState::City;
                     }
                     SelectionState::School => {
                         gamestate = process_school(
@@ -878,6 +895,7 @@ async fn main() {
                             &mut selected_school,
                             &mut initialization,
                         );
+                        prev_gamestate = SelectionState::School;
                     }
                     SelectionState::Profil => {
                         gamestate = process_profil(
@@ -889,6 +907,7 @@ async fn main() {
                             &mut selected,
                             &mut initialization,
                         );
+                        prev_gamestate = SelectionState::Profil;
                     }
 
                     SelectionState::Exit => (),
