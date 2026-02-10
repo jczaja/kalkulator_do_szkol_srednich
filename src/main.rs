@@ -7,7 +7,7 @@
 // I LO Szczecinek : https://cloud-d.edupage.org/cloud/Regulamin_i_harmonogram_rekrutacji_2025_2026_do_I_LO_Szczecinek.pdf?z%3A0mYjQe50qOoFEVT1pUcg5F%2BU1Qs%2BV%2FKMV5Rnq4AztxBI4PNFFctdFVyIc46bQWYEnD07Yx83qP7RLhSDLOMznQ%3D%3D
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
-// TODO: zwolnienie z egzaminu
+// TODO: Skoncz konkursy wypisywac
 // TODO: koszalin . Zobacz jak na komorce to wyglada
 // TODO: android TV ikonka (wlasny manifest)
 
@@ -555,13 +555,7 @@ fn process_none(
                 );
                 ui.label(
                     egui_macroquad::egui::RichText::new(format!("{}", total_points))
-                        .color(if total_points <= 100.0 {
-                            egui_macroquad::egui::Color32::RED
-                        } else if total_points <= 150.0 {
-                            egui_macroquad::egui::Color32::YELLOW
-                        } else {
-                            egui_macroquad::egui::Color32::GREEN
-                        })
+                        .color(egui_macroquad::egui::Color32::YELLOW)
                         .size(font_size),
                 );
             });
@@ -639,9 +633,15 @@ fn process_none(
                 [0.0, profil.points as f64],
                 [4.0, profil.points as f64],
             ]);
-            let target = Line::new(profil.get_full_name(), points);
+            let target = Line::new(profil.get_full_name(), points)
+                .color(egui_macroquad::egui::Color32::BLUE);
             let points_bar = Bar::new(2.0, total_points.into()).width(0.5);
-            let barchart = BarChart::new("Punkty", vec![points_bar]);
+            let barchart =
+                BarChart::new("Punkty", vec![points_bar]).color(if total_points >= profil.points {
+                    egui_macroquad::egui::Color32::GREEN
+                } else {
+                    egui_macroquad::egui::Color32::RED
+                });
 
             Plot::new("Punkty do szkoły średniej")
                 .legend(egui_plot::Legend::default())
