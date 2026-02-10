@@ -9,6 +9,7 @@
 
 // TODO: zwolnienie z egzaminu
 // TODO: koszalin . Zobacz jak na komorce to wyglada
+// TODO: android TV ikonka (wlasny manifest)
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -502,10 +503,13 @@ fn process_none(
                     egui_macroquad::egui::RichText::new(format!("Czerwony pasek: "))
                         .size(font_size),
                 ));
-                let honors_checked = ui.add_sized(
-                    [widget_width, widget_height * 0.5],
-                    egui_macroquad::egui::Checkbox::new(&mut certs.honors, ""),
-                );
+                ui.scope(|ui| {
+                    ui.style_mut().spacing.icon_width = font_size;
+                    let honors_checked = ui.add_sized(
+                        [widget_width, widget_height * 0.5],
+                        egui_macroquad::egui::Checkbox::new(&mut certs.honors, ""),
+                    );
+                });
             });
         });
 
@@ -530,10 +534,13 @@ fn process_none(
                 ui.add(egui_macroquad::egui::Label::new(
                     egui_macroquad::egui::RichText::new(format!("Wolontariat: ")).size(font_size),
                 ));
-                let vol_checked = ui.add_sized(
-                    [widget_width, widget_height * 0.5],
-                    egui_macroquad::egui::Checkbox::new(&mut certs.volounteering, ""),
-                );
+                ui.scope(|ui| {
+                    ui.style_mut().spacing.icon_width = font_size;
+                    let vol_checked = ui.add_sized(
+                        [widget_width, widget_height * 0.5],
+                        egui_macroquad::egui::Checkbox::new(&mut certs.volounteering, ""),
+                    );
+                });
             });
             // Punkty
             ui.horizontal(|ui| {
