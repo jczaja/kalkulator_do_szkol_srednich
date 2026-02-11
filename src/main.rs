@@ -7,6 +7,11 @@
 // I LO Szczecinek : https://cloud-d.edupage.org/cloud/Regulamin_i_harmonogram_rekrutacji_2025_2026_do_I_LO_Szczecinek.pdf?z%3A0mYjQe50qOoFEVT1pUcg5F%2BU1Qs%2BV%2FKMV5Rnq4AztxBI4PNFFctdFVyIc46bQWYEnD07Yx83qP7RLhSDLOMznQ%3D%3D
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
+// TODO: Crash in line 888
+
+//thread 'main' (7718) panicked at src/main.rs:888:30:
+//index out of bounds: the len is 3 but the index is 3
+//note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 // TODO: Skoncz konkursy wypisywac
 // TODO: koszalin . Zobacz jak na komorce to wyglada
 // TODO: android TV ikonka (wlasny manifest)
@@ -31,16 +36,19 @@ struct School<'a> {
 
 impl<'a> School<'a> {
     pub fn new(name: &'a str, profiles: &'a [Threshold<'a>]) -> School<'a> {
-
         let min_threashold = profiles.iter().fold(200.0, |mut acc, profil| {
             if acc > profil.points {
                 profil.points
             } else {
-               acc 
+                acc
             }
         });
 
-        School { name, profiles, min_threashold }
+        School {
+            name,
+            profiles,
+            min_threashold,
+        }
     }
 
     pub fn get_full_name(&self) -> String {
@@ -300,7 +308,11 @@ fn process_school(
     ui.vertical(|ui| {
         (0..schools.len()).for_each(|c| {
             let alt_school = &schools[c];
-            ui.radio_value(&mut *selected_school, c, format!("{}",alt_school.get_full_name()));
+            ui.radio_value(
+                &mut *selected_school,
+                c,
+                format!("{}", alt_school.get_full_name()),
+            );
         });
     });
     let ok_button = ui.add(egui_macroquad::egui::Button::new(
@@ -885,7 +897,7 @@ async fn main() {
                             &mut initialization,
                             &prev_gamestate,
                             city,
-                            &city.get_schools()[selected_school],
+                            &city.get_schools()[selected_school], // BABOL
                             &city.get_schools()[selected_school].profiles[selected],
                         );
                         prev_gamestate = SelectionState::None;
@@ -901,6 +913,13 @@ async fn main() {
                             &mut initialization,
                         );
                         prev_gamestate = SelectionState::City;
+                        // After reetting city we need to set indices
+                        // to school and profil to safe 0 values
+                        // otherwise there maybe out of bound error
+                        if let SelectionState::None = gamestate {
+                            selected_school = 0;
+                            selected = 0;
+                        }
                     }
                     SelectionState::School => {
                         gamestate = process_school(
@@ -913,6 +932,9 @@ async fn main() {
                             &mut initialization,
                         );
                         prev_gamestate = SelectionState::School;
+                        if let SelectionState::None = gamestate {
+                            selected = 0;
+                        }
                     }
                     SelectionState::Profil => {
                         gamestate = process_profil(
