@@ -26,15 +26,25 @@ enum SelectionState {
 struct School<'a> {
     name: &'a str,
     profiles: &'a [Threshold<'a>],
+    min_threashold: f32,
 }
 
 impl<'a> School<'a> {
     pub fn new(name: &'a str, profiles: &'a [Threshold<'a>]) -> School<'a> {
-        School { name, profiles }
+
+        let min_threashold = profiles.iter().fold(200.0, |mut acc, profil| {
+            if acc > profil.points {
+                profil.points
+            } else {
+               acc 
+            }
+        });
+
+        School { name, profiles, min_threashold }
     }
 
     pub fn get_full_name(&self) -> String {
-        format!("{}", self.name)
+        format!("{} (minimalny próg: {})", self.name, self.min_threashold)
     }
 }
 
@@ -290,7 +300,7 @@ fn process_school(
     ui.vertical(|ui| {
         (0..schools.len()).for_each(|c| {
             let alt_school = &schools[c];
-            ui.radio_value(&mut *selected_school, c, format!("{alt_school}"));
+            ui.radio_value(&mut *selected_school, c, format!("{}",alt_school.get_full_name()));
         });
     });
     let ok_button = ui.add(egui_macroquad::egui::Button::new(
