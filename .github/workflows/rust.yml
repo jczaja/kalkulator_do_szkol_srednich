@@ -51,7 +51,7 @@ jobs:
            rustup target add aarch64-linux-android
            rustup target add i686-linux-android
            rustup target add x86_64-linux-android
-           cargo install --git https://github.com/not-fl3/cargo-quad-apk
+           cargo install --git https://github.com/jczaja/cargo-quad-apk
 
        - uses: actions/checkout@v4
        - name: Build
