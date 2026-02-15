@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [package.metadata.android]
-manifest = "AndroidManifest.xml" # Disable to enable generation Andoird.xml by cargo quad-apk
 res = "android_res"
 icon = "@mipmap/ic_launcher"
 version_code = 7
