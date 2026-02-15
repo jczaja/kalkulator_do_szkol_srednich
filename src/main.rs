@@ -7,14 +7,10 @@
 // I LO Szczecinek : https://cloud-d.edupage.org/cloud/Regulamin_i_harmonogram_rekrutacji_2025_2026_do_I_LO_Szczecinek.pdf?z%3A0mYjQe50qOoFEVT1pUcg5F%2BU1Qs%2BV%2FKMV5Rnq4AztxBI4PNFFctdFVyIc46bQWYEnD07Yx83qP7RLhSDLOMznQ%3D%3D
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
-// TODO: Crash in line 888
+// punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 
-//thread 'main' (7718) panicked at src/main.rs:888:30:
-//index out of bounds: the len is 3 but the index is 3
-//note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-// TODO: Skoncz konkursy wypisywac
+// TODO: Skoncz konkursy wypisywac (sprawdz czy sie zgadzaja i UT dokoncz)
 // TODO: koszalin . Zobacz jak na komorce to wyglada
-// TODO: android TV ikonka (wlasny manifest)
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -36,7 +32,7 @@ struct School<'a> {
 
 impl<'a> School<'a> {
     pub fn new(name: &'a str, profiles: &'a [Threshold<'a>]) -> School<'a> {
-        let min_threashold = profiles.iter().fold(200.0, |mut acc, profil| {
+        let min_threashold = profiles.iter().fold(200.0, |acc, profil| {
             if acc > profil.points {
                 profil.points
             } else {
@@ -154,16 +150,68 @@ impl ExamResults<'_> {
         self.second_language.0 as f32 * 0.30
     }
 }
+
+// How to
+struct Contest<'a> {
+    curatorOverVoidship: ContestCuratorOverVoidship<'a>,
+    curatorVoidship: ContestCuratorVoidship,
+    interdisciplinery: ContestCuratorInterdisciplinary<'a>,
+    artistic: ContestArtisticNational,
+}
+
+impl<'a> Contest<'a> {
+    pub fn calculate_points(&self) -> Result<f32, &str> {
+        let mut total_points = std::cmp::min(
+            18,
+            self.curatorOverVoidship.as_u32()
+                + self.curatorVoidship.as_u32()
+                + self.interdisciplinery.as_u32()
+                + self.artistic.as_u32(),
+        );
+        Ok(total_points as f32)
+    }
+}
+
+// Przedmiotowe
+
+enum ContestCuratorOverVoidship<'a> {
+    None,
+    SubjectFinalist(&'a str),
+    SubjectLaureate(&'a str),
+    MultipleSubjectFinalist(&'a str),
+}
+
+impl<'a> ContestCuratorOverVoidship<'a> {
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestCuratorOverVoidship::None => 0,
+            ContestCuratorOverVoidship::SubjectFinalist(_) => 7,
+            ContestCuratorOverVoidship::SubjectLaureate(_) => 200,
+            ContestCuratorOverVoidship::MultipleSubjectFinalist(_) => 10,
+        }
+    }
+}
+
 // finalist of the subject competition
 //laureate of the thematic or interdisciplinary competition (7 points)
 // finalist of the thematic or interdisciplinary competition (5 points)
 
-#[repr(u8)]
-enum ContestCuratorOverVoidship<'a> {
-    None = 0,
-    SubjectFinalist(&'a str) = 10,
-    ThematicLaureate(&'a str) = 7,
-    ThematicFinalist(&'a str) = 5,
+enum ContestCuratorInterdisciplinary<'a> {
+    None,
+    SubjectFinalist(&'a str),
+    ThematicLaureate(&'a str),
+    ThematicFinalist(&'a str),
+}
+
+impl<'a> ContestCuratorInterdisciplinary<'a> {
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestCuratorInterdisciplinary::None => 0,
+            ContestCuratorInterdisciplinary::SubjectFinalist(_) => 10,
+            ContestCuratorInterdisciplinary::ThematicLaureate(_) => 7,
+            ContestCuratorInterdisciplinary::ThematicFinalist(_) => 5,
+        }
+    }
 }
 
 //tytułu finalisty konkursu z przedmiotu lub przedmiotów artystycznych objętych ramowym planem nauczania szkoły artystycznej (10 pkt)
@@ -172,12 +220,22 @@ enum ContestCuratorOverVoidship<'a> {
 
 //tytułu finalisty turnieju z przedmiotu lub przedmiotów artystycznych nieobjętych ramowym planem nauczania szkoły artystycznej (3 pkt)
 
-#[repr(u8)]
 enum ContestArtisticNational {
-    None = 0,
-    MandatoryFinalist = 10,
-    PeriferialLaureate = 4,
-    PeriferialFinalist = 3,
+    None,
+    MandatoryFinalist,
+    PeriferialLaureate,
+    PeriferialFinalist,
+}
+
+impl ContestArtisticNational {
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestArtisticNational::None => 0,
+            ContestArtisticNational::MandatoryFinalist => 10,
+            ContestArtisticNational::PeriferialLaureate => 4,
+            ContestArtisticNational::PeriferialFinalist => 3,
+        }
+    }
 }
 
 //brak (0 pkt)
@@ -189,12 +247,11 @@ enum ContestArtisticNational {
 //tytułu laureata konkursu tematycznego lub interdyscyplinarnego (5 pkt)
 //tytułu finalisty konkursu tematycznego lub interdyscyplinarnego (3 pkt)
 
-#[repr(u8)]
 enum ContestCuratorVoidship {
-    None = 0,
-    AtLeastTwoTimesSubjectFinalist = 10, // Can it be two times the same subject?
-    AtLeastTwoTimesThematicLaureate = 7,
-    AtLeastTwoTimesThematicFinalist = 5,
+    None,
+    AtLeastTwoTimesSubjectFinalist, // Can it be two times the same subject?
+    AtLeastTwoTimesThematicLaureate,
+    AtLeastTwoTimesThematicFinalist,
 }
 
 impl ContestCuratorVoidship {
@@ -202,6 +259,14 @@ impl ContestCuratorVoidship {
         ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate; // Can it be two times the same subject?
     pub const ThematicFinalist: ContestCuratorVoidship =
         ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist;
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestCuratorVoidship::None => 0,
+            ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist => 10,
+            ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate => 7,
+            ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist => 5,
+        }
+    }
 }
 
 struct CertificateResults<'a> {
@@ -1023,15 +1088,34 @@ mod tests {
         );
 
         assert_eq!(CertificateResults{ polish : (2, "jezyk polski" ),
-            math : (2, "matematyka"),
-            first_addtional_course : (2, "jezyk angielski"),
-            second_addtional_course : (2, "informatyka"),
-            achievements : 100,
-            honors : false,
-            volounteering : true,
+        math : (2, "matematyka"),
+        first_addtional_course : (2, "jezyk angielski"),
+        second_addtional_course : (2, "informatyka"),
+        achievements : 100,
+        honors : false,
+        volounteering : true,
 
         }.calculate_points(), Err("Grade needs to be between 2 and 6 and achievemnts needs to be between 0 and 18 points"));
 
+        Ok(())
+    }
+
+    #[test]
+    fn test_contest_points() -> Result<(), String> {
+        assert_eq!(ContestArtisticNational::MandatoryFinalist.as_u32(), 10);
+        //
+        //curatorOverVoidship: ContestCuratorOverVoidship<'a>,
+        //curatorVoidship: ContestCuratorVoidship,
+        //interdisciplinery: ContestCuratorInterdisciplinary<'a>,
+        //artistic: ContestArtisticNational,
+        //
+        //
+        //
+        //
+        //        let contest =  Contest {
+        //            curatorVoidship: ContestCuratorVoidship::SubjectFinalist,
+        //            artistic: ContestArtisticNational::MandatoryFinalist,
+        //        };
         Ok(())
     }
 }

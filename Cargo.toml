@@ -4,20 +4,22 @@ version = "0.1.0"
 edition = "2021"
 
 [package.metadata.android]
+manifest = "AndroidManifest.xml" # Disable to enable generation Andoird.xml by cargo quad-apk
 res = "android_res"
 icon = "@mipmap/ic_launcher"
-version_code = 6
+version_code = 7
 version_name = "Initial"
 min_sdk_version = 21
 build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
 
-[package.metadata.android.activity_attributes]
-"android:exported" =  "true"
-"android:screenOrientation" = "userLandscape"
+# Enable if you want Android.xml being generated
+#[package.metadata.android.activity_attributes]
+#"android:exported" =  "true"
+#"android:screenOrientation" = "userLandscape"
 
-[[package.metadata.android.feature]]
-name = "android.hardware.touchscreen"
-required = false
+#[[package.metadata.android.feature]]
+#name = "android.hardware.touchscreen"
+#required = false
 
 [dependencies]
 egui-macroquad = "0.17.3"
