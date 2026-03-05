@@ -935,6 +935,7 @@ fn process_none(
     widget_height: f32,
     exams: &mut ExamResults,
     certs: &mut CertificateResults,
+    contests: &Contest,
     initialization: &mut bool,
     prev_gamestate: &SelectionState,
     city: &City,
@@ -1099,8 +1100,11 @@ fn process_none(
         // List of secondary schools
         ui.vertical(|ui| {
             let contest_button = ui.add(egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!("Konkursy: {}", certs.achievements))
-                    .size(font_size),
+                egui_macroquad::egui::RichText::new(format!(
+                    "Konkursy: {}",
+                    contests.calculate_points().unwrap()
+                ))
+                .size(font_size),
             ));
 
             if let SelectionState::Contests = prev_gamestate {
@@ -1440,6 +1444,7 @@ async fn main() {
                             widget_height,
                             &mut exam_points,
                             &mut certs,
+                            &contests,
                             &mut initialization,
                             &prev_gamestate,
                             city,
