@@ -9,7 +9,7 @@
 
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 
-//TODO:  ui dla kokursow , Split by half
+// TODO: Punkty na przyciskach konkursowych
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -18,7 +18,12 @@ use macroquad::prelude::*; // Import necessary components
 enum SelectionState {
     None,
     City,
-    Contest,
+    Contests,
+    Contest1,
+    Contest2,
+    Contest3,
+    Contest4,
+    Contest5,
     Exit,
     Profil,
     School,
@@ -489,8 +494,131 @@ fn process_contest(
     schools: &[School],
     contests: &mut Contest,
     initialization: &mut bool,
+    prev_gamestate: &SelectionState,
 ) -> SelectionState {
-    let mut state = SelectionState::Contest;
+    let mut state = SelectionState::Contests;
+
+    let set_focus = |widget: &egui_macroquad::egui::Response, initialization: &mut bool| {
+        if *initialization {
+            // Make focus depending on previous selection state
+            widget.request_focus();
+            *initialization = false;
+        }
+    };
+
+    ui.vertical(|ui| {
+        // overvoidship
+        let contest1_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Przedmiotowe ponadwojewodzkie: {}",
+                contests.curatorOverVoidship.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest1 = prev_gamestate {
+            set_focus(&contest1_button, initialization);
+        }
+        if contest1_button.clicked() {
+            state = SelectionState::Contest1;
+            *initialization = true;
+        };
+
+        // voidship
+        let contest2_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Przedmiotowe wojewodzkie: {}",
+                contests.curatorVoidship.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest2 = prev_gamestate {
+            set_focus(&contest2_button, initialization);
+        }
+        if contest2_button.clicked() {
+            state = SelectionState::Contest2;
+            *initialization = true;
+        };
+
+        // interdysciplinary
+        let contest3_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Tematyczne i interdysplinarne: {}",
+                contests.interdisciplinery.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest3 = prev_gamestate {
+            set_focus(&contest3_button, initialization);
+        }
+        if contest3_button.clicked() {
+            state = SelectionState::Contest3;
+            *initialization = true;
+        };
+
+        // artistic
+        let contest4_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Artystyczne: {}",
+                contests.artistic.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest4 = prev_gamestate {
+            set_focus(&contest4_button, initialization);
+        }
+        if contest4_button.clicked() {
+            state = SelectionState::Contest4;
+            *initialization = true;
+        };
+
+        // other
+        let contest5_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Niekuratoryjne: {}",
+                contests.noncuratorial.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest5 = prev_gamestate {
+            set_focus(&contest5_button, initialization);
+        }
+        if contest5_button.clicked() {
+            state = SelectionState::Contest5;
+            *initialization = true;
+        };
+
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+fn process_contest1(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest1;
 
     ui.vertical(|ui| {
         // Curator overvoidship
@@ -510,7 +638,35 @@ fn process_contest(
                 ui.radio_value(&mut contests.curatorOverVoidship, c, format!("{c}"));
             })
         });
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
 
+    state
+}
+
+fn process_contest3(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest3;
+
+    ui.vertical(|ui| {
         //interdisciplinery: ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!("Osiągnięcia 2: ")).size(font_size),
@@ -529,7 +685,36 @@ fn process_contest(
                 ui.radio_value(&mut contests.interdisciplinery, c, format!("{c}"));
             })
         });
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
 
+    state
+}
+
+// Artistic
+fn process_contest4(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest4;
+
+    ui.vertical(|ui| {
         //artistic: ContestArtisticNational::OverVoidshipLaureate,
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!("Osiągnięcia 3: ")).size(font_size),
@@ -547,6 +732,35 @@ fn process_contest(
             })
         });
 
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+fn process_contest5(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest5;
+
+    ui.vertical(|ui| {
         //noncuratorial: NoncuratorialContest::None,
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!("Osiągnięcia 4: ")).size(font_size),
@@ -563,7 +777,52 @@ fn process_contest(
                 ui.radio_value(&mut contests.noncuratorial, c, format!("{c}"));
             })
         });
+        /*
+                ui.add(egui_macroquad::egui::Label::new(
+                    egui_macroquad::egui::RichText::new(format!("Osiągnięcia 5: ")).size(font_size),
+                ));
 
+                let voidships = [
+                    ContestCuratorVoidship::None,
+                    ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist, // Can it be two times the same subject?,
+                    ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate,
+                    ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist,
+                ];
+                ui.vertical(|ui| {
+                    voidships.into_iter().for_each(|c| {
+                        ui.radio_value(&mut contests.curatorVoidship, c, format!("{c}"));
+                    })
+                });
+        */
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+fn process_contest2(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest2;
+
+    ui.vertical(|ui| {
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!("Osiągnięcia 5: ")).size(font_size),
         ));
@@ -588,7 +847,7 @@ fn process_contest(
             *initialization = false;
         }
         if ok_button.clicked() {
-            state = SelectionState::None;
+            state = SelectionState::Contests;
             *initialization = true;
         };
     });
@@ -844,11 +1103,11 @@ fn process_none(
                     .size(font_size),
             ));
 
-            if let SelectionState::Contest = prev_gamestate {
+            if let SelectionState::Contests = prev_gamestate {
                 set_focus(&contest_button, initialization);
             }
             if contest_button.clicked() {
-                state = SelectionState::Contest;
+                state = SelectionState::Contests;
                 *initialization = true;
             };
 
@@ -1208,7 +1467,7 @@ async fn main() {
                             selected = 0;
                         }
                     }
-                    SelectionState::Contest => {
+                    SelectionState::Contests => {
                         // TODO:
                         gamestate = process_contest(
                             ui,
@@ -1218,8 +1477,79 @@ async fn main() {
                             cities[selected_city].get_schools(),
                             &mut contests,
                             &mut initialization,
+                            &prev_gamestate,
                         );
-                        prev_gamestate = SelectionState::Contest;
+                        prev_gamestate = SelectionState::Contests;
+                    }
+                    SelectionState::Contest1 => {
+                        // TODO:
+                        gamestate = process_contest1(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest1;
+                    }
+                    SelectionState::Contest2 => {
+                        // TODO:
+                        gamestate = process_contest2(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest2;
+                    }
+                    SelectionState::Contest3 => {
+                        // TODO:
+                        gamestate = process_contest3(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest3;
+                    }
+                    SelectionState::Contest4 => {
+                        // TODO:
+                        gamestate = process_contest4(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest4;
+                    }
+                    SelectionState::Contest5 => {
+                        // TODO:
+                        gamestate = process_contest5(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest5;
                     }
                     SelectionState::School => {
                         gamestate = process_school(
