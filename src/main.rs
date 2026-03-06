@@ -621,7 +621,7 @@ fn process_contest1(
     ui.vertical(|ui| {
         // Curator overvoidship
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Osiągnięcia: ")).size(font_size),
+            egui_macroquad::egui::RichText::new(format!("Konkursy przedmiotowe ponadwojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
         ));
 
         let curatorovervoidships = [
@@ -667,7 +667,7 @@ fn process_contest3(
     ui.vertical(|ui| {
         //interdisciplinery: ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Osiągnięcia 2: ")).size(font_size),
+            egui_macroquad::egui::RichText::new(format!("Konkursy wiedzy organizowane przez kuratorów oświaty: ")).size(font_size),
         ));
 
         let interdisciplineries = [
@@ -761,7 +761,7 @@ fn process_contest5(
     ui.vertical(|ui| {
         //noncuratorial: NoncuratorialContest::None,
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Osiągnięcia 4: ")).size(font_size),
+            egui_macroquad::egui::RichText::new(format!("konkursy organizowane  przez  inne  podmioty  działające  na  terenie  szkoły: ")).size(font_size),
         ));
         let noncuratorials = [
             NoncuratorialContest::None,
