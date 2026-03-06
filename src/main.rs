@@ -9,7 +9,8 @@
 
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 
-// TODO: Punkty na przyciskach konkursowych
+// TODO: Names of types of contests e.g. replace Osiagniecia with something more decent
+// TODO: Exit button to work on android
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -401,7 +402,6 @@ struct CertificateResults<'a> {
     math: (u8, &'a str),
     first_addtional_course: (u8, &'a str),
     second_addtional_course: (u8, &'a str),
-    achievements: u8,
     honors: bool,
     volounteering: bool,
 }
@@ -439,17 +439,15 @@ impl CertificateResults<'_> {
             && (2..=6).contains(&self.math.0)
             && (2..=6).contains(&self.first_addtional_course.0)
             && (2..=6).contains(&self.second_addtional_course.0)
-            && (0..=18).contains(&self.achievements)
         {
             Ok(get_course_points(self.polish.0)
                 + get_course_points(self.math.0)
                 + get_course_points(self.first_addtional_course.0)
                 + get_course_points(self.second_addtional_course.0)
-                + self.achievements as f32
                 + get_honors_points(self.honors)
                 + get_volunteering_points(self.volounteering))
         } else {
-            Err("Grade needs to be between 2 and 6 and achievemnts needs to be between 0 and 18 points")
+            Err("Grades must be between 2 and 6.")
         }
     }
 }
@@ -1133,7 +1131,13 @@ fn process_none(
 
                 let certificate_points = certs.calculate_points().unwrap();
 
-                total_points = certificate_points + exam_points;
+                let contests_points = contests.calculate_points().unwrap();
+
+                // No more than 200 points
+                total_points = certificate_points + exam_points + contests_points;
+                if total_points > 200.0 {
+                    total_points = 200.0;
+                }
                 ui.label(
                     egui_macroquad::egui::RichText::new(format!("Punkty Do Szkoły średniej: "))
                         .size(font_size),
@@ -1269,7 +1273,6 @@ async fn main() {
         math: (cmat_value, "matematyka"),
         first_addtional_course: (cang_value, "jezyk angielski"),
         second_addtional_course: (cinf_value, "informatyka"),
-        achievements: achv_value,
         honors: hon_value,
         volounteering: vol_value,
     };
@@ -1635,12 +1638,11 @@ mod tests {
                 math: (5, "matematyka"),
                 first_addtional_course: (4, "jezyk angielski"),
                 second_addtional_course: (3, "informatyka"),
-                achievements: 10,
                 honors: true,
                 volounteering: false,
             }
             .calculate_points(),
-            Ok(74.0)
+            Ok(64.0)
         );
 
         assert_eq!(
@@ -1649,7 +1651,6 @@ mod tests {
                 math: (2, "matematyka"),
                 first_addtional_course: (2, "jezyk angielski"),
                 second_addtional_course: (2, "informatyka"),
-                achievements: 0,
                 honors: false,
                 volounteering: true,
             }
@@ -1657,15 +1658,18 @@ mod tests {
             Ok(11.0)
         );
 
-        assert_eq!(CertificateResults{ polish : (2, "jezyk polski" ),
-        math : (2, "matematyka"),
-        first_addtional_course : (2, "jezyk angielski"),
-        second_addtional_course : (2, "informatyka"),
-        achievements : 100,
-        honors : false,
-        volounteering : true,
-
-        }.calculate_points(), Err("Grade needs to be between 2 and 6 and achievemnts needs to be between 0 and 18 points"));
+        assert_eq!(
+            CertificateResults {
+                polish: (2, "jezyk polski"),
+                math: (1, "matematyka"),
+                first_addtional_course: (2, "jezyk angielski"),
+                second_addtional_course: (2, "informatyka"),
+                honors: false,
+                volounteering: true,
+            }
+            .calculate_points(),
+            Err("Grades must be between 2 and 6.")
+        );
 
         Ok(())
     }
