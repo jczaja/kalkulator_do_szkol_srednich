@@ -365,7 +365,6 @@ impl std::fmt::Display for NoncuratorialContest {
 #[derive(PartialEq, Clone, Copy)]
 enum ContestCuratorVoidship {
     None,
-    AtLeastTwoTimesSubjectFinalist, // Can it be two times the same subject?
     AtLeastTwoTimesThematicLaureate,
     AtLeastTwoTimesThematicFinalist,
 }
@@ -374,7 +373,6 @@ impl ContestCuratorVoidship {
     fn as_u32(&self) -> u32 {
         match self {
             ContestCuratorVoidship::None => 0,
-            ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist => 10,
             ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate => 7,
             ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist => 5,
         }
@@ -385,9 +383,6 @@ impl std::fmt::Display for ContestCuratorVoidship {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             ContestCuratorVoidship::None => write!(f, "Brak"),
-            ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist => {
-                write!(f, "Wielokrotny finalista konkursu przedmiotowego")
-            }
             ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate => {
                 write!(f, "Wielokrotny laurat konkursu tematycznego")
             }
@@ -837,7 +832,6 @@ fn process_contest2(
 
         let voidships = [
             ContestCuratorVoidship::None,
-            ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist, // Can it be two times the same subject?,
             ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate,
             ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist,
         ];
