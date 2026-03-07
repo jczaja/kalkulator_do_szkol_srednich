@@ -20,11 +20,12 @@ enum SelectionState {
     None,
     City,
     Contests,
-    Contest1,
-    Contest2,
-    Contest3,
-    Contest4,
-    Contest5,
+    Contest1,  // Konkursy przedmiotowe ponadwojewódzkie
+    Contest2,  // Konkursy tematyczne ponadwojewódzkie
+    Contest3,  // Konkursy przedmiotowe wojewódzkie
+    Contest4,  // Konkursy tematyczne wojewódzkie
+    Contest5,  // Konkursy artystyczne
+    Contest6,  // Konkursy niekuratoryjne
     Exit,
     Profil,
     School,
@@ -158,9 +159,10 @@ impl ExamResults<'_> {
 
 // Struktura przechowująca wszystkie osiągnięcia w konkursach
 struct Contest {
-    national_curatorial: ContestNationalCuratorial,  // konkursy ponadwojewódzkie kuratoryjne
-    curatorVoidship: ContestCuratorVoidship,
-    interdisciplinery: ContestCuratorInterdisciplinary,
+    national_subject: ContestNationalSubject,          // konkursy przedmiotowe ponadwojewódzkie
+    national_thematic: ContestNationalThematic,        // konkursy tematyczne ponadwojewódzkie
+    regional_subject: ContestRegionalSubject,          // konkursy przedmiotowe wojewódzkie
+    regional_thematic: ContestRegionalThematic,        // konkursy tematyczne wojewódzkie
     artistic: ContestArtisticNational,
     noncuratorial: NoncuratorialContest,
 }
@@ -168,16 +170,17 @@ struct Contest {
 impl Contest {
     pub fn calculate_points(&self) -> Result<f32, &str> {
         // Laureat konkursu przedmiotowego ogólnopolskiego = automatyczne przyjęcie (200 pkt)
-        if self.national_curatorial == ContestNationalCuratorial::SubjectLaureate {
+        if self.national_subject == ContestNationalSubject::Laureate {
             return Ok(200.0);
         }
 
         // W pozostałych przypadkach maksymalnie 18 punktów z osiągnięć
         let total_points = std::cmp::min(
             18,
-            self.national_curatorial.as_u32()
-                + self.curatorVoidship.as_u32()
-                + self.interdisciplinery.as_u32()
+            self.national_subject.as_u32()
+                + self.national_thematic.as_u32()
+                + self.regional_subject.as_u32()
+                + self.regional_thematic.as_u32()
                 + self.artistic.as_u32()
                 + self.noncuratorial.as_u32(),
         );
@@ -185,94 +188,144 @@ impl Contest {
     }
 }
 
-// Konkursy ponadwojewódzkie kuratoryjne (punkt 1 rozporządzenia + laureat przedmiotowego)
-
+// 1. Konkursy PRZEDMIOTOWE ponadwojewódzkie (punkt 1a rozporządzenia)
 #[derive(PartialEq, Clone, Copy)]
-enum ContestNationalCuratorial {
+enum ContestNationalSubject {
     None,
-    SubjectFinalist,              // Finalista konkursu przedmiotowego - 10 pkt
-    SubjectLaureate,              // Laureat konkursu przedmiotowego ogólnopolskiego - 200 pkt (automatyczne przyjęcie)
-    ThematicLaureate,             // Laureat konkursu tematycznego/interdyscyplinarnego - 7 pkt
-    ThematicFinalist,             // Finalista konkursu tematycznego/interdyscyplinarnego - 5 pkt
+    Laureate,    // Laureat konkursu przedmiotowego ogólnopolskiego - 200 pkt (automatyczne przyjęcie)
+    Finalist,    // Finalista konkursu przedmiotowego - 10 pkt
 }
 
-impl ContestNationalCuratorial {
+impl ContestNationalSubject {
     fn as_u32(&self) -> u32 {
         match self {
-            ContestNationalCuratorial::None => 0,
-            ContestNationalCuratorial::SubjectFinalist => 10,
-            ContestNationalCuratorial::SubjectLaureate => 200,  // Automatyczne przyjęcie
-            ContestNationalCuratorial::ThematicLaureate => 7,
-            ContestNationalCuratorial::ThematicFinalist => 5,
+            ContestNationalSubject::None => 0,
+            ContestNationalSubject::Laureate => 200,
+            ContestNationalSubject::Finalist => 10,
         }
     }
 }
 
-impl std::fmt::Display for ContestNationalCuratorial {
+impl std::fmt::Display for ContestNationalSubject {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ContestNationalCuratorial::None => write!(f, "Brak"),
-            ContestNationalCuratorial::SubjectFinalist => {
-                write!(f, "Finalista konkursu przedmiotowego (10 pkt)")
-            }
-            ContestNationalCuratorial::SubjectLaureate => {
+            ContestNationalSubject::None => write!(f, "Brak"),
+            ContestNationalSubject::Laureate => {
                 write!(f, "Laureat konkursu przedmiotowego ogólnopolskiego (200 pkt - automatyczne przyjęcie)")
             }
-            ContestNationalCuratorial::ThematicLaureate => {
+            ContestNationalSubject::Finalist => {
+                write!(f, "Finalista konkursu przedmiotowego (10 pkt)")
+            }
+        }
+    }
+}
+
+// 2. Konkursy TEMATYCZNE/INTERDYSCYPLINARNE ponadwojewódzkie (punkt 1b,c rozporządzenia)
+#[derive(PartialEq, Clone, Copy)]
+enum ContestNationalThematic {
+    None,
+    Laureate,    // Laureat konkursu tematycznego/interdyscyplinarnego - 7 pkt
+    Finalist,    // Finalista konkursu tematycznego/interdyscyplinarnego - 5 pkt
+}
+
+impl ContestNationalThematic {
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestNationalThematic::None => 0,
+            ContestNationalThematic::Laureate => 7,
+            ContestNationalThematic::Finalist => 5,
+        }
+    }
+}
+
+impl std::fmt::Display for ContestNationalThematic {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ContestNationalThematic::None => write!(f, "Brak"),
+            ContestNationalThematic::Laureate => {
                 write!(f, "Laureat konkursu tematycznego lub interdyscyplinarnego (7 pkt)")
             }
-            ContestNationalCuratorial::ThematicFinalist => {
+            ContestNationalThematic::Finalist => {
                 write!(f, "Finalista konkursu tematycznego lub interdyscyplinarnego (5 pkt)")
             }
         }
     }
 }
 
-// finalist of the subject competition (10 points)
-//laureate of the thematic or interdisciplinary competition (7 points)
-// finalist of the thematic or interdisciplinary competition (5 points)
-
+// 3. Konkursy PRZEDMIOTOWE wojewódzkie (punkt 3a,d rozporządzenia)
 #[derive(PartialEq, Clone, Copy)]
-enum ContestCuratorInterdisciplinary {
+enum ContestRegionalSubject {
     None,
-    OvervoidshipThematicLaureate,
-    OvervoidshipThematicFinalist,
-    VoidshipThematicLaureate,
-    VoidshipThematicFinalist,
+    MultipleFinalist,    // 2+ finalistów konkursu przedmiotowego - 10 pkt
+    Finalist,            // Finalista konkursu przedmiotowego - 7 pkt
 }
 
-impl ContestCuratorInterdisciplinary {
+impl ContestRegionalSubject {
     fn as_u32(&self) -> u32 {
         match self {
-            ContestCuratorInterdisciplinary::None => 0,
-            ContestCuratorInterdisciplinary::OvervoidshipThematicLaureate => 7,
-            ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist => 5,
-            ContestCuratorInterdisciplinary::VoidshipThematicLaureate => 5,
-            ContestCuratorInterdisciplinary::VoidshipThematicFinalist => 3,
+            ContestRegionalSubject::None => 0,
+            ContestRegionalSubject::MultipleFinalist => 10,
+            ContestRegionalSubject::Finalist => 7,
         }
     }
 }
-impl std::fmt::Display for ContestCuratorInterdisciplinary {
+
+impl std::fmt::Display for ContestRegionalSubject {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ContestCuratorInterdisciplinary::None => write!(f, "Brak"),
-            ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist => {
-                write!(f, "Finalista konkursu tematycznego albo interdysplinarnego")
+            ContestRegionalSubject::None => write!(f, "Brak"),
+            ContestRegionalSubject::MultipleFinalist => {
+                write!(f, "2+ finalistów konkursu przedmiotowego (10 pkt)")
             }
-            ContestCuratorInterdisciplinary::OvervoidshipThematicLaureate => {
-                write!(f, "Laurat konkursu tematycznego albo interdysplinarnego")
+            ContestRegionalSubject::Finalist => {
+                write!(f, "Finalista konkursu przedmiotowego (7 pkt)")
             }
-            ContestCuratorInterdisciplinary::VoidshipThematicLaureate => write!(
-                f,
-                "Laurat konkursu wojewodzkiego tematycznego albo interdysplinarnego"
-            ),
-            ContestCuratorInterdisciplinary::VoidshipThematicFinalist => write!(
-                f,
-                "Finalista konkursu wojewodzkiego tematycznego albo interdysplinarnego"
-            ),
         }
     }
 }
+
+// 4. Konkursy TEMATYCZNE/INTERDYSCYPLINARNE wojewódzkie (punkt 3b,c,e,f rozporządzenia)
+#[derive(PartialEq, Clone, Copy)]
+enum ContestRegionalThematic {
+    None,
+    MultipleLaureate,    // 2+ laureatów konkursu tematycznego/interdyscyplinarnego - 7 pkt
+    MultipleFinalist,    // 2+ finalistów konkursu tematycznego/interdyscyplinarnego - 5 pkt
+    Laureate,            // Laureat konkursu tematycznego/interdyscyplinarnego - 5 pkt
+    Finalist,            // Finalista konkursu tematycznego/interdyscyplinarnego - 3 pkt
+}
+
+impl ContestRegionalThematic {
+    fn as_u32(&self) -> u32 {
+        match self {
+            ContestRegionalThematic::None => 0,
+            ContestRegionalThematic::MultipleLaureate => 7,
+            ContestRegionalThematic::MultipleFinalist => 5,
+            ContestRegionalThematic::Laureate => 5,
+            ContestRegionalThematic::Finalist => 3,
+        }
+    }
+}
+
+impl std::fmt::Display for ContestRegionalThematic {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ContestRegionalThematic::None => write!(f, "Brak"),
+            ContestRegionalThematic::MultipleLaureate => {
+                write!(f, "2+ laureatów konkursu tematycznego/interdyscyplinarnego (7 pkt)")
+            }
+            ContestRegionalThematic::MultipleFinalist => {
+                write!(f, "2+ finalistów konkursu tematycznego/interdyscyplinarnego (5 pkt)")
+            }
+            ContestRegionalThematic::Laureate => {
+                write!(f, "Laureat konkursu tematycznego/interdyscyplinarnego (5 pkt)")
+            }
+            ContestRegionalThematic::Finalist => {
+                write!(f, "Finalista konkursu tematycznego/interdyscyplinarnego (3 pkt)")
+            }
+        }
+    }
+}
+
 
 //tytułu finalisty konkursu z przedmiotu lub przedmiotów artystycznych objętych ramowym planem nauczania szkoły artystycznej (10 pkt)
 
@@ -358,41 +411,56 @@ impl std::fmt::Display for NoncuratorialContest {
         }
     }
 }
-//brak (0 pkt)
-
-//dwóch lub więcej tytułów finalisty konkursu przedmiotowego (10 pkt)
-//dwóch lub więcej tytułów laureata konkursu tematycznego lub interdyscyplinarnego (7 pkt)
-//dwóch lub więcej tytułów finalisty konkursu tematycznego lub interdyscyplinarnego (5 pkt)
-//tytułu finalisty konkursu przedmiotowego (7 pkt)
-//tytułu laureata konkursu tematycznego lub interdyscyplinarnego (5 pkt)
-//tytułu finalisty konkursu tematycznego lub interdyscyplinarnego (3 pkt)
+// Konkursy wojewódzkie kuratoryjne (punkt 3 rozporządzenia)
 
 #[derive(PartialEq, Clone, Copy)]
-enum ContestCuratorVoidship {
+enum ContestRegionalCuratorial {
     None,
-    AtLeastTwoTimesThematicLaureate,
-    AtLeastTwoTimesThematicFinalist,
+    // Konkursy przedmiotowe wojewódzkie
+    MultipleSubjectFinalist,              // 2+ finalistów konkursu przedmiotowego - 10 pkt
+    SubjectFinalist,                      // Finalista konkursu przedmiotowego - 7 pkt
+    // Konkursy tematyczne/interdyscyplinarne wojewódzkie
+    MultipleThematicLaureate,            // 2+ laureatów konkursu tematycznego/interdyscyplinarnego - 7 pkt
+    MultipleThematicFinalist,            // 2+ finalistów konkursu tematycznego/interdyscyplinarnego - 5 pkt
+    ThematicLaureate,                    // Laureat konkursu tematycznego/interdyscyplinarnego - 5 pkt
+    ThematicFinalist,                    // Finalista konkursu tematycznego/interdyscyplinarnego - 3 pkt
 }
 
-impl ContestCuratorVoidship {
+impl ContestRegionalCuratorial {
     fn as_u32(&self) -> u32 {
         match self {
-            ContestCuratorVoidship::None => 0,
-            ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate => 7,
-            ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist => 5,
+            ContestRegionalCuratorial::None => 0,
+            ContestRegionalCuratorial::MultipleSubjectFinalist => 10,
+            ContestRegionalCuratorial::SubjectFinalist => 7,
+            ContestRegionalCuratorial::MultipleThematicLaureate => 7,
+            ContestRegionalCuratorial::MultipleThematicFinalist => 5,
+            ContestRegionalCuratorial::ThematicLaureate => 5,
+            ContestRegionalCuratorial::ThematicFinalist => 3,
         }
     }
 }
 
-impl std::fmt::Display for ContestCuratorVoidship {
+impl std::fmt::Display for ContestRegionalCuratorial {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ContestCuratorVoidship::None => write!(f, "Brak"),
-            ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate => {
-                write!(f, "Wielokrotny laurat konkursu tematycznego")
+            ContestRegionalCuratorial::None => write!(f, "Brak"),
+            ContestRegionalCuratorial::MultipleSubjectFinalist => {
+                write!(f, "2+ finalistów konkursu przedmiotowego (10 pkt)")
             }
-            ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist => {
-                write!(f, "Wielokrotny finalista konkursu tematycznego")
+            ContestRegionalCuratorial::SubjectFinalist => {
+                write!(f, "Finalista konkursu przedmiotowego (7 pkt)")
+            }
+            ContestRegionalCuratorial::MultipleThematicLaureate => {
+                write!(f, "2+ laureatów konkursu tematycznego/interdyscyplinarnego (7 pkt)")
+            }
+            ContestRegionalCuratorial::MultipleThematicFinalist => {
+                write!(f, "2+ finalistów konkursu tematycznego/interdyscyplinarnego (5 pkt)")
+            }
+            ContestRegionalCuratorial::ThematicLaureate => {
+                write!(f, "Laureat konkursu tematycznego/interdyscyplinarnego (5 pkt)")
+            }
+            ContestRegionalCuratorial::ThematicFinalist => {
+                write!(f, "Finalista konkursu tematycznego/interdyscyplinarnego (3 pkt)")
             }
         }
     }
@@ -506,11 +574,11 @@ fn process_contest(
     };
 
     ui.vertical(|ui| {
-        // konkursy ponadwojewódzkie
+        // 1. Konkursy przedmiotowe ponadwojewódzkie
         let contest1_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Konkursy ponadwojewódzkie kuratoryjne: {}",
-                contests.national_curatorial.as_u32()
+                "Konkursy przedmiotowe ponadwojewódzkie: {}",
+                contests.national_subject.as_u32()
             ))
             .size(font_size),
         ));
@@ -523,11 +591,11 @@ fn process_contest(
             *initialization = true;
         };
 
-        // voidship
+        // 2. Konkursy tematyczne ponadwojewódzkie
         let contest2_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Przedmiotowe wojewodzkie: {}",
-                contests.curatorVoidship.as_u32()
+                "Konkursy tematyczne ponadwojewódzkie: {}",
+                contests.national_thematic.as_u32()
             ))
             .size(font_size),
         ));
@@ -540,11 +608,11 @@ fn process_contest(
             *initialization = true;
         };
 
-        // interdysciplinary
+        // 3. Konkursy przedmiotowe wojewódzkie
         let contest3_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Tematyczne i interdysplinarne: {}",
-                contests.interdisciplinery.as_u32()
+                "Konkursy przedmiotowe wojewódzkie: {}",
+                contests.regional_subject.as_u32()
             ))
             .size(font_size),
         ));
@@ -557,11 +625,11 @@ fn process_contest(
             *initialization = true;
         };
 
-        // artistic
+        // 4. Konkursy tematyczne wojewódzkie
         let contest4_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Artystyczne: {}",
-                contests.artistic.as_u32()
+                "Konkursy tematyczne wojewódzkie: {}",
+                contests.regional_thematic.as_u32()
             ))
             .size(font_size),
         ));
@@ -574,11 +642,11 @@ fn process_contest(
             *initialization = true;
         };
 
-        // other
+        // 5. Konkursy artystyczne
         let contest5_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Niekuratoryjne: {}",
-                contests.noncuratorial.as_u32()
+                "Konkursy artystyczne: {}",
+                contests.artistic.as_u32()
             ))
             .size(font_size),
         ));
@@ -587,6 +655,26 @@ fn process_contest(
             set_focus(&contest5_button, initialization);
         }
         if contest5_button.clicked() {
+            state = SelectionState::Contest5;
+            *initialization = true;
+        };
+
+        // 6. Konkursy niekuratoryjne
+        let contest6_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(
+                "Konkursy niekuratoryjne: {}",
+                contests.noncuratorial.as_u32()
+            ))
+            .size(font_size),
+        ));
+
+        if let SelectionState::Contest6 = prev_gamestate {
+            set_focus(&contest6_button, initialization);
+        }
+        if contest6_button.clicked() {
+            state = SelectionState::Contest6;
+            *initialization = true;
+        };
             state = SelectionState::Contest5;
             *initialization = true;
         };
@@ -657,55 +745,6 @@ fn process_contest1(
     state
 }
 
-fn process_contest3(
-    ui: &mut egui_macroquad::egui::Ui,
-    font_size: f32,
-    widget_width: f32,
-    widget_height: f32,
-    schools: &[School],
-    contests: &mut Contest,
-    initialization: &mut bool,
-    prev_gamestate: &SelectionState,
-) -> SelectionState {
-    let mut state = SelectionState::Contest3;
-
-    ui.vertical(|ui| {
-        //interdisciplinery: ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
-        ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!(
-                "Konkursy wiedzy organizowane przez kuratorów oświaty: "
-            ))
-            .size(font_size),
-        ));
-
-        let interdisciplineries = [
-            ContestCuratorInterdisciplinary::None,
-            ContestCuratorInterdisciplinary::OvervoidshipThematicLaureate,
-            ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
-            ContestCuratorInterdisciplinary::VoidshipThematicLaureate,
-            ContestCuratorInterdisciplinary::VoidshipThematicFinalist,
-        ];
-
-        ui.vertical(|ui| {
-            interdisciplineries.into_iter().for_each(|c| {
-                ui.radio_value(&mut contests.interdisciplinery, c, format!("{c}"));
-            })
-        });
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
-    });
-
-    state
-}
 
 // Artistic
 fn process_contest4(
@@ -786,23 +825,7 @@ fn process_contest5(
                 ui.radio_value(&mut contests.noncuratorial, c, format!("{c}"));
             })
         });
-        /*
-                ui.add(egui_macroquad::egui::Label::new(
-                    egui_macroquad::egui::RichText::new(format!("Osiągnięcia 5: ")).size(font_size),
-                ));
-
-                let voidships = [
-                    ContestCuratorVoidship::None,
-                    ContestCuratorVoidship::AtLeastTwoTimesSubjectFinalist, // Can it be two times the same subject?,
-                    ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate,
-                    ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist,
-                ];
-                ui.vertical(|ui| {
-                    voidships.into_iter().for_each(|c| {
-                        ui.radio_value(&mut contests.curatorVoidship, c, format!("{c}"));
-                    })
-                });
-        */
+        
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
@@ -822,28 +845,32 @@ fn process_contest5(
 fn process_contest2(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
-    widget_width: f32,
-    widget_height: f32,
-    schools: &[School],
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
     contests: &mut Contest,
     initialization: &mut bool,
-    prev_gamestate: &SelectionState,
+    _prev_gamestate: &SelectionState,
 ) -> SelectionState {
     let mut state = SelectionState::Contest2;
 
     ui.vertical(|ui| {
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Osiągnięcia 5: ")).size(font_size),
+            egui_macroquad::egui::RichText::new(format!("Konkursy wojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
         ));
 
-        let voidships = [
-            ContestCuratorVoidship::None,
-            ContestCuratorVoidship::AtLeastTwoTimesThematicLaureate,
-            ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist,
+        let regional_contests = [
+            ContestRegionalCuratorial::None,
+            ContestRegionalCuratorial::MultipleSubjectFinalist,
+            ContestRegionalCuratorial::SubjectFinalist,
+            ContestRegionalCuratorial::MultipleThematicLaureate,
+            ContestRegionalCuratorial::MultipleThematicFinalist,
+            ContestRegionalCuratorial::ThematicLaureate,
+            ContestRegionalCuratorial::ThematicFinalist,
         ];
         ui.vertical(|ui| {
-            voidships.into_iter().for_each(|c| {
-                ui.radio_value(&mut contests.curatorVoidship, c, format!("{c}"));
+            regional_contests.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.regional_curatorial, c, format!("{c}"));
             })
         });
 
@@ -1403,9 +1430,8 @@ async fn main() {
     let mut selected = 0;
     let mut contests = Contest {
         national_curatorial: ContestNationalCuratorial::None,
-        curatorVoidship: ContestCuratorVoidship::None,
+        regional_curatorial: ContestRegionalCuratorial::None,
         artistic: ContestArtisticNational::None,
-        interdisciplinery: ContestCuratorInterdisciplinary::None,
         noncuratorial: NoncuratorialContest::None,
     };
 
@@ -1526,20 +1552,6 @@ async fn main() {
                             &prev_gamestate,
                         );
                         prev_gamestate = SelectionState::Contest2;
-                    }
-                    SelectionState::Contest3 => {
-                        // TODO:
-                        gamestate = process_contest3(
-                            ui,
-                            font_size,
-                            widget_width,
-                            widget_height,
-                            cities[selected_city].get_schools(),
-                            &mut contests,
-                            &mut initialization,
-                            &prev_gamestate,
-                        );
-                        prev_gamestate = SelectionState::Contest3;
                     }
                     SelectionState::Contest4 => {
                         // TODO:
@@ -1691,9 +1703,8 @@ mod tests {
         // Test: laureat przedmiotowego ogólnopolskiego = 200 pkt
         let contest = Contest {
             national_curatorial: ContestNationalCuratorial::SubjectLaureate,
-            curatorVoidship: ContestCuratorVoidship::None,
+            regional_curatorial: ContestRegionalCuratorial::None,
             artistic: ContestArtisticNational::OvervoidshipLaureate,
-            interdisciplinery: ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(200.0f32));
@@ -1701,9 +1712,8 @@ mod tests {
         // Test: brak osiągnięć = 0 pkt
         let contest = Contest {
             national_curatorial: ContestNationalCuratorial::None,
-            curatorVoidship: ContestCuratorVoidship::None,
+            regional_curatorial: ContestRegionalCuratorial::None,
             artistic: ContestArtisticNational::None,
-            interdisciplinery: ContestCuratorInterdisciplinary::None,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(0.0f32));
@@ -1711,12 +1721,29 @@ mod tests {
         // Test: finalista przedmiotowego ponadwojewódzkiego = 10 pkt
         let contest = Contest {
             national_curatorial: ContestNationalCuratorial::SubjectFinalist,
-            curatorVoidship: ContestCuratorVoidship::None,
+            regional_curatorial: ContestRegionalCuratorial::None,
             artistic: ContestArtisticNational::None,
-            interdisciplinery: ContestCuratorInterdisciplinary::None,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(10.0f32));
+        
+        // Test: wielokrotny finalista przedmiotowego wojewódzkiego = 10 pkt
+        let contest = Contest {
+            national_curatorial: ContestNationalCuratorial::None,
+            regional_curatorial: ContestRegionalCuratorial::MultipleSubjectFinalist,
+            artistic: ContestArtisticNational::None,
+            noncuratorial: NoncuratorialContest::None,
+        };
+        assert_eq!(contest.calculate_points(), Ok(10.0f32));
+        
+        // Test: finalista przedmiotowego wojewódzkiego = 7 pkt
+        let contest = Contest {
+            national_curatorial: ContestNationalCuratorial::None,
+            regional_curatorial: ContestRegionalCuratorial::SubjectFinalist,
+            artistic: ContestArtisticNational::None,
+            noncuratorial: NoncuratorialContest::None,
+        };
+        assert_eq!(contest.calculate_points(), Ok(7.0f32));
         
         Ok(())
     }

@@ -1,0 +1,4 @@
+
+### Sending to android device
+1. Using device (phone, TV) make request of pairing the device with your computer
+2. kdeconnect-cli -n "motorola edge 60 pro" --share ~/kalkulator_do_szkol_srednich/DEPLOY/kalkulator_do_szkol_sredniej.apk
