@@ -836,17 +836,21 @@ fn process_contest(
 
         ui.add_space(15.0);
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::None;
-            *initialization = true;
-        };
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::None;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -885,17 +889,24 @@ fn process_contest1(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        // Przycisk OK z marginesem po prawej (żeby nie był zakryty przez kamerę)
+        ui.horizontal(|ui| {
+            ui.add_space(20.0); // margines z lewej
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0); // margines z prawej - ważne dla kamery!
+        });
     });
 
     state
@@ -931,17 +942,24 @@ fn process_contest2(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        // Przycisk OK z marginesem po prawej (żeby nie był zakryty przez kamerę)
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -980,17 +998,23 @@ fn process_contest3(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -1028,17 +1052,23 @@ fn process_contest4(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -1078,17 +1108,23 @@ fn process_contest5(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -1131,17 +1167,23 @@ fn process_contest6(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
@@ -1180,17 +1222,23 @@ fn process_contest7(
             })
         });
 
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
+        ui.add_space(10.0);
+
+        ui.horizontal(|ui| {
+            ui.add_space(20.0);
+            let ok_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+            ));
+            if *initialization {
+                ok_button.request_focus();
+                *initialization = false;
+            }
+            if ok_button.clicked() {
+                state = SelectionState::Contests;
+                *initialization = true;
+            };
+            ui.add_space(20.0);
+        });
     });
 
     state
