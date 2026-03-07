@@ -8,7 +8,7 @@
 // XV LO Gdansk : https://lo15.edu.gdansk.pl/Content/pub/452/rekrutacja%202025-26/regulamin_rekrutacji_2025_26.pdf
 
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
-
+// https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 // TODO: Names of types of contests e.g. replace Osiagniecia with something more decent
 // TODO: Exit button to work on android
 
@@ -156,9 +156,9 @@ impl ExamResults<'_> {
     }
 }
 
-// How to
+// Struktura przechowująca wszystkie osiągnięcia w konkursach
 struct Contest {
-    curatorOverVoidship: ContestCuratorOverVoidship,
+    national_curatorial: ContestNationalCuratorial,  // konkursy ponadwojewódzkie kuratoryjne
     curatorVoidship: ContestCuratorVoidship,
     interdisciplinery: ContestCuratorInterdisciplinary,
     artistic: ContestArtisticNational,
@@ -167,15 +167,15 @@ struct Contest {
 
 impl Contest {
     pub fn calculate_points(&self) -> Result<f32, &str> {
-        let max = if self.curatorOverVoidship.as_u32() == 200 {
-            200
-        } else {
-            18
-        };
+        // Laureat konkursu przedmiotowego ogólnopolskiego = automatyczne przyjęcie (200 pkt)
+        if self.national_curatorial == ContestNationalCuratorial::SubjectLaureate {
+            return Ok(200.0);
+        }
 
+        // W pozostałych przypadkach maksymalnie 18 punktów z osiągnięć
         let total_points = std::cmp::min(
-            max,
-            self.curatorOverVoidship.as_u32()
+            18,
+            self.national_curatorial.as_u32()
                 + self.curatorVoidship.as_u32()
                 + self.interdisciplinery.as_u32()
                 + self.artistic.as_u32()
@@ -185,39 +185,44 @@ impl Contest {
     }
 }
 
-// Przedmiotowe
+// Konkursy ponadwojewódzkie kuratoryjne (punkt 1 rozporządzenia + laureat przedmiotowego)
 
 #[derive(PartialEq, Clone, Copy)]
-enum ContestCuratorOverVoidship {
+enum ContestNationalCuratorial {
     None,
-    SubjectFinalist,
-    SubjectLaureate,
-    MultipleSubjectFinalist,
+    SubjectFinalist,              // Finalista konkursu przedmiotowego - 10 pkt
+    SubjectLaureate,              // Laureat konkursu przedmiotowego ogólnopolskiego - 200 pkt (automatyczne przyjęcie)
+    ThematicLaureate,             // Laureat konkursu tematycznego/interdyscyplinarnego - 7 pkt
+    ThematicFinalist,             // Finalista konkursu tematycznego/interdyscyplinarnego - 5 pkt
 }
 
-impl ContestCuratorOverVoidship {
+impl ContestNationalCuratorial {
     fn as_u32(&self) -> u32 {
         match self {
-            ContestCuratorOverVoidship::None => 0,
-            ContestCuratorOverVoidship::SubjectFinalist => 7,
-            ContestCuratorOverVoidship::SubjectLaureate => 200,
-            ContestCuratorOverVoidship::MultipleSubjectFinalist => 10,
+            ContestNationalCuratorial::None => 0,
+            ContestNationalCuratorial::SubjectFinalist => 10,
+            ContestNationalCuratorial::SubjectLaureate => 200,  // Automatyczne przyjęcie
+            ContestNationalCuratorial::ThematicLaureate => 7,
+            ContestNationalCuratorial::ThematicFinalist => 5,
         }
     }
 }
 
-impl std::fmt::Display for ContestCuratorOverVoidship {
+impl std::fmt::Display for ContestNationalCuratorial {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ContestCuratorOverVoidship::None => write!(f, "Brak"),
-            ContestCuratorOverVoidship::SubjectFinalist => {
-                write!(f, "Finalista konkursu przedmiotowego")
+            ContestNationalCuratorial::None => write!(f, "Brak"),
+            ContestNationalCuratorial::SubjectFinalist => {
+                write!(f, "Finalista konkursu przedmiotowego (10 pkt)")
             }
-            ContestCuratorOverVoidship::MultipleSubjectFinalist => {
-                write!(f, "Wielokrotny finalista konkursow przedmiotowych")
+            ContestNationalCuratorial::SubjectLaureate => {
+                write!(f, "Laureat konkursu przedmiotowego ogólnopolskiego (200 pkt - automatyczne przyjęcie)")
             }
-            ContestCuratorOverVoidship::SubjectLaureate => {
-                write!(f, "Laurat konkursu przedmiotowego")
+            ContestNationalCuratorial::ThematicLaureate => {
+                write!(f, "Laureat konkursu tematycznego lub interdyscyplinarnego (7 pkt)")
+            }
+            ContestNationalCuratorial::ThematicFinalist => {
+                write!(f, "Finalista konkursu tematycznego lub interdyscyplinarnego (5 pkt)")
             }
         }
     }
@@ -501,11 +506,11 @@ fn process_contest(
     };
 
     ui.vertical(|ui| {
-        // overvoidship
+        // konkursy ponadwojewódzkie
         let contest1_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Przedmiotowe ponadwojewodzkie: {}",
-                contests.curatorOverVoidship.as_u32()
+                "Konkursy ponadwojewódzkie kuratoryjne: {}",
+                contests.national_curatorial.as_u32()
             ))
             .size(font_size),
         ));
@@ -618,21 +623,22 @@ fn process_contest1(
         // Curator overvoidship
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!(
-                "Konkursy przedmiotowe ponadwojewódzkie organizowane przez kuratorów oświaty:"
+                "Konkursy ponadwojewódzkie organizowane przez kuratorów oświaty:"
             ))
             .size(font_size),
         ));
 
-        let curatorovervoidships = [
-            ContestCuratorOverVoidship::None,
-            ContestCuratorOverVoidship::SubjectFinalist,
-            ContestCuratorOverVoidship::MultipleSubjectFinalist,
-            ContestCuratorOverVoidship::SubjectLaureate,
+        let national_contests = [
+            ContestNationalCuratorial::None,
+            ContestNationalCuratorial::SubjectFinalist,
+            ContestNationalCuratorial::SubjectLaureate,
+            ContestNationalCuratorial::ThematicLaureate,
+            ContestNationalCuratorial::ThematicFinalist,
         ];
 
         ui.vertical(|ui| {
-            curatorovervoidships.into_iter().for_each(|c| {
-                ui.radio_value(&mut contests.curatorOverVoidship, c, format!("{c}"));
+            national_contests.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.national_curatorial, c, format!("{c}"));
             })
         });
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
@@ -1396,8 +1402,8 @@ async fn main() {
     let mut selected_school = 0;
     let mut selected = 0;
     let mut contests = Contest {
+        national_curatorial: ContestNationalCuratorial::None,
         curatorVoidship: ContestCuratorVoidship::None,
-        curatorOverVoidship: ContestCuratorOverVoidship::None,
         artistic: ContestArtisticNational::None,
         interdisciplinery: ContestCuratorInterdisciplinary::None,
         noncuratorial: NoncuratorialContest::None,
@@ -1681,22 +1687,37 @@ mod tests {
     #[test]
     fn test_contest_points() -> Result<(), String> {
         assert_eq!(ContestArtisticNational::OvervoidshipLaureate.as_u32(), 7);
+        
+        // Test: laureat przedmiotowego ogólnopolskiego = 200 pkt
         let contest = Contest {
-            curatorVoidship: ContestCuratorVoidship::AtLeastTwoTimesThematicFinalist,
-            curatorOverVoidship: ContestCuratorOverVoidship::SubjectLaureate,
+            national_curatorial: ContestNationalCuratorial::SubjectLaureate,
+            curatorVoidship: ContestCuratorVoidship::None,
             artistic: ContestArtisticNational::OvervoidshipLaureate,
             interdisciplinery: ContestCuratorInterdisciplinary::OvervoidshipThematicFinalist,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(200.0f32));
+        
+        // Test: brak osiągnięć = 0 pkt
         let contest = Contest {
+            national_curatorial: ContestNationalCuratorial::None,
             curatorVoidship: ContestCuratorVoidship::None,
-            curatorOverVoidship: ContestCuratorOverVoidship::None,
             artistic: ContestArtisticNational::None,
             interdisciplinery: ContestCuratorInterdisciplinary::None,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(0.0f32));
+        
+        // Test: finalista przedmiotowego ponadwojewódzkiego = 10 pkt
+        let contest = Contest {
+            national_curatorial: ContestNationalCuratorial::SubjectFinalist,
+            curatorVoidship: ContestCuratorVoidship::None,
+            artistic: ContestArtisticNational::None,
+            interdisciplinery: ContestCuratorInterdisciplinary::None,
+            noncuratorial: NoncuratorialContest::None,
+        };
+        assert_eq!(contest.calculate_points(), Ok(10.0f32));
+        
         Ok(())
     }
 }
