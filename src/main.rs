@@ -275,7 +275,7 @@ impl std::fmt::Display for ContestRegionalSubject {
         match self {
             ContestRegionalSubject::None => write!(f, "Brak"),
             ContestRegionalSubject::MultipleFinalist => {
-                write!(f, "2+ finalistów konkursu przedmiotowego (10 pkt)")
+                write!(f, "Wielokrotny finalista konkursu przedmiotowego (10 pkt)")
             }
             ContestRegionalSubject::Finalist => {
                 write!(f, "Finalista konkursu przedmiotowego (7 pkt)")
@@ -311,10 +311,10 @@ impl std::fmt::Display for ContestRegionalThematic {
         match self {
             ContestRegionalThematic::None => write!(f, "Brak"),
             ContestRegionalThematic::MultipleLaureate => {
-                write!(f, "2+ laureatów konkursu tematycznego/interdyscyplinarnego (7 pkt)")
+                write!(f, "Wielokrotny laureat konkursu tematycznego/interdyscyplinarnego (7 pkt)")
             }
             ContestRegionalThematic::MultipleFinalist => {
-                write!(f, "2+ finalistów konkursu tematycznego/interdyscyplinarnego (5 pkt)")
+                write!(f, "Wielokrotny finalista konkursu tematycznego/interdyscyplinarnego (5 pkt)")
             }
             ContestRegionalThematic::Laureate => {
                 write!(f, "Laureat konkursu tematycznego/interdyscyplinarnego (5 pkt)")
@@ -401,13 +401,13 @@ impl std::fmt::Display for NoncuratorialContest {
         match self {
             NoncuratorialContest::None => write!(f, "Brak"),
             NoncuratorialContest::International => {
-                write!(f, "Wysokie miejsce w konkursie miedzynarodowym")
+                write!(f, "Wysokie miejsce w konkursie międzynarodowym (4 pkt)")
             }
             NoncuratorialContest::National => {
-                write!(f, "Wysokie miejsce w konkursie ogolnopolskim")
+                write!(f, "Wysokie miejsce w konkursie ogólnopolskim (3 pkt)")
             }
-            NoncuratorialContest::Voidship => write!(f, "Wysokie miejsce w konkursie wojewodzkim"),
-            NoncuratorialContest::District => write!(f, "Wysokie miejsce w konkursie powiatowym"),
+            NoncuratorialContest::Voidship => write!(f, "Wysokie miejsce w konkursie wojewódzkim (2 pkt)"),
+            NoncuratorialContest::District => write!(f, "Wysokie miejsce w konkursie powiatowym (1 pkt)"),
         }
     }
 }
@@ -675,9 +675,6 @@ fn process_contest(
             state = SelectionState::Contest6;
             *initialization = true;
         };
-            state = SelectionState::Contest5;
-            *initialization = true;
-        };
 
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
@@ -695,40 +692,36 @@ fn process_contest(
     state
 }
 
+// Contest 1: Konkursy przedmiotowe ponadwojewódzkie
 fn process_contest1(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
-    widget_width: f32,
-    widget_height: f32,
-    schools: &[School],
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
     contests: &mut Contest,
     initialization: &mut bool,
-    prev_gamestate: &SelectionState,
+    _prev_gamestate: &SelectionState,
 ) -> SelectionState {
     let mut state = SelectionState::Contest1;
 
     ui.vertical(|ui| {
-        // Curator overvoidship
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!(
-                "Konkursy ponadwojewódzkie organizowane przez kuratorów oświaty:"
-            ))
-            .size(font_size),
+            egui_macroquad::egui::RichText::new(format!("Konkursy przedmiotowe ponadwojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
         ));
 
-        let national_contests = [
-            ContestNationalCuratorial::None,
-            ContestNationalCuratorial::SubjectFinalist,
-            ContestNationalCuratorial::SubjectLaureate,
-            ContestNationalCuratorial::ThematicLaureate,
-            ContestNationalCuratorial::ThematicFinalist,
+        let options = [
+            ContestNationalSubject::None,
+            ContestNationalSubject::Finalist,
+            ContestNationalSubject::Laureate,
         ];
 
         ui.vertical(|ui| {
-            national_contests.into_iter().for_each(|c| {
-                ui.radio_value(&mut contests.national_curatorial, c, format!("{c}"));
+            options.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.national_subject, c, format!("{c}"));
             })
         });
+        
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
@@ -746,23 +739,162 @@ fn process_contest1(
 }
 
 
-// Artistic
+// Contest 2: Konkursy tematyczne ponadwojewódzkie  
+fn process_contest2(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    _prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest2;
+
+    ui.vertical(|ui| {
+        ui.add(egui_macroquad::egui::Label::new(
+            egui_macroquad::egui::RichText::new(format!("Konkursy tematyczne/interdyscyplinarne ponadwojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
+        ));
+
+        let options = [
+            ContestNationalThematic::None,
+            ContestNationalThematic::Laureate,
+            ContestNationalThematic::Finalist,
+        ];
+
+        ui.vertical(|ui| {
+            options.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.national_thematic, c, format!("{c}"));
+            })
+        });
+        
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+// Contest 3: Konkursy przedmiotowe wojewódzkie
+fn process_contest3(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    _prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest3;
+
+    ui.vertical(|ui| {
+        ui.add(egui_macroquad::egui::Label::new(
+            egui_macroquad::egui::RichText::new(format!("Konkursy przedmiotowe wojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
+        ));
+
+        let options = [
+            ContestRegionalSubject::None,
+            ContestRegionalSubject::MultipleFinalist,
+            ContestRegionalSubject::Finalist,
+        ];
+
+        ui.vertical(|ui| {
+            options.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.regional_subject, c, format!("{c}"));
+            })
+        });
+        
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+// Contest 4: Konkursy tematyczne wojewódzkie
 fn process_contest4(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
-    widget_width: f32,
-    widget_height: f32,
-    schools: &[School],
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
     contests: &mut Contest,
     initialization: &mut bool,
-    prev_gamestate: &SelectionState,
+    _prev_gamestate: &SelectionState,
 ) -> SelectionState {
     let mut state = SelectionState::Contest4;
 
     ui.vertical(|ui| {
-        //artistic: ContestArtisticNational::OverVoidshipLaureate,
         ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Osiągnięcia 3: ")).size(font_size),
+            egui_macroquad::egui::RichText::new(format!("Konkursy tematyczne/interdyscyplinarne wojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
+        ));
+
+        let options = [
+            ContestRegionalThematic::None,
+            ContestRegionalThematic::MultipleLaureate,
+            ContestRegionalThematic::MultipleFinalist,
+            ContestRegionalThematic::Laureate,
+            ContestRegionalThematic::Finalist,
+        ];
+
+        ui.vertical(|ui| {
+            options.into_iter().for_each(|c| {
+                ui.radio_value(&mut contests.regional_thematic, c, format!("{c}"));
+            })
+        });
+        
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::Contests;
+            *initialization = true;
+        };
+    });
+
+    state
+}
+
+// Contest 5: Konkursy artystyczne (TODO: poprawić według rozporządzenia)
+fn process_contest5(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
+    contests: &mut Contest,
+    initialization: &mut bool,
+    _prev_gamestate: &SelectionState,
+) -> SelectionState {
+    let mut state = SelectionState::Contest5;
+
+    ui.vertical(|ui| {
+        ui.add(egui_macroquad::egui::Label::new(
+            egui_macroquad::egui::RichText::new(format!("Konkursy artystyczne: ")).size(font_size),
         ));
         let artisitcs = [
             ContestArtisticNational::None,
@@ -793,23 +925,23 @@ fn process_contest4(
     state
 }
 
-fn process_contest5(
+// Contest 6: Konkursy niekuratoryjne
+fn process_contest6(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
-    widget_width: f32,
-    widget_height: f32,
-    schools: &[School],
+    _widget_width: f32,
+    _widget_height: f32,
+    _schools: &[School],
     contests: &mut Contest,
     initialization: &mut bool,
-    prev_gamestate: &SelectionState,
+    _prev_gamestate: &SelectionState,
 ) -> SelectionState {
-    let mut state = SelectionState::Contest5;
+    let mut state = SelectionState::Contest6;
 
     ui.vertical(|ui| {
-        //noncuratorial: NoncuratorialContest::None,
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!(
-                "konkursy organizowane  przez  inne  podmioty  działające  na  terenie  szkoły: "
+                "Konkursy organizowane przez inne podmioty działające na terenie szkoły: "
             ))
             .size(font_size),
         ));
@@ -826,54 +958,6 @@ fn process_contest5(
             })
         });
         
-        let ok_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-        ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::Contests;
-            *initialization = true;
-        };
-    });
-
-    state
-}
-
-fn process_contest2(
-    ui: &mut egui_macroquad::egui::Ui,
-    font_size: f32,
-    _widget_width: f32,
-    _widget_height: f32,
-    _schools: &[School],
-    contests: &mut Contest,
-    initialization: &mut bool,
-    _prev_gamestate: &SelectionState,
-) -> SelectionState {
-    let mut state = SelectionState::Contest2;
-
-    ui.vertical(|ui| {
-        ui.add(egui_macroquad::egui::Label::new(
-            egui_macroquad::egui::RichText::new(format!("Konkursy wojewódzkie organizowane przez kuratorów oświaty:")).size(font_size),
-        ));
-
-        let regional_contests = [
-            ContestRegionalCuratorial::None,
-            ContestRegionalCuratorial::MultipleSubjectFinalist,
-            ContestRegionalCuratorial::SubjectFinalist,
-            ContestRegionalCuratorial::MultipleThematicLaureate,
-            ContestRegionalCuratorial::MultipleThematicFinalist,
-            ContestRegionalCuratorial::ThematicLaureate,
-            ContestRegionalCuratorial::ThematicFinalist,
-        ];
-        ui.vertical(|ui| {
-            regional_contests.into_iter().for_each(|c| {
-                ui.radio_value(&mut contests.regional_curatorial, c, format!("{c}"));
-            })
-        });
-
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
@@ -1429,8 +1513,10 @@ async fn main() {
     let mut selected_school = 0;
     let mut selected = 0;
     let mut contests = Contest {
-        national_curatorial: ContestNationalCuratorial::None,
-        regional_curatorial: ContestRegionalCuratorial::None,
+        national_subject: ContestNationalSubject::None,
+        national_thematic: ContestNationalThematic::None,
+        regional_subject: ContestRegionalSubject::None,
+        regional_thematic: ContestRegionalThematic::None,
         artistic: ContestArtisticNational::None,
         noncuratorial: NoncuratorialContest::None,
     };
@@ -1553,8 +1639,20 @@ async fn main() {
                         );
                         prev_gamestate = SelectionState::Contest2;
                     }
+                    SelectionState::Contest3 => {
+                        gamestate = process_contest3(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest3;
+                    }
                     SelectionState::Contest4 => {
-                        // TODO:
                         gamestate = process_contest4(
                             ui,
                             font_size,
@@ -1568,7 +1666,6 @@ async fn main() {
                         prev_gamestate = SelectionState::Contest4;
                     }
                     SelectionState::Contest5 => {
-                        // TODO:
                         gamestate = process_contest5(
                             ui,
                             font_size,
@@ -1580,6 +1677,19 @@ async fn main() {
                             &prev_gamestate,
                         );
                         prev_gamestate = SelectionState::Contest5;
+                    }
+                    SelectionState::Contest6 => {
+                        gamestate = process_contest6(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            cities[selected_city].get_schools(),
+                            &mut contests,
+                            &mut initialization,
+                            &prev_gamestate,
+                        );
+                        prev_gamestate = SelectionState::Contest6;
                     }
                     SelectionState::School => {
                         gamestate = process_school(
@@ -1702,8 +1812,10 @@ mod tests {
         
         // Test: laureat przedmiotowego ogólnopolskiego = 200 pkt
         let contest = Contest {
-            national_curatorial: ContestNationalCuratorial::SubjectLaureate,
-            regional_curatorial: ContestRegionalCuratorial::None,
+            national_subject: ContestNationalSubject::Laureate,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::None,
+            regional_thematic: ContestRegionalThematic::None,
             artistic: ContestArtisticNational::OvervoidshipLaureate,
             noncuratorial: NoncuratorialContest::None,
         };
@@ -1711,8 +1823,10 @@ mod tests {
         
         // Test: brak osiągnięć = 0 pkt
         let contest = Contest {
-            national_curatorial: ContestNationalCuratorial::None,
-            regional_curatorial: ContestRegionalCuratorial::None,
+            national_subject: ContestNationalSubject::None,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::None,
+            regional_thematic: ContestRegionalThematic::None,
             artistic: ContestArtisticNational::None,
             noncuratorial: NoncuratorialContest::None,
         };
@@ -1720,8 +1834,10 @@ mod tests {
         
         // Test: finalista przedmiotowego ponadwojewódzkiego = 10 pkt
         let contest = Contest {
-            national_curatorial: ContestNationalCuratorial::SubjectFinalist,
-            regional_curatorial: ContestRegionalCuratorial::None,
+            national_subject: ContestNationalSubject::Finalist,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::None,
+            regional_thematic: ContestRegionalThematic::None,
             artistic: ContestArtisticNational::None,
             noncuratorial: NoncuratorialContest::None,
         };
@@ -1729,8 +1845,10 @@ mod tests {
         
         // Test: wielokrotny finalista przedmiotowego wojewódzkiego = 10 pkt
         let contest = Contest {
-            national_curatorial: ContestNationalCuratorial::None,
-            regional_curatorial: ContestRegionalCuratorial::MultipleSubjectFinalist,
+            national_subject: ContestNationalSubject::None,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::MultipleFinalist,
+            regional_thematic: ContestRegionalThematic::None,
             artistic: ContestArtisticNational::None,
             noncuratorial: NoncuratorialContest::None,
         };
@@ -1738,12 +1856,25 @@ mod tests {
         
         // Test: finalista przedmiotowego wojewódzkiego = 7 pkt
         let contest = Contest {
-            national_curatorial: ContestNationalCuratorial::None,
-            regional_curatorial: ContestRegionalCuratorial::SubjectFinalist,
+            national_subject: ContestNationalSubject::None,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::Finalist,
+            regional_thematic: ContestRegionalThematic::None,
             artistic: ContestArtisticNational::None,
             noncuratorial: NoncuratorialContest::None,
         };
         assert_eq!(contest.calculate_points(), Ok(7.0f32));
+        
+        // Test: kombinacja osiągnięć (max 18 pkt)
+        let contest = Contest {
+            national_subject: ContestNationalSubject::Finalist,               // 10 pkt
+            national_thematic: ContestNationalThematic::Laureate,             // 7 pkt
+            regional_subject: ContestRegionalSubject::None,
+            regional_thematic: ContestRegionalThematic::Finalist,             // 3 pkt
+            artistic: ContestArtisticNational::None,
+            noncuratorial: NoncuratorialContest::None,
+        };
+        assert_eq!(contest.calculate_points(), Ok(18.0f32)); // 10+7+3 = 20, ale max 18
         
         Ok(())
     }
