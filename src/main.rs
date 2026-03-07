@@ -9,8 +9,6 @@
 
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
-// TODO: Names of types of contests e.g. replace Osiagniecia with something more decent
-// TODO: Exit button to work on android
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -1748,7 +1746,17 @@ async fn main() {
 
     loop {
         match gamestate {
-            SelectionState::Exit => break,
+            SelectionState::Exit => {
+                #[cfg(target_os = "android")]
+                {
+                    // This is needed for android to exit without leaving black screen
+                    std::process::exit(0);
+                }
+                #[cfg(not(target_os = "android"))]
+                {
+                    break;
+                }
+            }
             _ => (),
         }
 
