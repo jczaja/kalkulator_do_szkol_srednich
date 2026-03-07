@@ -638,17 +638,21 @@ fn process_city(
             ui.radio_value(&mut *selected_city, c, format!("{alt_city}"));
         });
     });
-    let ok_button = ui.add(egui_macroquad::egui::Button::new(
-        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-    ));
-    if *initialization {
-        ok_button.request_focus();
-        *initialization = false;
-    }
-    if ok_button.clicked() {
-        state = SelectionState::None;
-        *initialization = true;
-    };
+    ui.horizontal(|ui| {
+        ui.add_space(20.0);
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
+        };
+    });
 
     state
 }
@@ -1265,17 +1269,20 @@ fn process_school(
             );
         });
     });
-    let ok_button = ui.add(egui_macroquad::egui::Button::new(
-        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-    ));
-    if *initialization {
-        ok_button.request_focus();
-        *initialization = false;
-    }
-    if ok_button.clicked() {
-        state = SelectionState::None;
-        *initialization = true;
-    };
+    ui.horizontal(|ui| {
+        ui.add_space(20.0);
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
+        };
+    });
 
     state
 }
@@ -1302,17 +1309,20 @@ fn process_profil(
             );
         });
     });
-    let ok_button = ui.add(egui_macroquad::egui::Button::new(
-        egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
-    ));
-    if *initialization {
-        ok_button.request_focus();
-        *initialization = false;
-    }
-    if ok_button.clicked() {
-        state = SelectionState::None;
-        *initialization = true;
-    };
+    ui.horizontal(|ui| {
+        ui.add_space(20.0);
+        let ok_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
+        ));
+        if *initialization {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
+        };
+    });
 
     state
 }
