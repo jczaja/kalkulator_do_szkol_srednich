@@ -13,7 +13,7 @@
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
                            //
-
+#[derive(PartialEq)]
 enum SelectionState {
     None,
     City,
@@ -845,7 +845,7 @@ fn process_contest(
             let ok_button = ui.add(egui_macroquad::egui::Button::new(
                 egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
             ));
-            if *initialization {
+            if *initialization && state == SelectionState::Contests {
                 ok_button.request_focus();
                 *initialization = false;
             }
@@ -873,6 +873,7 @@ fn process_contest1(
 ) -> SelectionState {
     let mut state = SelectionState::Contest1;
 
+    println!("====> contest 1 initialization : {}", initialization);
     ui.vertical(|ui| {
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!(
@@ -902,6 +903,7 @@ fn process_contest1(
                 egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
             ));
             if *initialization {
+                println!("====> contest 1 initialization");
                 ok_button.request_focus();
                 *initialization = false;
             }
