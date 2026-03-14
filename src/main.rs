@@ -13,7 +13,7 @@
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
                            //
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 enum SelectionState {
     None,
     City,
@@ -26,6 +26,7 @@ enum SelectionState {
     Contest6, // Konkursy artystyczne ponadwojewódzkie/wojewódzkie
     Contest7, // Konkursy niekuratoryjne
     Exit,
+    Find,
     Profil,
     School,
 }
@@ -108,6 +109,7 @@ impl<'a> PartialEq for City<'a> {
     }
 }
 
+#[derive(Debug)]
 struct Threshold<'a> {
     base_name: &'a str,
     points: f32,
@@ -619,6 +621,21 @@ impl CertificateResults<'_> {
             Err("Grades must be between 2 and 6.")
         }
     }
+}
+
+fn calculate_points(exams: &ExamResults, certs: &CertificateResults, contests: &Contest) -> f32 {
+    let exam_points = exams.calculate_points().unwrap();
+
+    let certificate_points = certs.calculate_points().unwrap();
+
+    let contests_points = contests.calculate_points().unwrap();
+
+    // No more than 200 points
+    let mut total_points = certificate_points + exam_points + contests_points;
+    if total_points > 200.0 {
+        total_points = 200.0;
+    }
+    total_points
 }
 
 fn process_city(
@@ -1250,6 +1267,29 @@ fn process_contest7(
     state
 }
 
+fn process_find(
+    total_points: f32,
+    schools: &[School],
+    selected_school: &mut usize,
+    selected_profil: &mut usize,
+) -> SelectionState {
+    let state = SelectionState::None;
+
+    let mut candidate_points = 0.0;
+    // iterate through schools and profiles
+    schools.iter().enumerate().for_each(|(n, s)| {
+        s.profiles.iter().enumerate().for_each(|(np, p)| {
+            if p.points <= total_points && p.points > candidate_points {
+                candidate_points = p.points;
+                *selected_school = n;
+                *selected_profil = np;
+            }
+        });
+    });
+
+    state
+}
+
 fn process_school(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
@@ -1530,17 +1570,7 @@ fn process_none(
             });
             // Punkty
             ui.horizontal(|ui| {
-                let exam_points = exams.calculate_points().unwrap();
-
-                let certificate_points = certs.calculate_points().unwrap();
-
-                let contests_points = contests.calculate_points().unwrap();
-
-                // No more than 200 points
-                total_points = certificate_points + exam_points + contests_points;
-                if total_points > 200.0 {
-                    total_points = 200.0;
-                }
+                //total points
                 ui.label(
                     egui_macroquad::egui::RichText::new(format!("Punkty Do Szkoły średniej: "))
                         .size(font_size),
@@ -1571,6 +1601,15 @@ fn process_none(
                     state = SelectionState::City;
                     *initialization = true;
                 };
+                ui.add_space(10.0);
+                let find_button = ui.add(egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("Zaproponuj\nprofil"))
+                        .size(font_size),
+                ));
+                if find_button.clicked() {
+                    state = SelectionState::Find;
+                };
+                // TODO: if clicked then find me a profil within chosen city
             });
 
             ui.horizontal(|ui| {
@@ -1997,6 +2036,16 @@ async fn main() {
                         );
                         prev_gamestate = SelectionState::Contest7;
                     }
+                    SelectionState::Find => {
+                        // TODO: get from list of schools best profil
+                        gamestate = process_find(
+                            calculate_points(&exam_points, &certs, &contests),
+                            cities[selected_city].get_schools(),
+                            &mut selected_school,
+                            &mut selected,
+                        );
+                        prev_gamestate = SelectionState::Find;
+                    }
                     SelectionState::School => {
                         gamestate = process_school(
                             ui,
@@ -2109,6 +2158,126 @@ mod tests {
             Err("Grades must be between 2 and 6.")
         );
 
+        Ok(())
+    }
+
+    #[test]
+    fn test_process_find() -> Result<(), String> {
+        let g1 = &[Threshold::new(
+            "Klasa 1A (politechniczna)\n",
+            168.75,
+            "Fizyka",
+        )];
+        let g2 = &[
+            Threshold::new("LO III - Klasa 1A (ekonomiczna)\n", 166.74, "Geografia"),
+            Threshold::new(
+                "LO III - Klasa 1D-1(politechniczna)\n",
+                171.64,
+                "Informatyka",
+            ),
+            Threshold::new(
+                "LO III - Klasa 1D-2 (politechniczna)\n",
+                167.17,
+                "Informatyka",
+            ),
+        ];
+
+        let g3 = &[
+            Threshold::new("LO VIII - Klasa 1BD-1 (mat-geo-ang)\n", 170.6, "Geografia"),
+            Threshold::new(
+                "LO VIII - Klasa 1BD-2 (mat-inf-ang)\n",
+                170.3,
+                "Informatyka",
+            ),
+        ];
+
+        let g4 = &[
+            Threshold::new("LO IX - Klasa 1A (mat-fiz)\n", 161.90, "Fizyka"),
+            Threshold::new("LO IX - Klasa 1C (mat-fiz-inf)", 144.90, "Informatyka"),
+            Threshold::new("LO IX - Klasa 1E (mat-fiz-inf)\n", 157.80, "WOS"),
+        ];
+
+        let g5 = &[Threshold::new(
+            "LO X - Klasa 1A (dwujęzyczna politechniczna)\n",
+            160.87,
+            "Fizyka",
+        )];
+
+        let g6 = &[
+            Threshold::new("LO XV - Klasa 1A (mat-inf-ang)\n", 147.65, "Fizyka"),
+            Threshold::new("LO XV - Klasa 1D (mat-geo-ang)\n", 155.25, "Geografia"),
+        ];
+
+        let g7 = &[
+            Threshold::new("LO XIX - Klasa 1A (ekonomiczna)\n", 162.70, "Geografia"),
+            Threshold::new(
+                "LO XIX - Klasa 1B (artystyczna-muzyczna)\n",
+                136.20,
+                "Historia",
+            ),
+            Threshold::new("LO XIX - Klasa 1E (mat-fiz-ang)\n", 167.70, "Fizyka"),
+        ];
+        // Full
+        let schools_gdansk = vec![
+            School::new("LO II Gdańsk", g1),
+            School::new("LO III Gdańsk", g2),
+            School::new("LO VIII Gdańsk", g3),
+            School::new("LO IX Gdańsk", g4),
+            School::new("LO X Gdańsk", g5),
+            School::new("LO XV Gdańsk", g6),
+            School::new("LO XIX Gdańsk", g7),
+        ];
+
+        let mut selected_school = 0;
+        let mut selected_profil = 0;
+
+        let gamestate = process_find(
+            150.0,
+            &schools_gdansk,
+            &mut selected_school,
+            &mut selected_profil,
+        );
+
+        println!(
+            "Winner: {}  : {:?}",
+            schools_gdansk[selected_school],
+            schools_gdansk[selected_school].profiles[selected_profil]
+        );
+
+        assert_eq!(gamestate, SelectionState::None);
+
+        // With 150 points we should get g6 (X LO , mat-inf-ang)
+        assert_eq!(selected_school, 5);
+        assert_eq!(selected_profil, 0);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_calculate_points() -> Result<(), String> {
+        let contest = Contest {
+            national_subject: ContestNationalSubject::Laureate,
+            national_thematic: ContestNationalThematic::None,
+            regional_subject: ContestRegionalSubject::None,
+            regional_thematic: ContestRegionalThematic::None,
+            artistic_international: ContestArtisticInternational::None,
+            artistic_regional: ContestArtisticRegional::None,
+            noncuratorial: NoncuratorialContest::None,
+        };
+        let certs = CertificateResults {
+            polish: (6, "jezyk polski"),
+            math: (5, "matematyka"),
+            first_addtional_course: (4, "jezyk angielski"),
+            second_addtional_course: (3, "informatyka"),
+            honors: true,
+            volounteering: false,
+        };
+        let exams = ExamResults {
+            polish: (100, "Polish"),
+            math: (100, "Math"),
+            second_language: (100, "English"),
+        };
+        assert_eq!(calculate_points(&exams, &certs, &contest), 200.0);
         Ok(())
     }
 
