@@ -27,6 +27,7 @@ enum SelectionState {
     Contest7, // Konkursy niekuratoryjne
     Exit,
     Find,
+    NotFound,
     Profil,
     School,
 }
@@ -1273,7 +1274,7 @@ fn process_find(
     selected_school: &mut usize,
     selected_profil: &mut usize,
 ) -> SelectionState {
-    let state = SelectionState::None;
+    let mut state = SelectionState::NotFound;
 
     let mut candidate_points = 0.0;
     // iterate through schools and profiles
@@ -1283,11 +1284,46 @@ fn process_find(
                 candidate_points = p.points;
                 *selected_school = n;
                 *selected_profil = np;
+                state = SelectionState::None;
             }
         });
     });
 
     state
+}
+
+fn process_notfound(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    flash_counter: &mut i32,
+) -> SelectionState {
+    // First time entering - initialize counter
+    if *flash_counter == 0 {
+        *flash_counter = 60; // Display message for 60 frames (~1 second)
+    }
+
+    // Display large message in the center
+    ui.vertical_centered(|ui| {
+        ui.add_space(widget_height * 2.0);
+
+        ui.add(egui_macroquad::egui::Label::new(
+            egui_macroquad::egui::RichText::new("Brak pasującego profilu i szkoły")
+                .size(font_size * 3.0)
+                .color(egui_macroquad::egui::Color32::RED),
+        ));
+    });
+
+    // Decrease counter
+    *flash_counter -= 1;
+
+    // When counter reaches 0, return to None state
+    if *flash_counter == 0 {
+        SelectionState::None
+    } else {
+        SelectionState::NotFound // Stay in NotFound state
+    }
 }
 
 fn process_school(
@@ -1570,7 +1606,7 @@ fn process_none(
             });
             // Punkty
             ui.horizontal(|ui| {
-                //total points
+                total_points = calculate_points(&exams, &certs, &contests);
                 ui.label(
                     egui_macroquad::egui::RichText::new(format!("Punkty Do Szkoły średniej: "))
                         .size(font_size),
@@ -1601,15 +1637,18 @@ fn process_none(
                     state = SelectionState::City;
                     *initialization = true;
                 };
-                ui.add_space(10.0);
+                ui.add_space(20.0);
                 let find_button = ui.add(egui_macroquad::egui::Button::new(
                     egui_macroquad::egui::RichText::new(format!("Zaproponuj\nprofil"))
                         .size(font_size),
                 ));
+                if let SelectionState::Find = prev_gamestate {
+                    set_focus(&find_button, initialization);
+                }
                 if find_button.clicked() {
                     state = SelectionState::Find;
+                    *initialization = true;
                 };
-                // TODO: if clicked then find me a profil within chosen city
             });
 
             ui.horizontal(|ui| {
@@ -1843,6 +1882,9 @@ async fn main() {
         noncuratorial: NoncuratorialContest::None,
     };
 
+    // Counter for red flash effect
+    let mut red_flash_counter = 0;
+
     loop {
         match gamestate {
             SelectionState::Exit => {
@@ -2037,7 +2079,6 @@ async fn main() {
                         prev_gamestate = SelectionState::Contest7;
                     }
                     SelectionState::Find => {
-                        // TODO: get from list of schools best profil
                         gamestate = process_find(
                             calculate_points(&exam_points, &certs, &contests),
                             cities[selected_city].get_schools(),
@@ -2045,6 +2086,19 @@ async fn main() {
                             &mut selected,
                         );
                         prev_gamestate = SelectionState::Find;
+                    }
+                    SelectionState::NotFound => {
+                        gamestate = process_notfound(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            &mut red_flash_counter,
+                        );
+                        // Focus should be on propose profil
+                        if gamestate == SelectionState::None {
+                            prev_gamestate = SelectionState::Find;
+                        }
                     }
                     SelectionState::School => {
                         gamestate = process_school(
