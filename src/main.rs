@@ -1728,6 +1728,36 @@ fn process_none(
     state
 }
 
+fn get_screenshot() {
+    if is_key_pressed(KeyCode::S) {
+        println!("====> Saving screenshot...");
+        let image = macroquad::prelude::get_screen_data();
+        image.export_png("screenshot.png");
+    }
+}
+
+
+
+fn tablet7_window_conf() -> Conf {
+    Conf {
+        window_title: "kalkulator punktów do szkoły średniej".to_owned(),
+        window_height: 800,
+        window_width: 1280,
+        window_resizable: false,
+        ..Default::default()
+    }
+}
+fn tablet10_window_conf() -> Conf {
+    Conf {
+        window_title: "kalkulator punktów do szkoły średniej".to_owned(),
+        window_height: 1200,
+        window_width: 1920,
+        window_resizable: false,
+        ..Default::default()
+    }
+}
+
+//#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
     let pol_value: u8 = 69;
@@ -1972,7 +2002,6 @@ async fn main() {
                         }
                     }
                     SelectionState::Contests => {
-                        // TODO:
                         gamestate = process_contest(
                             ui,
                             font_size,
@@ -1986,7 +2015,6 @@ async fn main() {
                         prev_gamestate = SelectionState::Contests;
                     }
                     SelectionState::Contest1 => {
-                        // TODO:
                         gamestate = process_contest1(
                             ui,
                             font_size,
@@ -2000,7 +2028,6 @@ async fn main() {
                         prev_gamestate = SelectionState::Contest1;
                     }
                     SelectionState::Contest2 => {
-                        // TODO:
                         gamestate = process_contest2(
                             ui,
                             font_size,
@@ -2138,6 +2165,7 @@ async fn main() {
         egui_macroquad::draw();
 
         // Draw things after egui
+        get_screenshot();
 
         next_frame().await;
     }
