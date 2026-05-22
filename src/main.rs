@@ -10,6 +10,8 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
+// TODO: serializacja ustawien np. tutorial skoncozny i jakie ustawienia szkolne
+
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
                            //
@@ -30,6 +32,7 @@ enum SelectionState {
     NotFound,
     Profil,
     School,
+    Tutorial(u8),
 }
 
 struct School<'a> {
@@ -1728,6 +1731,71 @@ fn process_none(
     state
 }
 
+fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
+                    font_size: f32,
+                    widget_width: f32,
+                    widget_height: f32,
+                    initialization: &mut bool,
+                    slide_num : u8,
+) -> SelectionState {
+
+    let mut gamestate = SelectionState::Tutorial(slide_num);
+    const NUM_SLIDES : u8 = 5;
+
+    let slide = match slide_num {
+        1 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/egzaminy.png")),
+        2 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/swiadectwo.png")),
+        3 => 
+            egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/konkursy.png")),
+        4 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/szkoly.png")),
+        5 => 
+            egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/wyniki.png")),
+        _ => panic!("Error: request for index of not existing picture"),
+    };
+
+    ui.vertical_centered(|ui| {
+        ui.add(
+                egui_macroquad::egui::Image::new(slide)
+                .max_size(egui_macroquad::egui::vec2(ui.available_width(), ui.available_height() - 2.0*widget_height))
+                    .corner_radius(5));
+
+        ui.add(egui_macroquad::egui::Label::new(
+            egui_macroquad::egui::RichText::new(format!("Slajd:: {slide_num}/{NUM_SLIDES}"))
+                .size(font_size * 1.2)
+                .strong(),
+        ));
+        ui.horizontal_centered(|ui| {
+        let back_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+        ));
+        if back_button.clicked() {
+            gamestate = SelectionState::Tutorial( if slide_num > 1 {slide_num -1} else {1} );
+        };
+
+        let rozpocznij_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!("Rozpocznij")).size(font_size),
+        ));
+        if *initialization {
+            rozpocznij_button.request_focus();
+            *initialization = false;
+        }
+
+        if rozpocznij_button.clicked() {
+            gamestate = SelectionState::None;
+            *initialization = true;
+        };
+
+        let forward_button = ui.add(egui_macroquad::egui::Button::new(
+            egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+        ));
+        if forward_button.clicked() {
+            gamestate = SelectionState::Tutorial( if slide_num < NUM_SLIDES {slide_num +1} else {NUM_SLIDES} );
+        };
+        });
+    });
+    gamestate
+}
+
 fn get_screenshot() {
     if is_key_pressed(KeyCode::S) {
         println!("====> Saving screenshot...");
@@ -1769,7 +1837,6 @@ async fn main() {
     let cang_value: u8 = 6;
     let cmat_value: u8 = 5;
     let cinf_value: u8 = 6;
-    let achv_value: u8 = 0;
     let vol_value: bool = true;
     let hon_value: bool = true;
 
@@ -1896,7 +1963,7 @@ async fn main() {
         City::Koszalin(&schools_koszalin),
         City::Poznan(&schools_poznan),
     ];
-    let mut gamestate = SelectionState::None;
+    let mut gamestate = SelectionState::Tutorial(1);
     let mut prev_gamestate = SelectionState::None;
 
     let mut selected_city = 0;
@@ -1963,6 +2030,7 @@ async fn main() {
                         egui_macroquad::egui::FontFamily::Proportional,
                     ),
                 );
+                egui_extras::install_image_loaders(egui_ctx);
                 match gamestate {
                     SelectionState::None => {
                         let city = &cities[selected_city];
@@ -2154,6 +2222,10 @@ async fn main() {
                         );
                         prev_gamestate = SelectionState::Profil;
                     }
+                    SelectionState::Tutorial(slide_num) => {
+                        gamestate = process_tutorial(ui, font_size, widget_width, widget_height, &mut initialization, slide_num);
+                        prev_gamestate = SelectionState::Tutorial(slide_num);
+                    },
 
                     SelectionState::Exit => (),
                 }

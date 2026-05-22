@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [package.metadata.android]
+assets = "assets/"  
 res = "android_res"
 icon = "@mipmap/ic_launcher"
 version_code = 14
@@ -23,3 +24,5 @@ required = false
 egui-macroquad = "0.17.3"
 egui_plot = "0.32.1"
 macroquad = "0.4.14"
+egui_extras = { version = "=0.31.1", features = ["image"] }
+image = { version = "0.25.10", default-features = false, features = ["png"] }
