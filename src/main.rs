@@ -10,7 +10,6 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
-// TODO: serializacja ustawien np. tutorial skoncozny i jakie ustawienia szkolne
 // TODO: Android location for config
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
@@ -1839,33 +1838,47 @@ fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
                 .strong(),
         ));
         ui.horizontal_centered(|ui| {
-        let back_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
-        ));
-        if back_button.clicked() {
-            gamestate = SelectionState::Tutorial( if slide_num > 1 {slide_num -1} else {1} );
-        };
+            let back_button = if slide_num > 1 {
+                ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+            ))
+            } else {
+                ui.add_enabled(false,egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+            ))
+            };
+            if back_button.clicked() {
+                gamestate = SelectionState::Tutorial( if slide_num > 1 {slide_num -1} else {1} );
+            };
 
-        let rozpocznij_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!("Rozpocznij")).size(font_size),
-        ));
-        if *initialization {
-            rozpocznij_button.request_focus();
-            *initialization = false;
-        }
+            let rozpocznij_button = ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("Rozpocznij")).size(font_size),
+            ));
+            if *initialization {
+                rozpocznij_button.request_focus();
+                *initialization = false;
+            }
 
-        if rozpocznij_button.clicked() {
-            gamestate = SelectionState::None;
-            *initialization = true;
-        };
+            if rozpocznij_button.clicked() {
+                gamestate = SelectionState::None;
+                *initialization = true;
+            };
 
-        let forward_button = ui.add(egui_macroquad::egui::Button::new(
-            egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
-        ));
-        if forward_button.clicked() {
-            gamestate = SelectionState::Tutorial( if slide_num < NUM_SLIDES {slide_num +1} else {NUM_SLIDES} );
-        };
+            let forward_button = if slide_num < 5 {
+                ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+            ))
+            } else {
+                ui.add_enabled(false,egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+            ))
+            };
+
+            if forward_button.clicked() {
+                gamestate = SelectionState::Tutorial( if slide_num < NUM_SLIDES {slide_num +1} else {NUM_SLIDES} );
+            };
         });
+
     });
     gamestate
 }
@@ -2097,6 +2110,7 @@ async fn main() {
                             &city.get_schools()[selected_school], // BABOL
                             &city.get_schools()[selected_school].profiles[selected],
                         );
+                        completed_tutorial = true;
                         prev_gamestate = SelectionState::None;
                     }
                     SelectionState::City => {
