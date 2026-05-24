@@ -1837,7 +1837,9 @@ fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
                 .size(font_size * 1.2)
                 .strong(),
         ));
-        ui.horizontal_centered(|ui| {
+
+        ui.horizontal(|ui| {
+            ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
             let back_button = if slide_num > 1 {
                 ui.add(egui_macroquad::egui::Button::new(
                 egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
