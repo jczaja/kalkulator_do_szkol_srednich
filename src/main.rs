@@ -1390,12 +1390,26 @@ fn save_config(certs : CertificateResults, contests: Contest, exams: ExamResults
         completed_tutorial,
     };
     let toml_string = toml::to_string(&config).unwrap();
-    std::fs::write("config.toml", toml_string).expect("Unable to write file");
+    std::fs::write(get_config_path(), toml_string).expect("Unable to write file");
 }
+
+fn get_config_path() -> String {
+    let mut config_full_name = String::new();
+    #[cfg(target_os = "android")]
+    {
+        config_full_name = "costam".to_string();
+    }
+    #[cfg(not(target_os = "android"))]
+    {
+        config_full_name = "config.toml".to_string();
+    }
+    config_full_name
+}
+
 
 fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
 
-    let mut maybe_content = std::fs::read_to_string("config.toml");
+    let mut maybe_content = std::fs::read_to_string(get_config_path());
     match maybe_content {
         Ok(content) => {
              println!("Reading config.toml: {:?}", content);
