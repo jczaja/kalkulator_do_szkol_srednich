@@ -11,9 +11,12 @@
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
 // TODO: serializacja ustawien np. tutorial skoncozny i jakie ustawienia szkolne
+// TODO: Android location for config
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
+use serde::{Deserialize,Serialize};
+use toml;                        
                            //
 #[derive(PartialEq, Debug)]
 enum SelectionState {
@@ -135,14 +138,24 @@ impl<'a> Threshold<'a> {
     }
 }
 
-// Each tuple is representing score (in percentage) of given exam and name of topic
-struct ExamResults<'a> {
-    polish: (u8, &'a str),
-    math: (u8, &'a str),
-    second_language: (u8, &'a str),
+#[derive(Serialize,Deserialize)]
+struct Config {
+    exams: ExamResults,
+    contests : Contest,
+    certificate : CertificateResults,
+    completed_tutorial: bool,
+
 }
 
-impl ExamResults<'_> {
+// Each tuple is representing score (in percentage) of given exam and name of topic
+#[derive(Serialize,Deserialize)]
+struct ExamResults {
+    polish: (u8, String),
+    math: (u8, String),
+    second_language: (u8, String),
+}
+
+impl ExamResults {
     pub fn calculate_points(&self) -> Result<f32, &str> {
         if self.polish.0 > 100 || self.math.0 > 100 || self.second_language.0 > 100 {
             return Err("Score cannot be greater than 100");
@@ -163,6 +176,7 @@ impl ExamResults<'_> {
 }
 
 // Struktura przechowująca wszystkie osiągnięcia w konkursach
+#[derive(Serialize,Deserialize)]
 struct Contest {
     national_subject: ContestNationalSubject, // konkursy przedmiotowe ponadwojewódzkie
     national_thematic: ContestNationalThematic, // konkursy tematyczne ponadwojewódzkie
@@ -196,7 +210,7 @@ impl Contest {
 }
 
 // 1. Konkursy PRZEDMIOTOWE ponadwojewódzkie (punkt 1a rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestNationalSubject {
     None,
     Laureate, // Laureat konkursu przedmiotowego ogólnopolskiego - 200 pkt (automatyczne przyjęcie)
@@ -228,7 +242,7 @@ impl std::fmt::Display for ContestNationalSubject {
 }
 
 // 2. Konkursy TEMATYCZNE/INTERDYSCYPLINARNE ponadwojewódzkie (punkt 1b,c rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestNationalThematic {
     None,
     Laureate, // Laureat konkursu tematycznego/interdyscyplinarnego - 7 pkt
@@ -266,7 +280,7 @@ impl std::fmt::Display for ContestNationalThematic {
 }
 
 // 3. Konkursy PRZEDMIOTOWE wojewódzkie (punkt 3a,d rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestRegionalSubject {
     None,
     MultipleFinalist, // 2+ finalistów konkursu przedmiotowego - 10 pkt
@@ -298,7 +312,7 @@ impl std::fmt::Display for ContestRegionalSubject {
 }
 
 // 4. Konkursy TEMATYCZNE/INTERDYSCYPLINARNE wojewódzkie (punkt 3b,c,e,f rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestRegionalThematic {
     None,
     MultipleLaureate, // 2+ laureatów konkursu tematycznego/interdyscyplinarnego - 7 pkt
@@ -352,7 +366,7 @@ impl std::fmt::Display for ContestRegionalThematic {
 }
 
 // 5. Konkursy artystyczne MIĘDZYNARODOWE/OGÓLNOPOLSKIE (punkt 2 rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestArtisticInternational {
     None,
     // Objęte ramowym planem nauczania szkoły artystycznej:
@@ -400,7 +414,7 @@ impl std::fmt::Display for ContestArtisticInternational {
 }
 
 // 6. Konkursy artystyczne PONADWOJEWÓDZKIE/WOJEWÓDZKIE (punkt 4 rozporządzenia)
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum ContestArtisticRegional {
     None,
     // Wielokrotne - objęte planem:
@@ -465,7 +479,7 @@ impl std::fmt::Display for ContestArtisticRegional {
 }
 
 // Miejsca od 1 do 3 na szczeblu konkursów ogólnopolskich albo międzynarodowych
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Deserialize, Serialize)]
 enum NoncuratorialContest {
     None,
     International,
@@ -572,16 +586,17 @@ impl std::fmt::Display for ContestRegionalCuratorial {
     }
 }
 
-struct CertificateResults<'a> {
-    polish: (u8, &'a str),
-    math: (u8, &'a str),
-    first_addtional_course: (u8, &'a str),
-    second_addtional_course: (u8, &'a str),
+#[derive(Clone, Deserialize, Serialize)]
+struct CertificateResults {
+    polish: (u8, String),
+    math: (u8, String),
+    first_addtional_course: (u8, String),
+    second_addtional_course: (u8, String),
     honors: bool,
     volounteering: bool,
 }
 
-impl CertificateResults<'_> {
+impl CertificateResults {
     pub fn calculate_points(&self) -> Result<f32, &str> {
         let get_course_points = |grade: u8| -> f32 {
             match grade {
@@ -1368,6 +1383,65 @@ fn process_school(
     state
 }
 
+fn save_config(certs : CertificateResults, contests: Contest, exams: ExamResults, completed_tutorial: bool) {
+    let config = Config {
+        certificate: certs,
+        contests,
+        exams,
+        completed_tutorial,
+    };
+    let toml_string = toml::to_string(&config).unwrap();
+    std::fs::write("config.toml", toml_string).expect("Unable to write file");
+}
+
+fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
+
+    let mut maybe_content = std::fs::read_to_string("config.toml");
+    match maybe_content {
+        Ok(content) => {
+             println!("Reading config.toml: {:?}", content);
+             let config : Config = toml::from_str(&content.clone()).expect("Unable to parse config");
+            (config.certificate, config.contests, config.exams, config.completed_tutorial)
+        },
+        Err(_) => {
+            let exam_results = ExamResults {
+                polish: (50, "Polish".to_string()),
+                math: (50, "Math".to_owned()),
+                second_language: (50, "English".to_owned())
+            };
+            let certs = CertificateResults {
+                polish: (3, "jezyk polski".to_owned()),
+                math: (3, "matematyka".to_owned()),
+                first_addtional_course: (3, "jezyk angielski".to_owned()),
+                second_addtional_course: (3, "informatyka".to_owned()),
+                honors: false,
+                volounteering: false,
+            };
+
+            let contests = Contest {
+                national_subject: ContestNationalSubject::None,
+                national_thematic: ContestNationalThematic::None,
+                regional_subject: ContestRegionalSubject::None,
+                regional_thematic: ContestRegionalThematic::None,
+                artistic_international: ContestArtisticInternational::None,
+                artistic_regional: ContestArtisticRegional::None,
+                noncuratorial: NoncuratorialContest::None,
+            };
+            let config = Config {
+                exams: exam_results,
+                contests,
+                certificate : certs,
+                completed_tutorial: false,
+            };
+            let toml_string = toml::to_string(&config).unwrap();
+            std::fs::write("config.toml", toml_string).expect("Unable to write file");
+            (config.certificate, config.contests, config.exams, config.completed_tutorial)
+        }
+    }
+
+}
+
+
 //cities[selected_city].get_schools().first().unwrap()
 fn process_profil(
     ui: &mut egui_macroquad::egui::Ui,
@@ -1828,32 +1902,11 @@ fn tablet10_window_conf() -> Conf {
 //#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
-    let pol_value: u8 = 69;
-    let ang_value: u8 = 100;
-    let mat_value: u8 = 60;
     let mut initialization = true;
 
-    let cpol_value: u8 = 4;
-    let cang_value: u8 = 6;
-    let cmat_value: u8 = 5;
-    let cinf_value: u8 = 6;
-    let vol_value: bool = true;
-    let hon_value: bool = true;
+    // TODO: Get config or create a new one
+    let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = get_config();
 
-    let mut exam_points = ExamResults {
-        polish: (pol_value, "Polish"),
-        math: (mat_value, "Math"),
-        second_language: (ang_value, "English"),
-    };
-
-    let mut certs = CertificateResults {
-        polish: (cpol_value, "jezyk polski"),
-        math: (cmat_value, "matematyka"),
-        first_addtional_course: (cang_value, "jezyk angielski"),
-        second_addtional_course: (cinf_value, "informatyka"),
-        honors: hon_value,
-        volounteering: vol_value,
-    };
 
     let g1 = &[Threshold::new(
         "Klasa 1A (politechniczna)\n",
@@ -1963,21 +2016,16 @@ async fn main() {
         City::Koszalin(&schools_koszalin),
         City::Poznan(&schools_poznan),
     ];
-    let mut gamestate = SelectionState::Tutorial(1);
+    let mut gamestate = if completed_tutorial {
+        SelectionState::None
+    } else {
+        SelectionState::Tutorial(1)
+    };
     let mut prev_gamestate = SelectionState::None;
 
     let mut selected_city = 0;
     let mut selected_school = 0;
     let mut selected = 0;
-    let mut contests = Contest {
-        national_subject: ContestNationalSubject::None,
-        national_thematic: ContestNationalThematic::None,
-        regional_subject: ContestRegionalSubject::None,
-        regional_thematic: ContestRegionalThematic::None,
-        artistic_international: ContestArtisticInternational::None,
-        artistic_regional: ContestArtisticRegional::None,
-        noncuratorial: NoncuratorialContest::None,
-    };
 
     // Counter for red flash effect
     let mut red_flash_counter = 0;
@@ -1985,6 +2033,7 @@ async fn main() {
     loop {
         match gamestate {
             SelectionState::Exit => {
+                save_config(certs, contests, exam_points, completed_tutorial);
                 #[cfg(target_os = "android")]
                 {
                     // This is needed for android to exit without leaving black screen
@@ -2251,18 +2300,18 @@ mod tests {
     fn test_calculate_exam_points() -> Result<(), String> {
         assert_eq!(
             ExamResults {
-                polish: (100, "Polish"),
-                math: (100, "Math"),
-                second_language: (100, "English")
+                polish: (100, "Polish".to_owned()),
+                math: (100, "Math".to_owned()),
+                second_language: (100, "English".to_owned())
             }
             .calculate_points(),
             Ok(100.0)
         );
         assert_eq!(
             ExamResults {
-                polish: (110, "Polish"),
-                math: (100, "Math"),
-                second_language: (100, "English")
+                polish: (110, "Polish".to_owned()),
+                math: (100, "Math".to_owned()),
+                second_language: (100, "English".to_owned())
             }
             .calculate_points(),
             Err("Score cannot be greater than 100")
@@ -2275,10 +2324,10 @@ mod tests {
     fn test_calculate_certificate_points() -> Result<(), String> {
         assert_eq!(
             CertificateResults {
-                polish: (6, "jezyk polski"),
-                math: (5, "matematyka"),
-                first_addtional_course: (4, "jezyk angielski"),
-                second_addtional_course: (3, "informatyka"),
+                polish: (6, "jezyk polski".to_owned()),
+                math: (5, "matematyka".to_owned()),
+                first_addtional_course: (4, "jezyk angielski".to_owned()),
+                second_addtional_course: (3, "informatyka".to_owned()),
                 honors: true,
                 volounteering: false,
             }
@@ -2288,10 +2337,10 @@ mod tests {
 
         assert_eq!(
             CertificateResults {
-                polish: (2, "jezyk polski"),
-                math: (2, "matematyka"),
-                first_addtional_course: (2, "jezyk angielski"),
-                second_addtional_course: (2, "informatyka"),
+                polish: (2, "jezyk polski".to_owned()),
+                math: (2, "matematyka".to_owned()),
+                first_addtional_course: (2, "jezyk angielski".to_owned()),
+                second_addtional_course: (2, "informatyka".to_owned()),
                 honors: false,
                 volounteering: true,
             }
@@ -2301,10 +2350,10 @@ mod tests {
 
         assert_eq!(
             CertificateResults {
-                polish: (2, "jezyk polski"),
-                math: (1, "matematyka"),
-                first_addtional_course: (2, "jezyk angielski"),
-                second_addtional_course: (2, "informatyka"),
+                polish: (2, "jezyk polski".to_owned()),
+                math: (1, "matematyka".to_owned()),
+                first_addtional_course: (2, "jezyk angielski".to_owned()),
+                second_addtional_course: (2, "informatyka".to_owned()),
                 honors: false,
                 volounteering: true,
             }
@@ -2419,17 +2468,17 @@ mod tests {
             noncuratorial: NoncuratorialContest::None,
         };
         let certs = CertificateResults {
-            polish: (6, "jezyk polski"),
-            math: (5, "matematyka"),
-            first_addtional_course: (4, "jezyk angielski"),
-            second_addtional_course: (3, "informatyka"),
+            polish: (6, "jezyk polski".to_owned()),
+            math: (5, "matematyka".to_owned()),
+            first_addtional_course: (4, "jezyk angielski".to_owned()),
+            second_addtional_course: (3, "informatyka".to_owned()),
             honors: true,
             volounteering: false,
         };
         let exams = ExamResults {
-            polish: (100, "Polish"),
-            math: (100, "Math"),
-            second_language: (100, "English"),
+            polish: (100, "Polish".to_owned()),
+            math: (100, "Math".to_owned()),
+            second_language: (100, "English".to_owned()),
         };
         assert_eq!(calculate_points(&exams, &certs, &contest), 200.0);
         Ok(())
