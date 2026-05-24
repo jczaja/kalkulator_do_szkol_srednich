@@ -14,9 +14,9 @@
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
-use serde::{Deserialize,Serialize};
-use toml;                        
-                           //
+use serde::{Deserialize, Serialize};
+use toml;
+//
 #[derive(PartialEq, Debug)]
 enum SelectionState {
     None,
@@ -137,17 +137,16 @@ impl<'a> Threshold<'a> {
     }
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Config {
     exams: ExamResults,
-    contests : Contest,
-    certificate : CertificateResults,
+    contests: Contest,
+    certificate: CertificateResults,
     completed_tutorial: bool,
-
 }
 
 // Each tuple is representing score (in percentage) of given exam and name of topic
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct ExamResults {
     polish: (u8, String),
     math: (u8, String),
@@ -175,7 +174,7 @@ impl ExamResults {
 }
 
 // Struktura przechowująca wszystkie osiągnięcia w konkursach
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Contest {
     national_subject: ContestNationalSubject, // konkursy przedmiotowe ponadwojewódzkie
     national_thematic: ContestNationalThematic, // konkursy tematyczne ponadwojewódzkie
@@ -1382,7 +1381,12 @@ fn process_school(
     state
 }
 
-fn save_config(certs : CertificateResults, contests: Contest, exams: ExamResults, completed_tutorial: bool) {
+fn save_config(
+    certs: CertificateResults,
+    contests: Contest,
+    exams: ExamResults,
+    completed_tutorial: bool,
+) {
     let config = Config {
         certificate: certs,
         contests,
@@ -1390,37 +1394,31 @@ fn save_config(certs : CertificateResults, contests: Contest, exams: ExamResults
         completed_tutorial,
     };
     let toml_string = toml::to_string(&config).unwrap();
-    std::fs::write(get_config_path(), toml_string).expect("Unable to write file");
+    let storage = &mut quad_storage::STORAGE.lock().unwrap();
+    storage.set("config", toml_string.as_ref());
+    //std::fs::write(get_config_path(), toml_string).expect("Unable to write file");
 }
-
-fn get_config_path() -> String {
-    let mut config_full_name = String::new();
-    #[cfg(target_os = "android")]
-    {
-        config_full_name = "costam".to_string();
-    }
-    #[cfg(not(target_os = "android"))]
-    {
-        config_full_name = "config.toml".to_string();
-    }
-    config_full_name
-}
-
 
 fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
-
-    let mut maybe_content = std::fs::read_to_string(get_config_path());
+    //let mut maybe_content = std::fs::read_to_string(get_config_path());
+    let storage = &mut quad_storage::STORAGE.lock().unwrap();
+    let maybe_content = storage.get("config");
     match maybe_content {
-        Ok(content) => {
-             println!("Reading config.toml: {:?}", content);
-             let config : Config = toml::from_str(&content.clone()).expect("Unable to parse config");
-            (config.certificate, config.contests, config.exams, config.completed_tutorial)
-        },
-        Err(_) => {
+        Some(content) => {
+            println!("Reading config.toml: {:?}", content);
+            let config: Config = toml::from_str(&content.clone()).expect("Unable to parse config");
+            (
+                config.certificate,
+                config.contests,
+                config.exams,
+                config.completed_tutorial,
+            )
+        }
+        None => {
             let exam_results = ExamResults {
                 polish: (50, "Polish".to_string()),
                 math: (50, "Math".to_owned()),
-                second_language: (50, "English".to_owned())
+                second_language: (50, "English".to_owned()),
             };
             let certs = CertificateResults {
                 polish: (3, "jezyk polski".to_owned()),
@@ -1443,17 +1441,20 @@ fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
             let config = Config {
                 exams: exam_results,
                 contests,
-                certificate : certs,
+                certificate: certs,
                 completed_tutorial: false,
             };
             let toml_string = toml::to_string(&config).unwrap();
-            std::fs::write("config.toml", toml_string).expect("Unable to write file");
-            (config.certificate, config.contests, config.exams, config.completed_tutorial)
+            storage.set("config", toml_string.as_ref());
+            (
+                config.certificate,
+                config.contests,
+                config.exams,
+                config.completed_tutorial,
+            )
         }
     }
-
 }
-
 
 //cities[selected_city].get_schools().first().unwrap()
 fn process_profil(
@@ -1818,33 +1819,50 @@ fn process_none(
     state
 }
 
-fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
-                    font_size: f32,
-                    widget_width: f32,
-                    widget_height: f32,
-                    initialization: &mut bool,
-                    slide_num : u8,
+fn process_tutorial(
+    ui: &mut egui_macroquad::egui::Ui,
+    font_size: f32,
+    widget_width: f32,
+    widget_height: f32,
+    initialization: &mut bool,
+    slide_num: u8,
 ) -> SelectionState {
-
     let mut gamestate = SelectionState::Tutorial(slide_num);
-    const NUM_SLIDES : u8 = 5;
+    const NUM_SLIDES: u8 = 5;
 
     let slide = match slide_num {
-        1 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/egzaminy.png")),
-        2 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/swiadectwo.png")),
-        3 => 
-            egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/konkursy.png")),
-        4 => egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/szkoly.png")),
-        5 => 
-            egui_macroquad::egui::include_image!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/wyniki.png")),
+        1 => egui_macroquad::egui::include_image!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/assets/egzaminy.png"
+        )),
+        2 => egui_macroquad::egui::include_image!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/assets/swiadectwo.png"
+        )),
+        3 => egui_macroquad::egui::include_image!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/assets/konkursy.png"
+        )),
+        4 => egui_macroquad::egui::include_image!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/assets/szkoly.png"
+        )),
+        5 => egui_macroquad::egui::include_image!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/assets/wyniki.png"
+        )),
         _ => panic!("Error: request for index of not existing picture"),
     };
 
     ui.vertical_centered(|ui| {
         ui.add(
-                egui_macroquad::egui::Image::new(slide)
-                .max_size(egui_macroquad::egui::vec2(ui.available_width(), ui.available_height() - 2.0*widget_height))
-                    .corner_radius(5));
+            egui_macroquad::egui::Image::new(slide)
+                .max_size(egui_macroquad::egui::vec2(
+                    ui.available_width(),
+                    ui.available_height() - 2.0 * widget_height,
+                ))
+                .corner_radius(5),
+        );
 
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!("Slajd:: {slide_num}/{NUM_SLIDES}"))
@@ -1856,15 +1874,18 @@ fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
             ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
             let back_button = if slide_num > 1 {
                 ui.add(egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
-            ))
+                    egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+                ))
             } else {
-                ui.add_enabled(false,egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
-            ))
+                ui.add_enabled(
+                    false,
+                    egui_macroquad::egui::Button::new(
+                        egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+                    ),
+                )
             };
             if back_button.clicked() {
-                gamestate = SelectionState::Tutorial( if slide_num > 1 {slide_num -1} else {1} );
+                gamestate = SelectionState::Tutorial(if slide_num > 1 { slide_num - 1 } else { 1 });
             };
 
             let rozpocznij_button = ui.add(egui_macroquad::egui::Button::new(
@@ -1882,19 +1903,25 @@ fn process_tutorial(ui: &mut egui_macroquad::egui::Ui,
 
             let forward_button = if slide_num < 5 {
                 ui.add(egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
-            ))
+                    egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+                ))
             } else {
-                ui.add_enabled(false,egui_macroquad::egui::Button::new(
-                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
-            ))
+                ui.add_enabled(
+                    false,
+                    egui_macroquad::egui::Button::new(
+                        egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+                    ),
+                )
             };
 
             if forward_button.clicked() {
-                gamestate = SelectionState::Tutorial( if slide_num < NUM_SLIDES {slide_num +1} else {NUM_SLIDES} );
+                gamestate = SelectionState::Tutorial(if slide_num < NUM_SLIDES {
+                    slide_num + 1
+                } else {
+                    NUM_SLIDES
+                });
             };
         });
-
     });
     gamestate
 }
@@ -1906,8 +1933,6 @@ fn get_screenshot() {
         image.export_png("screenshot.png");
     }
 }
-
-
 
 fn tablet7_window_conf() -> Conf {
     Conf {
@@ -1935,7 +1960,6 @@ async fn main() {
 
     // TODO: Get config or create a new one
     let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = get_config();
-
 
     let g1 = &[Threshold::new(
         "Klasa 1A (politechniczna)\n",
@@ -2302,9 +2326,16 @@ async fn main() {
                         prev_gamestate = SelectionState::Profil;
                     }
                     SelectionState::Tutorial(slide_num) => {
-                        gamestate = process_tutorial(ui, font_size, widget_width, widget_height, &mut initialization, slide_num);
+                        gamestate = process_tutorial(
+                            ui,
+                            font_size,
+                            widget_width,
+                            widget_height,
+                            &mut initialization,
+                            slide_num,
+                        );
                         prev_gamestate = SelectionState::Tutorial(slide_num);
-                    },
+                    }
 
                     SelectionState::Exit => (),
                 }

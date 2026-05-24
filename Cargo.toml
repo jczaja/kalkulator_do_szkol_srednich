@@ -28,3 +28,4 @@ egui_extras = { version = "=0.31.1", features = ["image"] }
 image = { version = "0.25.10", default-features = false, features = ["png"] }
 serde = { version = "1.0.228", features = ["derive"] }
 toml = "1.1.2"
+quad-storage = "0.1.3"
