@@ -1,0 +1,5309 @@
+[[schools]]
+name = """
+
+                        I LO z oddziałem integracyjnym im. Bolesława Limanowskiego
+                    """
+min_threashold = 142.95
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (pol-hist-wos)
+                """
+points = 143.75
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-fiz-ang)
+                """
+points = 158.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-inf-ang)
+                """
+points = 159.2
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (biol-chem-mat)
+                """
+points = 159.6
+second_course = "chemia biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (pol-hist.szt-ang integracyjna)
+                """
+points = 152.1
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-geo-ang)
+                """
+points = 159.8
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (biol-chem-ang)
+                """
+points = 160.4
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (geo-ang-niem)
+                """
+points = 142.95
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (geo-ang-hiszp)
+                """
+points = 151.75
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        II LO im. Stefana Batorego
+                    """
+min_threashold = 172.97
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (biol-chem-mat)
+                """
+points = 177.05
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (dwujęzyczna mat-fiz)
+                """
+points = 189.3
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (dwujęzyczna mat-geo)
+                """
+points = 186.7
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (dwujęzyczna pol-hist)
+                """
+points = 172.97
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (dwujęzyczna IB)
+                """
+points = 195.86
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (dwujęzyczna IB)
+                """
+points = 195.86
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools]]
+name = """
+
+                        III LO im. gen. Józefa Sowińskiego
+                    """
+min_threashold = 146.9
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A
+                """
+points = 146.9
+second_course = "lub język hiszpański historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B
+                """
+points = 149.35
+second_course = "lub język francuski wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C
+                """
+points = 158.1
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D 
+                """
+points = 157.55
+second_course = "lub język rosyjski informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F 
+                """
+points = 163.8
+second_course = "lub język niemiecki chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1H
+                """
+points = 156.2
+second_course = "lub język hiszpański geografia"
+
+[[schools]]
+name = """
+
+                        IV LO im. Adama Mickiewicza
+                    """
+min_threashold = 159.35
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1I (Biznes i Technologia)
+                """
+points = 159.65
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1L (Lekarska)
+                """
+points = 165.05
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (Dziennikarska)
+                """
+points = 159.35
+second_course = "wiedza o społeczeństwie chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1S (Akadmicka SGH)
+                """
+points = 164.4
+second_course = "geografia fizyka"
+
+[[schools]]
+name = """
+
+                        V LO im. Księcia Józefa Poniatowskiego
+                    """
+min_threashold = 171.55
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (matematyczno-fizyczno-chemiczna)
+                """
+points = 171.55
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (biologiczno-chemiczna)
+                """
+points = 177.05
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (matematyczno-geograficzna)
+                """
+points = 175.05
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        VI LO im. Tadeusza Reytana
+                    """
+min_threashold = 162.8
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-fiz-ang)
+                """
+points = 162.8
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-fiz-ang)
+                """
+points = 164.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-biz-wos)
+                """
+points = 164.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-geo-biz)
+                """
+points = 166.3
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (biol-chem-mat)
+                """
+points = 168.3
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (biol-chem-ang)
+                """
+points = 167.7
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        VII LO im. Juliusza Słowackiego
+                    """
+min_threashold = 170.35
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (prawno-medialna)
+                """
+points = 172.9
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (ekonomiczno-bankowa)
+                """
+points = 172.8
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (matematyczno-informatyczna)
+                """
+points = 172.45
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (rozszerzony program edukacji humanistycznej)
+                """
+points = 170.35
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (biologiczno-chemiczna)
+                """
+points = 173.0
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        VIII LO im. Władysława IV
+                    """
+min_threashold = 169.9
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (hist-wos-mat)
+                """
+points = 173.7
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biol-chem-mat)
+                """
+points = 178.15
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-inf)
+                """
+points = 171.15
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-fiz-chem)
+                """
+points = 169.9
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (mat-geo-ang)
+                """
+points = 172.6
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        IX LO im. Klementyny Hoffmanowej
+                    """
+min_threashold = 171.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (biol-chem-mat)
+                """
+points = 179.45
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biol-chem-mat)
+                """
+points = 177.75
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-inf)
+                """
+points = 175.95
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-fiz-chem)
+                """
+points = 177.0
+second_course = "chemia fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (mat-geo-hist)
+                """
+points = 171.4
+second_course = "geografia historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (mat-geo-wos)
+                """
+points = 176.0
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G (biol-chem-mat)
+                """
+points = 177.9
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1H (biol-chem-mat)
+                """
+points = 177.1
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1U (mat-fiz-ang)
+                """
+points = 179.25
+second_course = "chemia fizyka"
+
+[[schools]]
+name = """
+
+                        X LO im. Królowej Jadwigi
+                    """
+min_threashold = 153.15
+
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (mat-fiz-biol)
+                """
+points = 157.55
+second_course = "biologia lub fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (mat-geo-biz)
+                """
+points = 164.8
+second_course = "geografia"
+
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (mat-geo-wos)
+                """
+points = 161.15
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (pol-his-wos)
+                """
+points = 156.35
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (mat-fiz-biol)
+                """
+points = 153.15
+second_course = "biologia lub fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (mat-geo-biz)
+                """
+points = 162.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (biol-chem-mat)
+                """
+points = 167.5
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (mat-geo-wos)
+                """
+points = 158.25
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XI LO im. Mikołaja Reja
+                    """
+min_threashold = 162.7
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (matematyczno-fizyczna)
+                """
+points = 170.7
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (klasyczna)
+                """
+points = 163.8
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (społeczna)
+                """
+points = 162.7
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (biologiczno-chemiczna)
+                """
+points = 172.35
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (matematyczno-geograficzna)
+                """
+points = 169.45
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XII LO im. Henryka Sienkiewicza
+                    """
+min_threashold = 153.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-fiz-inf)
+                """
+points = 163.7
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-ang)
+                """
+points = 163.25
+second_course = "geografia  lub"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biol-chem-mat)
+                """
+points = 168.4
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (pol-hist-wos)
+                """
+points = 153.4
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XIII LO im. płk. Leopolda Lisa-Kuli
+                    """
+min_threashold = 141.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (literacko-medialna)
+                """
+points = 152.1
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (matematyczno-fizyczna)
+                """
+points = 158.85
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biologiczno-chemiczna)
+                """
+points = 163.75
+second_course = "dwa wybrane z: biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczno-informatyczna)
+                """
+points = 162.15
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (matematyczno-geograficzna)
+                """
+points = 160.95
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (wos-geografia)
+                """
+points = 157.95
+second_course = "dwa wybrane z: geografia  wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G (literacko-teatralna)
+                """
+points = 143.25
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1H (historia-wos)
+                """
+points = 141.85
+second_course = "dwa wybrane z: historia  wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XIV LO im. Stanisława Staszica
+                    """
+min_threashold = 170.6
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-fiz)
+                """
+points = 403.7
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-fiz)
+                """
+points = 403.7
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-inf)
+                """
+points = 181.7
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-biol-chem)
+                """
+points = 185.85
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (mat-fiz-chem)
+                """
+points = 172.8
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (mat-fiz)
+                """
+points = 170.6
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G (mat-fiz)
+                """
+points = 170.6
+second_course = "fizyka chemia"
+
+[[schools]]
+name = """
+
+                        XV LO im. Narcyzy Żmichowskiej
+                    """
+min_threashold = 155.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (pol-hist)
+                """
+points = 159.0
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo)
+                """
+points = 160.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (wos-ang-biz)
+                """
+points = 158.4
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (wstępna)
+                """
+points = 168.98
+second_course = "biologia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1L (dwujęzyczna)
+                """
+points = 157.4
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1S (dwujęzyczna)
+                """
+points = 155.3
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        XVI LO im. Stefanii Sempołowskiej
+                    """
+min_threashold = 150.65
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0A (wstępna z językiem francuskim)
+                """
+points = 154.4
+second_course = "biologia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0F (wstępna z językiem francuskim)
+                """
+points = 154.4
+second_course = "biologia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-ang)
+                """
+points = 159.3
+second_course = "geografia fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (hist-geo-wos)
+                """
+points = 150.65
+second_course = "historia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (dwujęzyczna z językiem francuskim)
+                """
+points = 153.95
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (dwujęzyczna z językiem francuskim)
+                """
+points = 156.2
+second_course = "historia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (biol-chem-mat)
+                """
+points = 163.65
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        XVII LO im. Andrzeja Frycza Modrzewskiego
+                    """
+min_threashold = 157.15
+
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biol-chem-mat)
+                """
+points = 170.8
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (pol-hist-ang)
+                """
+points = 157.15
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-geo-ang)
+                """
+points = 185.7
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1W (wstępna)
+                """
+points = 172.65
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XVIII LO im. Jana Zamoyskiego
+                    """
+min_threashold = 165.95
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-fiz-inf)
+                """
+points = 172.1
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-fiz-ang)
+                """
+points = 175.8
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biol-chem-mat)
+                """
+points = 173.85
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (biol-chem-mat)
+                """
+points = 173.85
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (pol-hist-wos)
+                """
+points = 165.95
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G (mat-geo-ang)
+                """
+points = 172.75
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XIX LO im. Powstańców Warszawy
+                    """
+min_threashold = 162.8
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-biol-chem)
+                """
+points = 169.55
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (humanistyczna)
+                """
+points = 162.8
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-geo-ang)
+                """
+points = 171.05
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-fiz-ang)
+                """
+points = 167.45
+second_course = "fizyka chemia"
+
+[[schools]]
+name = """
+
+                        XX LO im. Bolesława Chrobrego
+                    """
+min_threashold = 96.15
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (medialna)
+                """
+points = 108.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (turystyczno-matematyczna)
+                """
+points = 96.15
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XXI LO im. Hugona Kołłątaja
+                    """
+min_threashold = 156.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (dwujęzyczna mat-fiz-inf)
+                """
+points = 178.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (ekonomiczna mat-geo-biz)
+                """
+points = 163.5
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (architektoniczna mat-fiz-inf)
+                """
+points = 166.3
+second_course = "informatyka fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (dwujęzyczna biol-chem-ang)
+                """
+points = 179.16
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (humanistyczna hist-wos-ang)
+                """
+points = 156.4
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XXII LO im. Jose Marti
+                    """
+min_threashold = 158.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-fiz-chem)
+                """
+points = 163.4
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-ang)
+                """
+points = 171.1
+second_course = "geografia biologia lub chemia lub fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biol-chem-mat)
+                """
+points = 170.15
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Dh (pol-his-ang)
+                """
+points = 158.45
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 10H (hiszpański dwujęzyczny)
+                """
+points = 220.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Dw (pol-ang-WOS)
+                """
+points = 162.6
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XXIII LO im. Marii Skłodowskiej-Curie
+                    """
+min_threashold = 120.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna)
+                """
+points = 126.85
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (ekonomiczna)
+                """
+points = 128.7
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (przyrodniczo-geograficzna)
+                """
+points = 120.3
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (przyrodniczo-chemiczna)
+                """
+points = 129.55
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (ekonomiczna)
+                """
+points = 125.85
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XXIV LO im. Cypriana Kamila Norwida
+                    """
+min_threashold = 145.25
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A Solaris grupa 1 (biologiczno-chemiczno-językowa)
+                """
+points = 162.25
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B Sztuk-Mistrz grupa 1 (humanistyczna)
+                """
+points = 145.25
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C Merkator grupa 1 (geograficzno-matematyczno-językowa)
+                """
+points = 157.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D Delta grupa 1 (matematyczno-fizyczno-językowa)
+                """
+points = 159.15
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A Solaris grupa 2 (biologiczno-chemiczno-językowa)
+                """
+points = 161.0
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B Sztuk-Mistrz grupa 2 (humanistyczna)
+                """
+points = 145.55
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C Merkator grupa 2 (geograficzno-matematyczno-językowa)
+                """
+points = 162.45
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D Delta grupa 2 (matematyczno-fizyczno-językowa)
+                """
+points = 165.3
+second_course = "fizyka"
+
+[[schools]]
+name = """
+
+                        XXV LO im. Józefa Wybickiego
+                    """
+min_threashold = 147.35
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-geo-ang)
+                """
+points = 161.85
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biol-chem-ang)
+                """
+points = 157.2
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (pol-ang-his)
+                """
+points = 153.6
+second_course = "drugi  lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (ang-geo-wos)
+                """
+points = 147.35
+second_course = "wiedza o społeczeństwie geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (pol-ang-hiszp)
+                """
+points = 153.1
+second_course = "drugi  lub historia"
+
+[[schools]]
+name = """
+
+                        XXVI LO im. Juliana Tuwima
+                    """
+min_threashold = 118.2
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (ogólnodostępna ang-geo-wos)
+                """
+points = 124.95
+second_course = "wiedza o społeczeństwie geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (integracyjna pol-hist-wos)
+                """
+points = 121.15
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (integracyjna pol-wos-ang)
+                """
+points = 121.95
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (ogólnodostępna biol-ang-wf)
+                """
+points = 118.2
+second_course = "biologia"
+
+[[schools]]
+name = """
+
+                        XXVII LO im. Tadeusza Czackiego
+                    """
+min_threashold = 177.1
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1H (humanistyczna)
+                """
+points = 180.0
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M (matematyczna)
+                """
+points = 179.5
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1P (przyrodnicza)
+                """
+points = 181.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1S (społeczna)
+                """
+points = 177.1
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XXX LO im. Jana Śniadeckiego
+                    """
+min_threashold = 152.2
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna)
+                """
+points = 155.8
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (Matematyczno-geograficzna)
+                """
+points = 162.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (Biologiczno-chemiczna)
+                """
+points = 161.95
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (Lingwistyczna)
+                """
+points = 158.4
+second_course = "geografia język hiszpański"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (dwujęzyczna)
+                """
+points = 175.02
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (Lingwistyczna)
+                """
+points = 152.2
+second_course = "geografia język niemiecki"
+
+[[schools]]
+name = """
+
+                        XXXII Liceum Ogólnokształcące im. Stefana Grota-Roweckiego
+                    """
+min_threashold = 120.65
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (hist-ang)
+                """
+points = 120.65
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XXXIII LO im. Mikołaja Kopernika
+                    """
+min_threashold = 178.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M (matematyczno-fizyczna z pogramem olimpijskim z matematyki)
+                """
+points = 178.0
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (matematyczno-fizyczno-architektonicza z rysunkiem)
+                """
+points = 186.42
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1P (biologiczno-chemiczno-matematyczna)
+                """
+points = 190.36
+second_course = "biologia lub chemia biologia lub"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G grupa 1 (matematyczno-społeczna)
+                """
+points = 188.48
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1MYP (międzynarodowwa IB)
+                """
+points = 197.38
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G grupa 2 (matematyczno-społeczna)
+                """
+points = 184.6
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XXXIV LO im. Miguela de Cervantesa
+                    """
+min_threashold = 152.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0h (dwujęzyczna)
+                """
+points = 228.45
+second_course = "geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-geo-hiszp)
+                """
+points = 166.3
+second_course = "historia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (plastyczna)
+                """
+points = 214.25
+second_course = "geografia historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (pol-ang-hiszp)
+                """
+points = 163.25
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (his-ang-hiszp)
+                """
+points = 152.4
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (geo-ang-hiszp)
+                """
+points = 164.2
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XXXV LO im. Bolesława Prusa
+                    """
+min_threashold = 164.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M grupa 1 (międzynarodowa)
+                """
+points = 185.01
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (dwujęzyczna społeczno-ekonomiczna)
+                """
+points = 184.73
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B ( geograficzno-matematyczna)
+                """
+points = 169.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (matematyczno-fizyczna)
+                """
+points = 168.1
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D ( biologiczno-chemiczna)
+                """
+points = 170.7
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (matematyczno-chemiczna) 
+                """
+points = 164.3
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M grupa 2 (międzynarodowa)
+                """
+points = 177.18
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia"
+
+[[schools]]
+name = """
+
+                        XXXVII LO im. Jarosława Dąbrowskiego
+                    """
+min_threashold = 160.95
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (pol-hist-wos)
+                """
+points = 160.95
+second_course = "historia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (pol-ang-wł)
+                """
+points = 167.05
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-inf)
+                """
+points = 166.85
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-biol-chem)
+                """
+points = 170.95
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (mat-geo)
+                """
+points = 170.6
+second_course = "geografia biologia"
+
+[[schools]]
+name = """
+
+                        XXXVIII LO im. Stanisława Kostki Potockiego
+                    """
+min_threashold = 128.95
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (matematyczno-społeczna)
+                """
+points = 130.15
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (matematyczno-biologiczna)
+                """
+points = 132.25
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (matematyczno-geograficzna)
+                """
+points = 133.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (matematyczno-geograficzna)
+                """
+points = 128.95
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (matematyczno-społeczna)
+                """
+points = 129.25
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (matematyczno-biologiczna) 
+                """
+points = 147.95
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (matematyczno-geograficzna)
+                """
+points = 152.9
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (matematyczno-geograficzna)
+                """
+points = 135.05
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XXXIX LO im. Lotnictwa Polskiego
+                    """
+min_threashold = 120.35
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (humanistyczna)
+                """
+points = 129.95
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biol-chem-ang)
+                """
+points = 141.45
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (biol-chem-ang)
+                """
+points = 137.3
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (biol-geo-ang)
+                """
+points = 133.05
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (humanistyczna)
+                """
+points = 125.45
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biol-chem-ang)
+                """
+points = 129.9
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (biol-chem-ang)
+                """
+points = 121.45
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (biol-geo-ang)
+                """
+points = 120.35
+second_course = "biologia geografia"
+
+[[schools]]
+name = """
+
+                        XL LO im. Stefana Żeromskiego
+                    """
+min_threashold = 166.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (matematyczno-fizyczna z informatyką modułową)
+                """
+points = 171.8
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biologiczno-chemiczna z elementami wiedzy medycznej)
+                """
+points = 172.4
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (matematyczno-medyczna)
+                """
+points = 175.55
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (ekonomiczno-społeczna)
+                """
+points = 166.45
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (matematyczno-geograficzna)
+                """
+points = 173.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (dwujęzyczna społeczno-prawnicza)
+                """
+points = 181.06
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XLI LO im. Joachima Lelewela
+                    """
+min_threashold = 155.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (matematyczna)
+                """
+points = 170.75
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (matematyczna)
+                """
+points = 170.0
+second_course = "fizyka chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (ekonomiczna dwujęzyczna)
+                """
+points = 180.78
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (przyrodnicza)
+                """
+points = 171.1
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (humanistyczna)
+                """
+points = 156.15
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1P (prawnicza)
+                """
+points = 155.0
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (ekonomiczna dwujęzyczna)
+                """
+points = 185.42
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (przyrodnicza)
+                """
+points = 174.2
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (humanistyczna)
+                """
+points = 165.8
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XLII LO im. Marii Konopnickiej
+                    """
+min_threashold = 135.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (politechniczna)
+                """
+points = 140.65
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (humanistyczna)
+                """
+points = 137.85
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biologiczno-chemiczna)
+                """
+points = 153.8
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczno-geograficzna)
+                """
+points = 139.45
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (akademicka SGH)
+                """
+points = 135.85
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XLIII LO im. Kazimierza Wielkiego
+                    """
+min_threashold = 145.1
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (ekonomiczna)
+                """
+points = 161.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (psychologiczna)
+                """
+points = 164.2
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (medyczna)
+                """
+points = 153.55
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (prawnicza)
+                """
+points = 151.35
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (ekonomiczna)
+                """
+points = 155.25
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (psychologiczna)
+                """
+points = 158.15
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (medyczna)
+                """
+points = 159.8
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (prawnicza)
+                """
+points = 145.1
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XLIV LO im. Stefana Banacha
+                    """
+min_threashold = 144.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (politechniczna)
+                """
+points = 155.0
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (medyczna)
+                """
+points = 163.65
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (geograficzno-społeczna)
+                """
+points = 156.55
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (dziennikarska)
+                """
+points = 152.7
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (ekonomiczna)
+                """
+points = 160.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (politechniczna)
+                """
+points = 144.0
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (medyczna)
+                """
+points = 162.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (geograficzno-społeczna)
+                """
+points = 151.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (dziennikarska)
+                """
+points = 145.95
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (ekonomiczna)
+                """
+points = 150.8
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XLV LO im. Romualda Traugutta
+                    """
+min_threashold = 121.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (medyczno-dietetyczna)
+                """
+points = 139.9
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (administracyjno-prawna)
+                """
+points = 121.3
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (społeczno-turystyczna)
+                """
+points = 135.7
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczno-informatyczna)
+                """
+points = 139.95
+second_course = "fizyka"
+
+[[schools]]
+name = """
+
+                        XLVI LO im. Stefana Czarnieckiego
+                    """
+min_threashold = 81.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0AH (wstępna dwujęzyczna z jęz. hiszpańskim)
+                """
+points = 160.85
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0AN (wstępna dwujęzyczna  z jęz. niemieckim)
+                """
+points = 81.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1AH (dwujęzyczna  z jęz. hiszpańskim i jęz. angielskim)
+                """
+points = 195.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1AN (dwujęzyczna z jęz. niemieckim i jęz. angielskim)
+                """
+points = 200.9
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (psychologiczno-pedagogiczna z jęz. angielskim i jęz. obcym)
+                """
+points = 129.75
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1BM (biologiczno-medyczna  z jęz. angielskim i jęz. obcym)
+                """
+points = 146.5
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (dziennikarsko-kulturoznawcza z jęz. angielskim i jęz. obcym)
+                """
+points = 127.3
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (menedżerska z jęz. angielskim i jęz. niemieckim)
+                """
+points = 141.45
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (teatralno-artystyczna z jęz. angielskim i jęz. obcym)
+                """
+points = 117.25
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XLVII LO im. Stanisława Wyspiańskiego
+                    """
+min_threashold = 147.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-inf-ang)
+                """
+points = 156.25
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-ang)
+                """
+points = 153.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biol-chem-ang)
+                """
+points = 156.7
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (geo-wos-ang)
+                """
+points = 151.4
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (pol-wos-ang)
+                """
+points = 147.85
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools]]
+name = """
+
+                        XLVIII LO im. Edwarda Dembowskiego
+                    """
+min_threashold = 141.2
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (społeczno-kulturowa)
+                """
+points = 151.9
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 4 (społeczno-kulturowa)
+                """
+points = 148.55
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (przyrodnicza)
+                """
+points = 165.4
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (lingwistyczna)
+                """
+points = 165.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (politechniczna)
+                """
+points = 163.2
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 4 (politechniczna)
+                """
+points = 160.6
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (biznesowa)
+                """
+points = 159.8
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (społeczno-kulturowa)
+                """
+points = 144.9
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 3 (społeczno-kulturowa)
+                """
+points = 144.35
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 5 (społeczno-kulturowa)
+                """
+points = 141.2
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 6 (społeczno-kulturowa)
+                """
+points = 145.25
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (przyrodnicza)
+                """
+points = 160.65
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 3 (przyrodnicza)
+                """
+points = 155.1
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (lingwistyczna)
+                """
+points = 148.3
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 3 (lingwistyczna)
+                """
+points = 145.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (politechniczna)
+                """
+points = 156.0
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 3 (politechniczna)
+                """
+points = 154.55
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 5 (politechniczna)
+                """
+points = 153.4
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 6 (politechniczna)
+                """
+points = 151.75
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (biznesowa)
+                """
+points = 154.7
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XLIX LO im. Johanna Wolfganga Goethego
+                    """
+min_threashold = 99.7
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (teatralno-filmowa)
+                """
+points = 143.6
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (językowa)
+                """
+points = 154.55
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (matematyczno-informatyczna)
+                """
+points = 161.15
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczno-geograficzna)
+                """
+points = 155.9
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (dwujęzyczna)
+                """
+points = 99.7
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (językowa)
+                """
+points = 161.05
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        L LO im. Ruy Barbosy
+                    """
+min_threashold = 124.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (ogólna obywatelsko-prawna)
+                """
+points = 130.45
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (ogólna medyczna)
+                """
+points = 140.5
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (integracyjna pedagogiczno-psychologiczna)
+                """
+points = 124.45
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (ogólna turystyczno-krajoznawcza)
+                """
+points = 138.2
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1I (integracyjna społeczno-kulturowa)
+                """
+points = 131.55
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1K ( ogólna matematyczno-informatyczna)
+                """
+points = 135.85
+second_course = "fizyka informatyka"
+
+[[schools]]
+name = """
+
+                        LI LO im. Tadeusza Kościuszki
+                    """
+min_threashold = 83.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (lingwistyczna)
+                """
+points = 113.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (biol-chem-ang)
+                """
+points = 121.25
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (mat-geo-ang)
+                """
+points = 83.3
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (biol-chem-ang)
+                """
+points = 105.95
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        LII LO im. Władysława Reymonta
+                    """
+min_threashold = 142.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (psychologiczna)
+                """
+points = 144.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (matematyczna)
+                """
+points = 146.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biznesowa)
+                """
+points = 142.4
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        LVI LO im. Rotmistrza Witolda Pileckiego 
+                    """
+min_threashold = 125.8
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1AF (politechniczna)
+                """
+points = 133.85
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (medyczna)
+                """
+points = 139.1
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (prawno-ekonomiczna)
+                """
+points = 138.15
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1DH (medialno-teatralna)
+                """
+points = 128.3
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (lingwistyczna)
+                """
+points = 136.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1AI (politechniczna)
+                """
+points = 125.8
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1DW (medialno-teatralna)
+                """
+points = 140.25
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        LVIII LO im. Krzysztofa Kamila Baczyńskiego
+                    """
+min_threashold = 119.25
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1BL (biol-mat-ang)
+                """
+points = 119.25
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1CL (mat-wos-geo)
+                """
+points = 132.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1DL (geo-wos-ang)
+                """
+points = 139.3
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1EL (pol-ang-wł)
+                """
+points = 137.2
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        LIX LO Mistrzostwa Sportowego im. Janusza Kusocińskiego
+                    """
+min_threashold = 24.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (przyrodnicza - piłka nożna)
+                """
+points = 60.0
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (ratowniczo-medyczna - pięciobój nowoczesny)
+                """
+points = 103.13
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (turystyczna - koszykówka męska)
+                """
+points = 61.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (menadżerska - boks)
+                """
+points = 520.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (prawnicza - piłka siatkowa męska)
+                """
+points = 86.0
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (przyrodnicza - piłka ręczna)
+                """
+points = 60.0
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 3 (przyrodnicza - rugby)
+                """
+points = 50.9
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (ratowniczo-medyczna - piłka wodna)
+                """
+points = 24.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 3 (ratowniczo-medyczna - pływanie)
+                """
+points = 300.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 4 (ratowniczo-medyczna - ratownictwo wodne)
+                """
+points = 35.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 5 (ratowniczo-medyczna - triathlon)
+                """
+points = 30.0
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (turystyczna - lekkoatletyka)
+                """
+points = 360.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 3 (turystyczna - pilka nożna)
+                """
+points = 64.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (menadżerska - judo)
+                """
+points = 60.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 3 (menadżerska - strzelectwo sportowe)
+                """
+points = 76.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 4 (menadżerska - szermierka)
+                """
+points = 40.64
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 5 (menadżerska - taekwondo olimpijskie)
+                """
+points = 61.13
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 6 (menadżerska - zapasy)
+                """
+points = 62.75
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (prawnicza - piłka siatkowa żeńska)
+                """
+points = 66.0
+second_course = "wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        LX LO im. Wojciecha Górskiego
+                    """
+min_threashold = 120.05
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LA (artystyczna)
+                """
+points = 120.05
+second_course = "drugi"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LB (krajoznawczo-turystyczna)
+                """
+points = 128.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LC (społeczna)
+                """
+points = 122.1
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        LXII Sportowe LO im. Władysława Alberta Andersa
+                    """
+min_threashold = 51.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mistrzostwa sportowego pol-biol-ang - pływanie)
+                """
+points = 380.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (mistrzostwa sportowego biol-chem-ang - koszykówka męska)
+                """
+points = 509.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (mistrzostwa sportowego biol-chem-ang - piłka siatkowa męska)
+                """
+points = 63.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (Sportowa pol-hist-ang)
+                """
+points = 54.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (sportowa pol-hist-ang)
+                """
+points = 54.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F grupa 1 (sportowa pol-biol-ang - sporty różne)
+                """
+points = 301.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mistrzostwa sportowego pol-biol-ang - piłka nożna)
+                """
+points = 70.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (mistrzostwa sportowego biol-chem-ang - piłka siatkowa żeńska)
+                """
+points = 51.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (mistrzostwa sportowego biol-chem-ang - piłka siatkowa żeńska)
+                """
+points = 57.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F grupa 1 (sportowa pol-biol-ang - LA)
+                """
+points = 361.0
+second_course = "biologia"
+
+[[schools]]
+name = """
+
+                        LXIII LO im. Lajosa Kossutha
+                    """
+min_threashold = 128.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (językowa)
+                """
+points = 128.85
+second_course = "język hiszpański"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biologiczno-chemiczna)
+                """
+points = 155.5
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (społeczno-prawna)
+                """
+points = 147.5
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (matematyczno-informatyczna)
+                """
+points = 148.55
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (matematyczno-fizyczna)
+                """
+points = 150.45
+second_course = "fizyka informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (integracyjna matematyczno-geograficzna)
+                """
+points = 153.45
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biologiczno-chemiczna)
+                """
+points = 149.1
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (społeczno-prawna)
+                """
+points = 143.65
+second_course = "wiedza o społeczeństwie historia"
+
+[[schools]]
+name = """
+
+                        LXIV LO im. Stanisława Ignacego Witkiewicza 
+                    """
+min_threashold = 174.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (język angielski)
+                """
+points = 176.0
+second_course = "dwa wybrane z: biologia chemia fizyka geografia historia  wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (język niemiecki)
+                """
+points = 174.75
+second_course = "dwa wybrane z: biologia chemia fizyka geografia historia  wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (język francuskI)
+                """
+points = 174.45
+second_course = "dwa wybrane z: biologia chemia fizyka geografia historia  wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (język hiszpański)
+                """
+points = 179.55
+second_course = "dwa wybrane z: biologia chemia fizyka geografia historia  wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        LXV LO im. gen. Józefa Bema
+                    """
+min_threashold = 126.05
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (integracyjna matematyczna)
+                """
+points = 150.25
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (integracyjna biologiczna)
+                """
+points = 151.35
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (ogólnodostępna artystyczna)
+                """
+points = 129.75
+second_course = "historia muzyka lub plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (ogólnodostępna prawnicza)
+                """
+points = 137.6
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (intgracyjna lingwistyczna)
+                """
+points = 135.85
+second_course = "drugi"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (integracyjna matematyczna)
+                """
+points = 142.75
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (integracyjna biologiczna)
+                """
+points = 140.95
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (ogólnodostępna artystyczna)
+                """
+points = 126.05
+second_course = "historia muzyka lub plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (ogólnodostępna prawnicza)
+                """
+points = 126.75
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (intgracyjna lingwistyczna)
+                """
+points = 128.55
+second_course = "drugi"
+
+[[schools]]
+name = """
+
+                        LXVII LO im. Jana Nowaka-Jeziorańskiego
+                    """
+min_threashold = 163.65
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (medyczno-przyrodnicza)
+                """
+points = 175.85
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (politechniczna)
+                """
+points = 174.55
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (ekonomiczna)
+                """
+points = 173.8
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (prawna)
+                """
+points = 171.85
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (medyczno-przyrodnicza)
+                """
+points = 171.3
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (politechniczna)
+                """
+points = 169.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (ekonomiczna)
+                """
+points = 165.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (prawna)
+                """
+points = 163.65
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        LXVIII LO im. Tytusa Chałubińskiego
+                    """
+min_threashold = 118.65
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1T (przyrodniczo-medyczna)
+                """
+points = 118.65
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1U (społeczno-prawna)
+                """
+points = 121.2
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1W (dziennikarska)
+                """
+points = 121.4
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        LXIX Liceum Ogólnokształcące Z Oddziałami Integracyjnymi im. Bohaterów Powstania Warszawskiego 1944 w Warszawie
+                    """
+min_threashold = 130.1
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (integracyjna społeczna)
+                """
+points = 130.1
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (integracyjna geograficzna)
+                """
+points = 149.85
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (integracyjna biologiczno-językowa)
+                """
+points = 147.9
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (ogólna informatyczna)
+                """
+points = 132.4
+second_course = "informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (artystyczna)
+                """
+points = 140.8
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        LXX LO im. Aleksandra Kamińskiego
+                    """
+min_threashold = 159.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (pol-his-wos)
+                """
+points = 161.85
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (mat-fiz-ang)
+                """
+points = 169.75
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (mat-fiz-inf)
+                """
+points = 167.65
+second_course = "fizyka  -"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (mat-geo-ang)
+                """
+points = 169.15
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (mat-geo-niem)
+                """
+points = 164.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (biol-chem-mat)
+                """
+points = 167.95
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (pol-his-wos)
+                """
+points = 159.0
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (mat-geo-ang)
+                """
+points = 169.25
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (mat-geo-hiszp)
+                """
+points = 167.95
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (biol-chem-mat)
+                """
+points = 173.05
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        LXXII LO im. gen. Jakuba Jasińskiego
+                    """
+min_threashold = 120.8
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (humanistyczna)
+                """
+points = 132.8
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (europejska)
+                """
+points = 136.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (psychologiczno-społęczna)
+                """
+points = 142.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (ratownicza)
+                """
+points = 148.05
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (ratownicza)
+                """
+points = 135.9
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (humanistyczna)
+                """
+points = 126.95
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (europejska)
+                """
+points = 129.05
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (psychologiczno-społęczna)
+                """
+points = 120.8
+second_course = "biologia"
+
+[[schools]]
+name = """
+
+                        LXXV LO im. Jana III Sobieskiego
+                    """
+min_threashold = 132.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (medialna)
+                """
+points = 148.5
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biologiczno-chemiczna)
+                """
+points = 162.75
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (filmowa)
+                """
+points = 158.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (dyplomatyczna)
+                """
+points = 148.6
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (muzyczno-teatralna)
+                """
+points = 132.4
+second_course = "historia muzyka"
+
+[[schools]]
+name = """
+
+                        LXXVI Liceum Ogólnokształcące im. Marszałka Józefa Piłsudskiego
+                    """
+min_threashold = 109.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (z innowacją w zakresie służby celno- skarbowej)
+                """
+points = 110.1
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1L (z innowacją w zakresie personelu pokładowego)
+                """
+points = 128.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M (z innowacją w zakresie medycznym)
+                """
+points = 125.5
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1P (z innowacją w zakresie służby w policji)
+                """
+points = 109.4
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1W (z innowacją w zakresie wojskowości)
+                """
+points = 124.7
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D ( integracyjna, z innowacją w zakresie dziennikarstwa)
+                """
+points = 111.15
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        LXXVIII LO im. Marii Pawlikowskiej-Jasnorzewskiej
+                    """
+min_threashold = 122.56
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (turystyczna)
+                """
+points = 141.05
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (ekonomiczna)
+                """
+points = 149.7
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (przyrodnicza)
+                """
+points = 146.35
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (lingwistyczna)
+                """
+points = 134.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (prawnicza)
+                """
+points = 130.4
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (dwujęzyczna)
+                """
+points = 122.56
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        LXXX LO im. Leopolda Staffa
+                    """
+min_threashold = 146.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-inf-ang)
+                """
+points = 153.75
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-inf-ang)
+                """
+points = 146.0
+second_course = "fizyka"
+
+[[schools]]
+name = """
+
+                        LXXXI LO im. Aleksandra Fredry
+                    """
+min_threashold = 157.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna)
+                """
+points = 157.3
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biznesowa)
+                """
+points = 167.9
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (przyrodnicza)
+                """
+points = 168.35
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        LXXXIII LO im. Emiliana Konopczyńskiego
+                    """
+min_threashold = 156.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-fiz-ang)
+                """
+points = 158.25
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-ang)
+                """
+points = 158.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (pol-ang-hiszp)
+                """
+points = 156.3
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (biol-chem-mat)
+                """
+points = 157.65
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        LXXXIV Liceum Ogólnokształcące im. Bohaterów Narwiku
+                    """
+min_threashold = 147.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (geo-ang-hiszp)
+                """
+points = 156.6
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (geo-ang-niem)
+                """
+points = 147.45
+second_course = "biologia lub chemia lub fizyka lub geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        LXXXVI LO im. Batalionu 
+                    """
+min_threashold = 132.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczno-artystyczna)
+                """
+points = 132.85
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (techniczna)
+                """
+points = 134.6
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biznesowa)
+                """
+points = 138.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (przyrodnicza)
+                """
+points = 134.15
+second_course = "biologia lub chemia"
+
+[[schools]]
+name = """
+
+                        LXXXVII Liceum Ogólnokształcące im. Gen. Leopolda Okulickiego
+                    """
+min_threashold = 123.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LB (medyczno-farmaceutyczna)
+                """
+points = 123.0
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        LXXXVIII LO im. Michała Konarskiego
+                    """
+min_threashold = 38.5
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LA (oddział z innowacją wojskową)
+                """
+points = 109.2
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LB (oddział o profilu mundurowym)
+                """
+points = 57.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LC (oddział o profilu mundurowym)
+                """
+points = 38.5
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XCII LO
+                    """
+min_threashold = 94.25
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (tradycyjna biol-ang)
+                """
+points = 100.05
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Ai (integracyjna biol-ang)
+                """
+points = 94.25
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Bi (integracyjna geo-wos)
+                """
+points = 107.8
+second_course = "geografia historia lub wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        XCIV Liceum Ogólnokształcące im. gen. Stanisława Maczka
+                    """
+min_threashold = 139.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Ah (mat-fiz)
+                """
+points = 161.55
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1An (mat-fiz)
+                """
+points = 159.6
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Bh (pol-hist-wos)
+                """
+points = 145.55
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Bw (pol-hist-wos)
+                """
+points = 139.45
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Ch (biol-chem)
+                """
+points = 167.4
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Cw (biol-chem)
+                """
+points = 163.8
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-geo)
+                """
+points = 161.2
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (pol-ang-hiszp)
+                """
+points = 157.85
+second_course = "drugi"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Fh (mat-geo)
+                """
+points = 158.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Fn (mat-geo)
+                """
+points = 159.25
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        XCVI LO im. Agnieszki Osieckiej
+                    """
+min_threashold = 104.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 (artystyczna)
+                """
+points = 104.45
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XCVII LO im. Olimpijczyków Polskich
+                    """
+min_threashold = 96.15
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 1 (dyplomatyczno-medialna)
+                """
+points = 96.15
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1 grupa 2 (dyplomatyczno-medialna)
+                """
+points = 115.35
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        XCIX LO im. Zbigniewa Herberta
+                    """
+min_threashold = 93.92
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna z programem wiedzy o filmie i teatrze)
+                """
+points = 140.45
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (nauki ścisłe)
+                """
+points = 143.3
+second_course = "informatyka fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (społeczno-ekonomiczna)
+                """
+points = 139.5
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (dwujęzyczna)
+                """
+points = 93.92
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (nauki przyrodnicze)
+                """
+points = 144.8
+second_course = "biologia chemia"
+
+[[schools]]
+name = """
+
+                        CII LO z Oddziałami Integracyjnymi im. Księdza Józefa Woźniaka
+                    """
+min_threashold = 106.75
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (pedagogiczna - integracyjna)
+                """
+points = 113.3
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (kulturowa - integracyjna)
+                """
+points = 106.75
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (turystyczna - integracyjna)
+                """
+points = 109.35
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        CV LO im. Zbigniewa Herberta
+                    """
+min_threashold = 134.2
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mat-geo-ang)
+                """
+points = 152.8
+second_course = "chemia lub fizyka lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B  grupa 1 (biol-chem-ang)
+                """
+points = 157.1
+second_course = "biologia lub chemia lub fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (pol-hist-ang)
+                """
+points = 134.2
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (wos-geo-ang)
+                """
+points = 142.7
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (wos-hist-ang)
+                """
+points = 134.5
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F grupa 1 (mat-fiz-ang)
+                """
+points = 149.85
+second_course = "chemia lub fizyka lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (mat-geo-ang)
+                """
+points = 157.9
+second_course = "chemia lub fizyka lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biol-chem-ang)
+                """
+points = 156.2
+second_course = "biologia lub chemia lub fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (pol-his-ang)
+                """
+points = 136.55
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (WOS-geo-ang)
+                """
+points = 143.55
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (his-WOS-ang)
+                """
+points = 137.2
+second_course = "geografia lub historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F grupa 2 (mat-fiz-ang)
+                """
+points = 156.1
+second_course = "chemia lub fizyka lub geografia"
+
+[[schools]]
+name = """
+
+                        CX LO im. Roberta Schumana
+                    """
+min_threashold = 125.7
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (lingwistyczno-turystyczna)
+                """
+points = 128.65
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biznesowo-społeczna)
+                """
+points = 134.3
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (medialno-prawna)
+                """
+points = 126.0
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (lingwistyczno-turystyczna)
+                """
+points = 137.1
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biznesowo-społeczna)
+                """
+points = 125.7
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (medialno-prawna)
+                """
+points = 130.95
+second_course = "historia wiedza o społeczeństwie"
+
+[[schools]]
+name = """
+
+                        CXI LO z Oddziałami Integracyjnymi im. Stefana Kisielewskiego
+                    """
+min_threashold = 96.05
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (medialna)
+                """
+points = 96.05
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (artystyczna)
+                """
+points = 110.75
+second_course = "muzyka lub plastyka"
+
+[[schools]]
+name = """
+
+                        CXIV LO
+                    """
+min_threashold = 108.3
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (projektowanie plastyczne)
+                """
+points = 130.1
+second_course = "historia plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1AI (integracyjna projektowanie plastyczne)
+                """
+points = 109.35
+second_course = "historia plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (ratownictwo i pożarnictwo)
+                """
+points = 120.4
+second_course = "biologia wychowanie fizyczne"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (plastyczno-teatralna)
+                """
+points = 136.8
+second_course = "plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (projektowanie plastyczne)
+                """
+points = 114.7
+second_course = "historia plastyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (plastyczno-teatralna)
+                """
+points = 108.3
+second_course = "plastyka"
+
+[[schools]]
+name = """
+
+                        CXIX LO im. Jacka Kuronia
+                    """
+min_threashold = 136.55
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (his-wos-ang)
+                """
+points = 139.55
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biol-chem)
+                """
+points = 153.3
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (mat-geo-ang)
+                """
+points = 152.5
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (pol-his-ang)
+                """
+points = 136.7
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (his-wos-ang)
+                """
+points = 148.75
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biol-chem)
+                """
+points = 151.9
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (mat-geo-ang)
+                """
+points = 153.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (pol-his-ang)
+                """
+points = 136.55
+second_course = "historia"
+
+[[schools]]
+name = """
+
+                        CXXII LO im. Ignacego Domeyki
+                    """
+min_threashold = 169.05
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mat-fiz-ang)
+                """
+points = 169.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-fiz-ang)
+                """
+points = 169.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-ang)
+                """
+points = 169.05
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-geo-ang)
+                """
+points = 175.4
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (biol-chem-mat)
+                """
+points = 173.5
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (mat-fiz-ang)
+                """
+points = 179.2
+second_course = "fizyka"
+
+[[schools]]
+name = """
+
+                        CXXV LO im. Waldemara Milewicza
+                    """
+min_threashold = 52.25
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1La (językowa)
+                """
+points = 123.1
+second_course = "biologia lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Lb (społeczno-medialna)
+                """
+points = 118.75
+second_course = "biologia lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Lc (ratownictwa medycznego)
+                """
+points = 115.35
+second_course = "biologia lub geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1Ld (mundurowa OPW)
+                """
+points = 52.25
+second_course = "biologia lub geografia lub historia"
+
+[[schools]]
+name = """
+
+                        CXXXVII LO z Oddziałami Dwujęzycznymi im. Roberta Schumana
+                    """
+min_threashold = 125.0
+
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (dwujęzyczna angielska menadżersko-prawna)
+                """
+points = 174.83
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (dwujęzyczna angielska - biol-chem)
+                """
+points = 174.25
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (dwujęzyczna angielska - humanistyczna)
+                """
+points = 151.87
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczno-fizyczna)
+                """
+points = 157.7
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (lingwistyczno-społeczna)
+                """
+points = 125.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (lingwistyczno – społeczna)
+                """
+points = 145.55
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        CLV LO z Oddziałami Dwujęzycznymi im. Bohaterek Powstania Warszawskiego
+                    """
+min_threashold = 172.6
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-hist-pol)
+                """
+points = 181.68
+second_course = "historia"
+
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (mat-fiz)
+                """
+points = 186.5
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1H (mat-geo-hiszp)
+                """
+points = 190.42
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1M (mat-biol-chem)
+                """
+points = 172.6
+second_course = "biologia lub chemia"
+
+[[schools]]
+name = """
+
+                        CLVI LO Integracyjne
+                    """
+min_threashold = 132.45
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna)
+                """
+points = 132.45
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (europejska)
+                """
+points = 140.3
+second_course = "geografia lub historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (biologiczna)
+                """
+points = 142.2
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyczna)
+                """
+points = 139.5
+second_course = "fizyka lub informatyka"
+
+[[schools]]
+name = """
+
+                        CLVII LO im. Marii Skłodowskiej - Curie
+                    """
+min_threashold = 164.25
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (mat-biol-ang)
+                """
+points = 167.95
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (mat-geo-hiszp)
+                """
+points = 164.25
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (mat-fiz-inf)
+                """
+points = 165.25
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (mat-fiz-ang)
+                """
+points = 165.75
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E (mat-biol-chem)
+                """
+points = 170.55
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1F (mat-chem-ang)
+                """
+points = 167.85
+second_course = "chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1G (mat-geo-biz)
+                """
+points = 166.9
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        CLVIII LO z Oddziałami Dwujęzycznymi im. Księżnej Izabeli Czartoryjskiej
+                    """
+min_threashold = 143.48
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (dwujęzyczna z jęz. angielskim)
+                """
+points = 143.48
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (dwujęzyczna z językiem hiszpańskim)
+                """
+points = 167.36
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Kalsa 1D grupa 1 (matematyczno-geograficzna)
+                """
+points = 166.6
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (biologiczno-chemiczna)
+                """
+points = 165.4
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 0h (wstępna dwujęzyczna z językiem hiszpańskim)
+                """
+points = 213.4
+second_course = "geografia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (dwujęzyczna z jęz. angielskim)
+                """
+points = 161.92
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (matematyczno-geograficzna)
+                """
+points = 163.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (biologiczno-chemiczna)
+                """
+points = 161.85
+second_course = "biologia lub chemia"
+
+[[schools]]
+name = """
+
+                        CLIX LO im. Króla Jana III Sobieskiego
+                    """
+min_threashold = 147.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mat-fiz-inf)
+                """
+points = 165.85
+second_course = "fizyka lub informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (mat-geo-ang)
+                """
+points = 164.05
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (dwujęzyczna biol-chem-ang)
+                """
+points = 170.42
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (pol-his-wos)
+                """
+points = 155.3
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (geo-ang-biz)
+                """
+points = 160.05
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (mat-fiz-inf)
+                """
+points = 158.5
+second_course = "fizyka lub informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (mat-geo-ang)
+                """
+points = 159.85
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (dwujęzyczna biol-chem-ang)
+                """
+points = 160.59
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (pol-his-wos)
+                """
+points = 147.85
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (geo-ang-biz)
+                """
+points = 162.55
+second_course = "geografia"
+
+[[schools]]
+name = """
+
+                        CLX LO im. gen. dyw. Stefana Roweckiego 
+                    """
+min_threashold = 131.85
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (mat-geo)
+                """
+points = 140.45
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (biznesowa)
+                """
+points = 136.7
+second_course = "wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (przyrodnicza)
+                """
+points = 154.25
+second_course = "biologia chemia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D (matematyka PLUS)
+                """
+points = 131.85
+second_course = "fizyka lub informatyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 1 (językowa)
+                """
+points = 145.3
+second_course = "drugi"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (mat-geo)
+                """
+points = 139.1
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (przyrodnicza)
+                """
+points = 142.95
+second_course = "biologia chemia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1E grupa 2 (językowa)
+                """
+points = 133.1
+second_course = "drugi"
+
+[[schools]]
+name = """
+
+                        CLXI Liceum Ogólnokształcące im. Władysława Bartoszewskiego
+                    """
+min_threashold = 120.4
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (biznesowo-ekonomiczna)
+                """
+points = 148.45
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biotechnologiczna)
+                """
+points = 152.3
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (społeczno-medialna)
+                """
+points = 126.65
+second_course = "historia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (biznesowo-ekonomiczna)
+                """
+points = 139.25
+second_course = "fizyka geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biotechnologiczna)
+                """
+points = 144.9
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (społeczno-medialna)
+                """
+points = 120.4
+second_course = "historia geografia"
+
+[[schools]]
+name = """
+
+                        CLXII LO im. Szarych Szeregów
+                    """
+min_threashold = 38.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (integracyjna pol-hist-ang)
+                """
+points = 108.7
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biol-chem-ang)
+                """
+points = 113.6
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (geo-ang-hiszp)
+                """
+points = 119.35
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1S grupa 1 (biol-geo-ang)
+                """
+points = 39.0
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biol-chem-ang)
+                """
+points = 103.25
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (geo-ang-niem)
+                """
+points = 98.8
+second_course = "biologia lub chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1S grupa 2 (biol-geo-ang)
+                """
+points = 38.0
+second_course = "biologia lub geografia"
+
+[[schools]]
+name = """
+
+                        CLXIII Liceum Ogólnokształcące
+                    """
+min_threashold = 154.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 1 (hist-ang-wos)
+                """
+points = 156.2
+second_course = "historia lub wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (hist-ang-mat)
+                """
+points = 154.0
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (mat-geo-wos)
+                """
+points = 159.2
+second_course = "geografia wiedza o społeczeństwie"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (mat-geo-ang)
+                """
+points = 161.0
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 1 (biol-chem-ang)
+                """
+points = 165.3
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C grupa 2 (biol-chem-mat)
+                """
+points = 166.35
+second_course = "biologia chemia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (mat-fiz-ang)
+                """
+points = 164.85
+second_course = "fizyka"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (mat-fiz-inf)
+                """
+points = 159.9
+second_course = "fizyka informatyka"
+
+[[schools]]
+name = """
+
+                        CLXIV Liceum Ogólnokształcące Mistrzostwa Sportowego
+                    """
+min_threashold = 16.0
+
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 1 (biol/geo-ang - cheerleading)
+                """
+points = 16.0
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 2 (biol/geo-ang - piłka nożna)
+                """
+points = 70.0
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A grupa 3 (biol/geo-ang - szermierka)
+                """
+points = 50.2
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 2 (biol/geo-ang - pływanie)
+                """
+points = 400.0
+second_course = "biologia lub geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B grupa 3 (biol/geo-ang - ratownictwo)
+                """
+points = 30.0
+second_course = "biologia lub geografia"
+
+[[schools]]
+name = """
+
+                        CLXV Liceum Ogólnokształcące
+                    """
+min_threashold = 115.95
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1C (geograficzno-biznesowa)
+                """
+points = 125.1
+second_course = "geografia historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 1 (chemiczno-biologiczna)
+                """
+points = 127.7
+second_course = "chemia biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1D grupa 2 (biologiczno-geograficzna)
+                """
+points = 122.05
+second_course = "biologia geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1A (humanistyczna)
+                """
+points = 115.95
+second_course = "historia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1B (matematyczno-informatyczna)
+                """
+points = 121.4
+second_course = "informatyka"
+
+[[schools]]
+name = """
+
+                        CLXVI Liceum Ogólnokształcące Z Oddziałami Sportowymi
+                    """
+min_threashold = 61.0
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LA grupa 1 (ogólna humanistyczno-społeczna)
+                """
+points = 121.05
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LB grupa 1 (sportowa - pływanie)
+                """
+points = 510.0
+second_course = "biologia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LA grupa 2 (ogólna humanistyczno-społeczna)
+                """
+points = 129.8
+second_course = "geografia"
+
+[[schools.profiles]]
+base_name = """
+
+                    Klasa 1LB grupa 2 (sportowa - piłka nożna chłopców)
+                """
+points = 61.0
+second_course = "biologia"

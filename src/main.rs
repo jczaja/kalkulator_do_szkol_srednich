@@ -10,14 +10,16 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
-// TODO: Android location for config
+// TODO: names of profiles should be shorter
+// TODO: remove sports schools
+// TODO: add rust-scrapper as a separate bin
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
 use serde::{Deserialize, Serialize};
 use toml;
 //
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug,Clone)]
 enum SelectionState {
     None,
     City,
@@ -33,18 +35,19 @@ enum SelectionState {
     Find,
     NotFound,
     Profil,
-    School,
+    School(u8),
     Tutorial(u8),
 }
 
-struct School<'a> {
-    name: &'a str,
-    profiles: &'a [Threshold<'a>],
+#[derive(Deserialize)]
+struct School {
+    name: String,
+    profiles: Vec<Threshold>,
     min_threashold: f32,
 }
 
-impl<'a> School<'a> {
-    pub fn new(name: &'a str, profiles: &'a [Threshold<'a>]) -> School<'a> {
+impl School {
+    pub fn new(name: &str, profiles: Vec<Threshold>) -> School {
         let min_threashold = profiles.iter().fold(200.0, |acc, profil| {
             if acc > profil.points {
                 profil.points
@@ -54,7 +57,7 @@ impl<'a> School<'a> {
         });
 
         School {
-            name,
+            name : name.to_string(),
             profiles,
             min_threashold,
         }
@@ -65,30 +68,37 @@ impl<'a> School<'a> {
     }
 }
 
-impl<'a> std::fmt::Display for School<'a> {
+impl std::fmt::Display for School {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.name)
     }
 }
 
-impl<'a> PartialEq for School<'a> {
+impl PartialEq for School {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
     }
 }
 
+#[derive(Deserialize)]
+struct Schools {
+    schools: Vec<School>,
+}
+
 enum City<'a> {
-    Gdansk(&'a [School<'a>]),
-    Koszalin(&'a [School<'a>]),
-    Poznan(&'a [School<'a>]),
+    Gdansk(&'a [School]),
+    Koszalin(&'a [School]),
+    Poznan(&'a [School]),
+    Warszawa(&'a [School]),
 }
 
 impl<'a> City<'a> {
-    pub fn get_schools(&self) -> &'a [School<'a>] {
+    pub fn get_schools(&self) -> &'a [School] {
         match self {
             City::Gdansk(schools) => schools,
             City::Koszalin(schools) => schools,
             City::Poznan(schools) => schools,
+            City::Warszawa(schools) => schools,
         }
     }
 }
@@ -99,6 +109,7 @@ impl<'a> std::fmt::Display for City<'a> {
             City::Gdansk(_) => "Gdańsk",
             City::Koszalin(_) => "Koszalin",
             City::Poznan(_) => "Poznań",
+            City::Warszawa(_) => "Warszawa",
         };
         write!(f, "{}", as_str)
     }
@@ -109,24 +120,25 @@ impl<'a> PartialEq for City<'a> {
         match (self, other) {
             (City::Gdansk(_), City::Gdansk(_))
             | (City::Koszalin(_), City::Koszalin(_))
+            | (City::Warszawa(_), City::Warszawa(_))
             | (City::Poznan(_), City::Poznan(_)) => true,
             _ => false,
         }
     }
 }
 
-#[derive(Debug)]
-struct Threshold<'a> {
-    base_name: &'a str,
+#[derive(Debug,Deserialize)]
+struct Threshold {
+    base_name: String,
     points: f32,
-    second_course: &'a str,
+    second_course: String,
 }
-impl<'a> Threshold<'a> {
-    pub fn new(base_name: &'a str, points: f32, second_course: &'a str) -> Threshold<'a> {
+impl<'a> Threshold {
+    pub fn new(base_name: &str, points: f32, second_course: &str) -> Threshold {
         Threshold {
-            base_name,
+            base_name : base_name.to_string(),
             points,
-            second_course,
+            second_course: second_course.to_string(),
         }
     }
     pub fn get_full_name(&self) -> String {
@@ -1348,23 +1360,58 @@ fn process_school(
     widget_width: f32,
     widget_height: f32,
     schools: &[School],
+    slide_num : u8,
     selected_school: &mut usize,
     initialization: &mut bool,
 ) -> SelectionState {
-    let mut state = SelectionState::School;
+    let mut state = SelectionState::School(slide_num);
+
+
+    // get number of schools and print 9 per page
+    // calculate number of pages
+    const NUM_SCHOOLS_PER_SLIDE : usize = 9;
+    // 3  -> (3-1)/9 + 1 = 1
+    // 9 -> (9-1)/9 + 1 = 1
+    let num_slides : u8 = ((schools.len()-1)/NUM_SCHOOLS_PER_SLIDE) as u8 + 1;
+
+
+    let start_offset = NUM_SCHOOLS_PER_SLIDE as u8*(slide_num-1);
+    let end_offset = std::cmp::min(NUM_SCHOOLS_PER_SLIDE as u8*(slide_num), schools.len() as u8);
+
+
+    println!("schools.len(): {} , num_slides: {} start_offset: {} end_offset: {}",schools.len(),num_slides,start_offset,end_offset);
+
 
     ui.vertical(|ui| {
-        (0..schools.len()).for_each(|c| {
-            let alt_school = &schools[c];
+        //(NUM_SCHOOLS_PER_SLIDE as u8*num_slides*(slide_num-1)..schools.len() as u8).for_each(|c| {
+        (start_offset..end_offset).for_each(|c| {
+            let alt_school = &schools[c as usize];
             ui.radio_value(
                 &mut *selected_school,
-                c,
+                c as usize,
                 format!("{}", alt_school.get_full_name()),
             );
         });
     });
     ui.horizontal(|ui| {
-        ui.add_space(20.0);
+            ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
+            let back_button = if slide_num > 1 {
+                ui.add(egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+                ))
+            } else {
+                ui.add_enabled(
+                    false,
+                    egui_macroquad::egui::Button::new(
+                        egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+                    ),
+                )
+            };
+            if back_button.clicked() {
+                state = SelectionState::School(if slide_num > 1 { slide_num - 1 } else { 1 });
+            };
+
+
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
@@ -1376,9 +1423,85 @@ fn process_school(
             state = SelectionState::None;
             *initialization = true;
         };
+        let forward_button = if slide_num < num_slides {
+            ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+            ))
+        } else {
+            ui.add_enabled(
+                false,
+                egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+                ),
+            )
+        };
+
+        if forward_button.clicked() {
+            println!("KLINKNALEM! slide_num={slide_num}, num_slides={num_slides}");
+            state = SelectionState::School(if slide_num < num_slides {
+                println!("=====> CLICKED FORWARD. new slide num update: {}",(slide_num+1));
+                slide_num + 1
+            } else {
+                num_slides
+            });
+        };
     });
 
     state
+}
+   
+
+//[[licea]]
+//szkola = "I LO im. Mikołaja Kopernika"
+//klasa = "Klasa akademicka / politechniczna"
+//rozszerzenia = "mat-fiz"
+//przedmioty_rekrutacja = ["język polski", "matematyka", "fizyka", "język obcy nowożytny"]
+//prog_2025 = 170.75
+//prog_2024 = 169.2
+#[derive(Serialize, Deserialize,Debug)]
+struct Liceum {
+    szkola : String,
+    klasa: String,
+    rozszerzenia : String,
+    przedmioty_rekrutacja : Vec<String>,
+    prog_2025 : f32,
+    prog_2024 : f32,
+}
+
+#[derive(Serialize, Deserialize,Debug)]
+struct Data {
+    licea : Vec<Liceum>,
+}
+
+fn get_profiles_data(profiles_str : &str) -> Vec<School> {
+    // Fetch the data and deserialize 
+    let data: Data = toml::from_str(profiles_str).expect("Unable to parse config");
+    println!("Parsed data: {:?}",data);
+    // Transform data into structures
+    // Threshold
+    let mut profiles_map : std::collections::HashMap<String, Vec<Threshold>> = data.licea.into_iter().map(|l| {
+         
+        let extra_subjects = l.przedmioty_rekrutacja.iter().filter(|&p| {
+        p != "język polski" && p != "matematyka" && p != "język obcy nowożytny" } ).collect::<Vec<&String>>();
+
+        // If among extra subject we have Geo and Wos then pick WOS
+        // if there is Inf and Fix then pick Inf 
+        // other wise pick first one
+        
+        let subject = extra_subjects.iter().find(|s| **s == "wiedza o społeczeństwie" || **s == "informatyka" ).unwrap_or(&extra_subjects[0]);
+        let myth = Threshold::new(&l.szkola, l.prog_2025, subject );
+        (l.szkola,myth)
+    }).fold(std::collections::HashMap::new(), |mut acc, (szkola, myth)| {
+        acc.entry(szkola).or_insert_with(Vec::new).push(myth);
+        acc
+    });
+    // used by this program
+    // Make profiles gathered per school
+
+   profiles_map.into_iter().map(|(name, profiles)| {
+       School::new(&name, profiles)
+   }).collect::<Vec<School>>()
+
 }
 
 fn save_config(
@@ -1396,11 +1519,9 @@ fn save_config(
     let toml_string = toml::to_string(&config).unwrap();
     let storage = &mut quad_storage::STORAGE.lock().unwrap();
     storage.set("config", toml_string.as_ref());
-    //std::fs::write(get_config_path(), toml_string).expect("Unable to write file");
 }
 
 fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
-    //let mut maybe_content = std::fs::read_to_string(get_config_path());
     let storage = &mut quad_storage::STORAGE.lock().unwrap();
     let maybe_content = storage.get("config");
     match maybe_content {
@@ -1751,11 +1872,13 @@ fn process_none(
                     egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
                 ));
 
-                if let SelectionState::School = prev_gamestate {
+                if let SelectionState::School(_) = prev_gamestate {
                     set_focus(&school_button, initialization);
                 }
+                // If we clicked school then we 
+                // show list of schools from first slide
                 if school_button.clicked() {
-                    state = SelectionState::School;
+                    state = SelectionState::School(1);
                     *initialization = true;
                 };
             });
@@ -1779,6 +1902,16 @@ fn process_none(
             });
 
             ui.horizontal(|ui| {
+                if ui
+                    .add(egui_macroquad::egui::Button::new(
+                        egui_macroquad::egui::RichText::new(format!("Poradnik")).size(font_size),
+                    ))
+                    .clicked()
+                {
+                    state = SelectionState::Tutorial(1);
+                };
+
+
                 if ui
                     .add(egui_macroquad::egui::Button::new(
                         egui_macroquad::egui::RichText::new(format!("Exit")).size(font_size),
@@ -1958,116 +2091,21 @@ fn tablet10_window_conf() -> Conf {
 async fn main() {
     let mut initialization = true;
 
-    // TODO: Get config or create a new one
     let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = get_config();
 
-    let g1 = &[Threshold::new(
-        "Klasa 1A (politechniczna)\n",
-        168.75,
-        "Fizyka",
-    )];
-    let g2 = &[
-        Threshold::new("LO III - Klasa 1A (ekonomiczna)\n", 166.74, "Geografia"),
-        Threshold::new(
-            "LO III - Klasa 1D-1(politechniczna)\n",
-            171.64,
-            "Informatyka",
-        ),
-        Threshold::new(
-            "LO III - Klasa 1D-2 (politechniczna)\n",
-            167.17,
-            "Informatyka",
-        ),
-    ];
+    
+    let schools_gdansk : Schools = toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml"); 
+    let schools_poznan : Schools = toml::from_str(include_str!("../assets/poznan.toml")).expect("Unable to load poznan.toml"); 
+    let schools_warszawa : Schools = toml::from_str(include_str!("../assets/warszawa.toml")).expect("Unable to load warszawa.toml"); 
 
-    let g3 = &[
-        Threshold::new("LO VIII - Klasa 1BD-1 (mat-geo-ang)\n", 170.6, "Geografia"),
-        Threshold::new(
-            "LO VIII - Klasa 1BD-2 (mat-inf-ang)\n",
-            170.3,
-            "Informatyka",
-        ),
-    ];
-
-    let g4 = &[
-        Threshold::new("LO IX - Klasa 1A (mat-fiz)\n", 161.90, "Fizyka"),
-        Threshold::new("LO IX - Klasa 1C (mat-fiz-inf)", 144.90, "Informatyka"),
-        Threshold::new("LO IX - Klasa 1E (mat-fiz-inf)\n", 157.80, "WOS"),
-    ];
-
-    let g5 = &[Threshold::new(
-        "LO X - Klasa 1A (dwujęzyczna politechniczna)\n",
-        160.87,
-        "Fizyka",
-    )];
-
-    let g6 = &[
-        Threshold::new("LO XV - Klasa 1A (mat-inf-ang)\n", 147.65, "Fizyka"),
-        Threshold::new("LO XV - Klasa 1D (mat-geo-ang)\n", 155.25, "Geografia"),
-    ];
-
-    let g7 = &[
-        Threshold::new("LO XIX - Klasa 1A (ekonomiczna)\n", 162.70, "Geografia"),
-        Threshold::new(
-            "LO XIX - Klasa 1B (artystyczna-muzyczna)\n",
-            136.20,
-            "Historia",
-        ),
-        Threshold::new("LO XIX - Klasa 1E (mat-fiz-ang)\n", 167.70, "Fizyka"),
-    ];
-
-    let k1 = &[Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
-
-    let p1 = &[
-        Threshold::new("LO I - Klasa 1 (ABAKUS)\n", 163.85, "Fizyka"),
-        Threshold::new("LO I - Klasa 1 (COLUMBUS)\n", 172.90, "Geografia"),
-        Threshold::new("LO I - Klasa 1 (SIGMA)\n", 165.00, "Chemia"),
-    ];
-
-    let p2 = &[
-        Threshold::new("LO VIII - Klasa 1A (informatyczna)\n", 172.20, "Fizyka"),
-        Threshold::new("LO VIII - Klasa 1C (fizyczna)\n", 163.95, "Fizyka"),
-        Threshold::new(
-            "LO VIII - Klasa 1D grupa 1 (ekonomiczna)\n",
-            173.30,
-            "Geografia",
-        ),
-        Threshold::new(
-            "LO VIII - Klasa 1D grupa 2 (ekonomiczna)\n",
-            163.85,
-            "Geografia",
-        ),
-    ];
-
-    let p3 = &[
-        Threshold::new(
-            "LO XVI - Klasa 1C (ekonomiczno-informatyczna)\n",
-            90.85,
-            "Geografia",
-        ),
-        Threshold::new("LO XVI - Klasa 1D (politechniczna)\n", 126.60, "Fizyka"),
-    ];
-    let schools_gdansk = vec![
-        School::new("LO II Gdańsk", g1),
-        School::new("LO III Gdańsk", g2),
-        School::new("LO VIII Gdańsk", g3),
-        School::new("LO IX Gdańsk", g4),
-        School::new("LO X Gdańsk", g5),
-        School::new("LO XV Gdańsk", g6),
-        School::new("LO XIX Gdańsk", g7),
-    ];
-
+    let k1 = vec![Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
     let schools_koszalin = vec![School::new("LO I im. St. Dubois Koszalin", k1)];
 
-    let schools_poznan = vec![
-        School::new("LO I im. Karola Marcinkowskiego Poznań", p1),
-        School::new("LO VIII Liceum im. Adama Mickiewicza Poznań", p2),
-        School::new("LO XVI im. Charlesa de Gaulle Poznań", p3),
-    ];
     let cities = [
-        City::Gdansk(&schools_gdansk),
+        City::Gdansk(&schools_gdansk.schools),
         City::Koszalin(&schools_koszalin),
-        City::Poznan(&schools_poznan),
+        City::Poznan(&schools_poznan.schools),
+        City::Warszawa(&schools_warszawa.schools),
     ];
     let mut gamestate = if completed_tutorial {
         SelectionState::None
@@ -2298,18 +2336,22 @@ async fn main() {
                             prev_gamestate = SelectionState::Find;
                         }
                     }
-                    SelectionState::School => {
+                    SelectionState::School(part) => {
+                        println!("====> SCHOOL SLIDE NUM: {part}");
                         gamestate = process_school(
                             ui,
                             font_size,
                             widget_width,
                             widget_height,
                             cities[selected_city].get_schools(),
+                            part,
                             &mut selected_school,
                             &mut initialization,
                         );
-                        prev_gamestate = SelectionState::School;
-                        if let SelectionState::None = gamestate {
+                        if let SelectionState::School(_) = gamestate  {
+                            prev_gamestate = gamestate.clone();
+                        } else if let SelectionState::None = gamestate {
+                            prev_gamestate = SelectionState::School(1);
                             selected = 0;
                         }
                     }
@@ -2319,7 +2361,7 @@ async fn main() {
                             font_size,
                             widget_width,
                             widget_height,
-                            cities[selected_city].get_schools()[selected_school].profiles,
+                            &cities[selected_city].get_schools()[selected_school].profiles,
                             &mut selected,
                             &mut initialization,
                         );
@@ -2427,12 +2469,12 @@ mod tests {
 
     #[test]
     fn test_process_find() -> Result<(), String> {
-        let g1 = &[Threshold::new(
+        let g1 = vec![Threshold::new(
             "Klasa 1A (politechniczna)\n",
             168.75,
             "Fizyka",
         )];
-        let g2 = &[
+        let g2 = vec![
             Threshold::new("LO III - Klasa 1A (ekonomiczna)\n", 166.74, "Geografia"),
             Threshold::new(
                 "LO III - Klasa 1D-1(politechniczna)\n",
@@ -2446,7 +2488,7 @@ mod tests {
             ),
         ];
 
-        let g3 = &[
+        let g3 = vec![
             Threshold::new("LO VIII - Klasa 1BD-1 (mat-geo-ang)\n", 170.6, "Geografia"),
             Threshold::new(
                 "LO VIII - Klasa 1BD-2 (mat-inf-ang)\n",
@@ -2455,24 +2497,24 @@ mod tests {
             ),
         ];
 
-        let g4 = &[
+        let g4 = vec![
             Threshold::new("LO IX - Klasa 1A (mat-fiz)\n", 161.90, "Fizyka"),
             Threshold::new("LO IX - Klasa 1C (mat-fiz-inf)", 144.90, "Informatyka"),
             Threshold::new("LO IX - Klasa 1E (mat-fiz-inf)\n", 157.80, "WOS"),
         ];
 
-        let g5 = &[Threshold::new(
+        let g5 = vec![Threshold::new(
             "LO X - Klasa 1A (dwujęzyczna politechniczna)\n",
             160.87,
             "Fizyka",
         )];
 
-        let g6 = &[
+        let g6 = vec![
             Threshold::new("LO XV - Klasa 1A (mat-inf-ang)\n", 147.65, "Fizyka"),
             Threshold::new("LO XV - Klasa 1D (mat-geo-ang)\n", 155.25, "Geografia"),
         ];
 
-        let g7 = &[
+        let g7 = vec![
             Threshold::new("LO XIX - Klasa 1A (ekonomiczna)\n", 162.70, "Geografia"),
             Threshold::new(
                 "LO XIX - Klasa 1B (artystyczna-muzyczna)\n",
