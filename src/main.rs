@@ -189,7 +189,6 @@ impl std::fmt::Display for Threshold {
             "\n".chars().next().unwrap(),
             3,
         );
-        println!("PROFIL:\"{formatted_name}\"");
         write!(f, "{}", displayed_name)
     }
 }
@@ -964,7 +963,6 @@ fn process_contest1(
 ) -> SelectionState {
     let mut state = SelectionState::Contest1;
 
-    println!("====> contest 1 initialization : {}", initialization);
     ui.vertical(|ui| {
         ui.add(egui_macroquad::egui::Label::new(
             egui_macroquad::egui::RichText::new(format!(
@@ -994,7 +992,6 @@ fn process_contest1(
                 egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
             ));
             if *initialization {
-                println!("====> contest 1 initialization");
                 ok_button.request_focus();
                 *initialization = false;
             }
@@ -1516,7 +1513,6 @@ struct Data {
 fn get_profiles_data(profiles_str: &str) -> Vec<School> {
     // Fetch the data and deserialize
     let data: Data = toml::from_str(profiles_str).expect("Unable to parse config");
-    println!("Parsed data: {:?}", data);
     // Transform data into structures
     // Threshold
     let mut profiles_map: std::collections::HashMap<String, Vec<Threshold>> = data
@@ -1580,7 +1576,6 @@ fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
     let maybe_content = storage.get("config");
     match maybe_content {
         Some(content) => {
-            println!("Reading config.toml: {:?}", content);
             let config: Config = toml::from_str(&content.clone()).expect("Unable to parse config");
             (
                 config.certificate,

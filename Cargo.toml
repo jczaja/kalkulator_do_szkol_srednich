@@ -7,7 +7,7 @@ edition = "2021"
 assets = "assets/"  
 res = "android_res"
 icon = "@mipmap/ic_launcher"
-version_code = 14
+version_code = 15
 version_name = "Initial"
 min_sdk_version = 21
 build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
@@ -29,5 +29,3 @@ image = { version = "0.25.10", default-features = false, features = ["png"] }
 serde = { version = "1.0.228", features = ["derive"] }
 toml = "1.1.2"
 quad-storage = "0.1.3"
-[target.'cfg(debug_assertions)'.dependencies]
-gdb-helper = { version = "0.1.0", path = "../gdb-helper" }
