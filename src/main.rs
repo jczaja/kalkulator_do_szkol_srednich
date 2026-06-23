@@ -10,8 +10,6 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
-// TODO: names of profiles should be shorter
-// TODO: add rust-scrapper as a separate bin
 // TODO: proccess_profil 9 per page
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
@@ -159,7 +157,7 @@ struct Threshold {
     points: f32,
     second_course: String,
 }
-impl<'a> Threshold {
+impl Threshold {
     pub fn new(base_name: &str, points: f32, second_course: &str) -> Threshold {
         Threshold {
             base_name : base_name.to_string(),
@@ -172,6 +170,16 @@ impl<'a> Threshold {
             "{} (przedmiot: {}) - {} pkt",
             self.base_name, self.second_course, self.points
         )
+    }
+}
+
+impl std::fmt::Display for Threshold {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // replace every third " " with "\n"
+        let formatted_name = format!( "{} (przedmiot: {}) - {} pkt", self.base_name.trim(), self.second_course, self.points);
+        let displayed_name = formatted_name.replace_every_char_n(" ".chars().next().unwrap() ,"\n".chars().next().unwrap() ,3);
+        println!("PROFIL:\"{formatted_name}\"");
+        write!(f, "{}", displayed_name)
     }
 }
 
@@ -1463,9 +1471,7 @@ fn process_school(
         };
 
         if forward_button.clicked() {
-            println!("KLINKNALEM! slide_num={slide_num}, num_slides={num_slides}");
             state = SelectionState::School(if slide_num < num_slides {
-                println!("=====> CLICKED FORWARD. new slide num update: {}",(slide_num+1));
                 slide_num + 1
             } else {
                 num_slides
@@ -1914,7 +1920,7 @@ fn process_none(
                     egui_macroquad::egui::RichText::new(format!("Profil: ")).size(font_size),
                 ));
                 let profil_button = ui.add(egui_macroquad::egui::Button::new(
-                    egui_macroquad::egui::RichText::new(format!("{}", profil.get_full_name()))
+                    egui_macroquad::egui::RichText::new(format!("{}", profil))
                         .size(font_size),
                 ));
 
