@@ -11,8 +11,8 @@
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
 // TODO: names of profiles should be shorter
-// TODO: remove sports schools
 // TODO: add rust-scrapper as a separate bin
+// TODO: proccess_profil 9 per page
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -46,6 +46,30 @@ struct School {
     min_threashold: f32,
 }
 
+trait ReplaceEveryN {
+    fn replace_every_char_n(&self, from : char, to: char, n : usize) -> String;
+}
+
+impl ReplaceEveryN for str {
+
+    fn replace_every_char_n(&self, from : char, to: char, n : usize) -> String {
+        let mut count = 0;
+        self.chars().map(|c| {
+            if c == from {
+                count+=1;
+                if count % n == 0 {
+                    to
+                } else {
+                    from
+                }
+            } else {
+                c
+            }
+        }).collect::<String>()
+    }
+
+}
+
 impl School {
     pub fn new(name: &str, profiles: Vec<Threshold>) -> School {
         let min_threashold = profiles.iter().fold(200.0, |acc, profil| {
@@ -70,7 +94,9 @@ impl School {
 
 impl std::fmt::Display for School {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.name)
+        // replace every third " " with "\n"
+        let displayed_format = self.name.trim().replace_every_char_n(" ".chars().next().unwrap() ,"\n".chars().next().unwrap() ,3);
+        write!(f, "{}", displayed_format)
     }
 }
 
@@ -1870,7 +1896,7 @@ fn process_none(
 
                 let school_button = ui.add(egui_macroquad::egui::Button::new(
                     egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
-                ));
+                ).wrap());
 
                 if let SelectionState::School(_) = prev_gamestate {
                     set_focus(&school_button, initialization);
