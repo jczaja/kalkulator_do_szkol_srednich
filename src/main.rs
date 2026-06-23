@@ -10,14 +10,12 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 
-// TODO: proccess_profil 9 per page
-
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
 use serde::{Deserialize, Serialize};
 use toml;
 //
-#[derive(PartialEq, Debug,Clone)]
+#[derive(PartialEq, Debug, Clone)]
 enum SelectionState {
     None,
     City,
@@ -32,7 +30,7 @@ enum SelectionState {
     Exit,
     Find,
     NotFound,
-    Profil,
+    Profil(u8),
     School(u8),
     Tutorial(u8),
 }
@@ -45,27 +43,27 @@ struct School {
 }
 
 trait ReplaceEveryN {
-    fn replace_every_char_n(&self, from : char, to: char, n : usize) -> String;
+    fn replace_every_char_n(&self, from: char, to: char, n: usize) -> String;
 }
 
 impl ReplaceEveryN for str {
-
-    fn replace_every_char_n(&self, from : char, to: char, n : usize) -> String {
+    fn replace_every_char_n(&self, from: char, to: char, n: usize) -> String {
         let mut count = 0;
-        self.chars().map(|c| {
-            if c == from {
-                count+=1;
-                if count % n == 0 {
-                    to
+        self.chars()
+            .map(|c| {
+                if c == from {
+                    count += 1;
+                    if count % n == 0 {
+                        to
+                    } else {
+                        from
+                    }
                 } else {
-                    from
+                    c
                 }
-            } else {
-                c
-            }
-        }).collect::<String>()
+            })
+            .collect::<String>()
     }
-
 }
 
 impl School {
@@ -79,7 +77,7 @@ impl School {
         });
 
         School {
-            name : name.to_string(),
+            name: name.to_string(),
             profiles,
             min_threashold,
         }
@@ -93,7 +91,11 @@ impl School {
 impl std::fmt::Display for School {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         // replace every third " " with "\n"
-        let displayed_format = self.name.trim().replace_every_char_n(" ".chars().next().unwrap() ,"\n".chars().next().unwrap() ,3);
+        let displayed_format = self.name.trim().replace_every_char_n(
+            " ".chars().next().unwrap(),
+            "\n".chars().next().unwrap(),
+            3,
+        );
         write!(f, "{}", displayed_format)
     }
 }
@@ -151,7 +153,7 @@ impl<'a> PartialEq for City<'a> {
     }
 }
 
-#[derive(Debug,Deserialize)]
+#[derive(Debug, Deserialize)]
 struct Threshold {
     base_name: String,
     points: f32,
@@ -160,7 +162,7 @@ struct Threshold {
 impl Threshold {
     pub fn new(base_name: &str, points: f32, second_course: &str) -> Threshold {
         Threshold {
-            base_name : base_name.to_string(),
+            base_name: base_name.to_string(),
             points,
             second_course: second_course.to_string(),
         }
@@ -176,8 +178,17 @@ impl Threshold {
 impl std::fmt::Display for Threshold {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         // replace every third " " with "\n"
-        let formatted_name = format!( "{} (przedmiot: {}) - {} pkt", self.base_name.trim(), self.second_course, self.points);
-        let displayed_name = formatted_name.replace_every_char_n(" ".chars().next().unwrap() ,"\n".chars().next().unwrap() ,3);
+        let formatted_name = format!(
+            "{} (przedmiot: {}) - {} pkt",
+            self.base_name.trim(),
+            self.second_course,
+            self.points
+        );
+        let displayed_name = formatted_name.replace_every_char_n(
+            " ".chars().next().unwrap(),
+            "\n".chars().next().unwrap(),
+            3,
+        );
         println!("PROFIL:\"{formatted_name}\"");
         write!(f, "{}", displayed_name)
     }
@@ -1394,27 +1405,26 @@ fn process_school(
     widget_width: f32,
     widget_height: f32,
     schools: &[School],
-    slide_num : u8,
+    slide_num: u8,
     selected_school: &mut usize,
     initialization: &mut bool,
 ) -> SelectionState {
     let mut state = SelectionState::School(slide_num);
 
-
     // get number of schools and print 9 per page
     // calculate number of pages
-    const NUM_SCHOOLS_PER_SLIDE : usize = 9;
+    const NUM_SCHOOLS_PER_SLIDE: usize = 9;
     // 3  -> (3-1)/9 + 1 = 1
     // 9 -> (9-1)/9 + 1 = 1
-    let num_slides : u8 = ((schools.len()-1)/NUM_SCHOOLS_PER_SLIDE) as u8 + 1;
+    let num_slides: u8 = ((schools.len() - 1) / NUM_SCHOOLS_PER_SLIDE) as u8 + 1;
 
+    let start_offset = NUM_SCHOOLS_PER_SLIDE as u8 * (slide_num - 1);
+    let end_offset = std::cmp::min(
+        NUM_SCHOOLS_PER_SLIDE as u8 * (slide_num),
+        schools.len() as u8,
+    );
 
-    let start_offset = NUM_SCHOOLS_PER_SLIDE as u8*(slide_num-1);
-    let end_offset = std::cmp::min(NUM_SCHOOLS_PER_SLIDE as u8*(slide_num), schools.len() as u8);
-
-
-    println!("schools.len(): {} , num_slides: {} start_offset: {} end_offset: {}",schools.len(),num_slides,start_offset,end_offset);
-
+    //    println!("schools.len(): {} , num_slides: {} start_offset: {} end_offset: {}",schools.len(),num_slides,start_offset,end_offset);
 
     ui.vertical(|ui| {
         //(NUM_SCHOOLS_PER_SLIDE as u8*num_slides*(slide_num-1)..schools.len() as u8).for_each(|c| {
@@ -1428,23 +1438,22 @@ fn process_school(
         });
     });
     ui.horizontal(|ui| {
-            ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
-            let back_button = if slide_num > 1 {
-                ui.add(egui_macroquad::egui::Button::new(
+        ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
+        let back_button = if slide_num > 1 {
+            ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+            ))
+        } else {
+            ui.add_enabled(
+                false,
+                egui_macroquad::egui::Button::new(
                     egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
-                ))
-            } else {
-                ui.add_enabled(
-                    false,
-                    egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
-                    ),
-                )
-            };
-            if back_button.clicked() {
-                state = SelectionState::School(if slide_num > 1 { slide_num - 1 } else { 1 });
-            };
-
+                ),
+            )
+        };
+        if back_button.clicked() {
+            state = SelectionState::School(if slide_num > 1 { slide_num - 1 } else { 1 });
+        };
 
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
@@ -1481,7 +1490,6 @@ fn process_school(
 
     state
 }
-   
 
 //[[licea]]
 //szkola = "I LO im. Mikołaja Kopernika"
@@ -1490,50 +1498,64 @@ fn process_school(
 //przedmioty_rekrutacja = ["język polski", "matematyka", "fizyka", "język obcy nowożytny"]
 //prog_2025 = 170.75
 //prog_2024 = 169.2
-#[derive(Serialize, Deserialize,Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 struct Liceum {
-    szkola : String,
+    szkola: String,
     klasa: String,
-    rozszerzenia : String,
-    przedmioty_rekrutacja : Vec<String>,
-    prog_2025 : f32,
-    prog_2024 : f32,
+    rozszerzenia: String,
+    przedmioty_rekrutacja: Vec<String>,
+    prog_2025: f32,
+    prog_2024: f32,
 }
 
-#[derive(Serialize, Deserialize,Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 struct Data {
-    licea : Vec<Liceum>,
+    licea: Vec<Liceum>,
 }
 
-fn get_profiles_data(profiles_str : &str) -> Vec<School> {
-    // Fetch the data and deserialize 
+fn get_profiles_data(profiles_str: &str) -> Vec<School> {
+    // Fetch the data and deserialize
     let data: Data = toml::from_str(profiles_str).expect("Unable to parse config");
-    println!("Parsed data: {:?}",data);
+    println!("Parsed data: {:?}", data);
     // Transform data into structures
     // Threshold
-    let mut profiles_map : std::collections::HashMap<String, Vec<Threshold>> = data.licea.into_iter().map(|l| {
-         
-        let extra_subjects = l.przedmioty_rekrutacja.iter().filter(|&p| {
-        p != "język polski" && p != "matematyka" && p != "język obcy nowożytny" } ).collect::<Vec<&String>>();
+    let mut profiles_map: std::collections::HashMap<String, Vec<Threshold>> = data
+        .licea
+        .into_iter()
+        .map(|l| {
+            let extra_subjects = l
+                .przedmioty_rekrutacja
+                .iter()
+                .filter(|&p| {
+                    p != "język polski" && p != "matematyka" && p != "język obcy nowożytny"
+                })
+                .collect::<Vec<&String>>();
 
-        // If among extra subject we have Geo and Wos then pick WOS
-        // if there is Inf and Fix then pick Inf 
-        // other wise pick first one
-        
-        let subject = extra_subjects.iter().find(|s| **s == "wiedza o społeczeństwie" || **s == "informatyka" ).unwrap_or(&extra_subjects[0]);
-        let myth = Threshold::new(&l.szkola, l.prog_2025, subject );
-        (l.szkola,myth)
-    }).fold(std::collections::HashMap::new(), |mut acc, (szkola, myth)| {
-        acc.entry(szkola).or_insert_with(Vec::new).push(myth);
-        acc
-    });
+            // If among extra subject we have Geo and Wos then pick WOS
+            // if there is Inf and Fix then pick Inf
+            // other wise pick first one
+
+            let subject = extra_subjects
+                .iter()
+                .find(|s| **s == "wiedza o społeczeństwie" || **s == "informatyka")
+                .unwrap_or(&extra_subjects[0]);
+            let myth = Threshold::new(&l.szkola, l.prog_2025, subject);
+            (l.szkola, myth)
+        })
+        .fold(
+            std::collections::HashMap::new(),
+            |mut acc, (szkola, myth)| {
+                acc.entry(szkola).or_insert_with(Vec::new).push(myth);
+                acc
+            },
+        );
     // used by this program
     // Make profiles gathered per school
 
-   profiles_map.into_iter().map(|(name, profiles)| {
-       School::new(&name, profiles)
-   }).collect::<Vec<School>>()
-
+    profiles_map
+        .into_iter()
+        .map(|(name, profiles)| School::new(&name, profiles))
+        .collect::<Vec<School>>()
 }
 
 fn save_config(
@@ -1616,23 +1638,57 @@ fn process_profil(
     widget_width: f32,
     widget_height: f32,
     profils: &[Threshold],
+    slide_num: u8,
     selected_profil: &mut usize,
     initialization: &mut bool,
 ) -> SelectionState {
-    let mut state = SelectionState::Profil;
+    let mut state = SelectionState::Profil(slide_num);
 
+    // get number of schools and print 9 per page
+    // calculate number of pages
+    const NUM_PROFILS_PER_SLIDE: usize = 9;
+    // 3  -> (3-1)/9 + 1 = 1
+    // 9 -> (9-1)/9 + 1 = 1
+    let num_slides: u8 = ((profils.len() - 1) / NUM_PROFILS_PER_SLIDE) as u8 + 1;
+
+    let start_offset = NUM_PROFILS_PER_SLIDE as u8 * (slide_num - 1);
+    let end_offset = std::cmp::min(
+        NUM_PROFILS_PER_SLIDE as u8 * (slide_num),
+        profils.len() as u8,
+    );
+
+    //    println!("profils.len(): {} , num_slides: {} start_offset: {} end_offset: {}",profils.len(),num_slides,start_offset,end_offset);
+    //
     ui.vertical(|ui| {
-        (0..profils.len()).for_each(|c| {
-            let alt_profil = &profils[c];
+        (start_offset..end_offset).for_each(|c| {
+            let alt_profil: &Threshold = &profils[c as usize];
             ui.radio_value(
                 &mut *selected_profil,
-                c,
+                c as usize,
                 format!("{}", alt_profil.get_full_name()),
             );
         });
     });
     ui.horizontal(|ui| {
-        ui.add_space(20.0);
+        //ui.add_space(20.0);
+        ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
+
+        let back_button = if slide_num > 1 {
+            ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+            ))
+        } else {
+            ui.add_enabled(
+                false,
+                egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!("<<")).size(font_size),
+                ),
+            )
+        };
+        if back_button.clicked() {
+            state = SelectionState::Profil(if slide_num > 1 { slide_num - 1 } else { 1 });
+        };
+
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
@@ -1643,6 +1699,26 @@ fn process_profil(
         if ok_button.clicked() {
             state = SelectionState::None;
             *initialization = true;
+        };
+        let forward_button = if slide_num < num_slides {
+            ui.add(egui_macroquad::egui::Button::new(
+                egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+            ))
+        } else {
+            ui.add_enabled(
+                false,
+                egui_macroquad::egui::Button::new(
+                    egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
+                ),
+            )
+        };
+
+        if forward_button.clicked() {
+            state = SelectionState::Profil(if slide_num < num_slides {
+                slide_num + 1
+            } else {
+                num_slides
+            });
         };
     });
 
@@ -1900,14 +1976,17 @@ fn process_none(
                     egui_macroquad::egui::RichText::new("Szkoła: ".to_string()).size(font_size),
                 ));
 
-                let school_button = ui.add(egui_macroquad::egui::Button::new(
-                    egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
-                ).wrap());
+                let school_button = ui.add(
+                    egui_macroquad::egui::Button::new(
+                        egui_macroquad::egui::RichText::new(format!("{school}")).size(font_size),
+                    )
+                    .wrap(),
+                );
 
                 if let SelectionState::School(_) = prev_gamestate {
                     set_focus(&school_button, initialization);
                 }
-                // If we clicked school then we 
+                // If we clicked school then we
                 // show list of schools from first slide
                 if school_button.clicked() {
                     state = SelectionState::School(1);
@@ -1920,15 +1999,14 @@ fn process_none(
                     egui_macroquad::egui::RichText::new(format!("Profil: ")).size(font_size),
                 ));
                 let profil_button = ui.add(egui_macroquad::egui::Button::new(
-                    egui_macroquad::egui::RichText::new(format!("{}", profil))
-                        .size(font_size),
+                    egui_macroquad::egui::RichText::new(format!("{}", profil)).size(font_size),
                 ));
 
-                if let SelectionState::Profil = prev_gamestate {
+                if let SelectionState::Profil(_) = prev_gamestate {
                     set_focus(&profil_button, initialization);
                 }
                 if profil_button.clicked() {
-                    state = SelectionState::Profil;
+                    state = SelectionState::Profil(1);
                     *initialization = true;
                 };
             });
@@ -1942,7 +2020,6 @@ fn process_none(
                 {
                     state = SelectionState::Tutorial(1);
                 };
-
 
                 if ui
                     .add(egui_macroquad::egui::Button::new(
@@ -2125,10 +2202,12 @@ async fn main() {
 
     let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = get_config();
 
-    
-    let schools_gdansk : Schools = toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml"); 
-    let schools_poznan : Schools = toml::from_str(include_str!("../assets/poznan.toml")).expect("Unable to load poznan.toml"); 
-    let schools_warszawa : Schools = toml::from_str(include_str!("../assets/warszawa.toml")).expect("Unable to load warszawa.toml"); 
+    let schools_gdansk: Schools =
+        toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml");
+    let schools_poznan: Schools =
+        toml::from_str(include_str!("../assets/poznan.toml")).expect("Unable to load poznan.toml");
+    let schools_warszawa: Schools = toml::from_str(include_str!("../assets/warszawa.toml"))
+        .expect("Unable to load warszawa.toml");
 
     let k1 = vec![Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
     let schools_koszalin = vec![School::new("LO I im. St. Dubois Koszalin", k1)];
@@ -2369,7 +2448,6 @@ async fn main() {
                         }
                     }
                     SelectionState::School(part) => {
-                        println!("====> SCHOOL SLIDE NUM: {part}");
                         gamestate = process_school(
                             ui,
                             font_size,
@@ -2380,24 +2458,30 @@ async fn main() {
                             &mut selected_school,
                             &mut initialization,
                         );
-                        if let SelectionState::School(_) = gamestate  {
+                        if let SelectionState::School(_) = gamestate {
                             prev_gamestate = gamestate.clone();
                         } else if let SelectionState::None = gamestate {
                             prev_gamestate = SelectionState::School(1);
                             selected = 0;
                         }
                     }
-                    SelectionState::Profil => {
+                    SelectionState::Profil(part) => {
                         gamestate = process_profil(
                             ui,
                             font_size,
                             widget_width,
                             widget_height,
                             &cities[selected_city].get_schools()[selected_school].profiles,
+                            part,
                             &mut selected,
                             &mut initialization,
                         );
-                        prev_gamestate = SelectionState::Profil;
+                        if let SelectionState::Profil(_) = gamestate {
+                            prev_gamestate = gamestate.clone();
+                        } else if let SelectionState::None = gamestate {
+                            prev_gamestate = SelectionState::Profil(1);
+                            selected = 0;
+                        }
                     }
                     SelectionState::Tutorial(slide_num) => {
                         gamestate = process_tutorial(
