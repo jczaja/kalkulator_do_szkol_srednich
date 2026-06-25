@@ -52,9 +52,8 @@ jobs:
            rustup target add i686-linux-android
            rustup target add x86_64-linux-android
            cargo install --git https://github.com/jczaja/cargo-quad-apk
-
-       - uses: actions/checkout@v4
-       - name: Build
+           
+       - name: Setup Android SDK and NDK
          run: |
            wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
            unzip -q sdk-tools-linux-4333796.zip
@@ -68,15 +67,34 @@ jobs:
            wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
            unzip android-ndk-r25c-linux.zip
            rm android-ndk-r25c-linux.zip
+
+       - name: Build (standard, unsigned)
+         run: |
            export ANDROID_SDK_ROOT=$PWD
            export ANDROID_HOME=$ANDROID_SDK_ROOT
            export ANDROID_NDK_ROOT=$PWD/android-ndk-r25c
            export NDK_HOME=$ANDROID_NDK_ROOT
-           cargo quad-apk build --release --verbose  --nosign
+           cargo quad-apk build --release --verbose --nosign
+           
+       - name: Build (with tracy, signed)
+         run: |
+           export ANDROID_SDK_ROOT=$PWD
+           export ANDROID_HOME=$ANDROID_SDK_ROOT
+           export ANDROID_NDK_ROOT=$PWD/android-ndk-r25c
+           export NDK_HOME=$ANDROID_NDK_ROOT
+           cargo quad-apk build --release --verbose -F tracy
+           
        - name: Run tests
          run: cargo test --verbose
-       - name: Upload APK
+         
+       - name: Upload APK (standard)
          uses: actions/upload-artifact@v4
          with:
-          name: kalkulator-do-szkol-srednich
+          name: kalkulator-do-szkol-srednich-standard
+          path: target/android-artifacts/release/apk/*.apk
+          
+       - name: Upload APK (tracy)
+         uses: actions/upload-artifact@v4
+         with:
+          name: kalkulator-do-szkol-srednich-tracy
           path: target/android-artifacts/release/apk/*.apk

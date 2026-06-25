@@ -9,11 +9,17 @@
 
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
+//
+
+// TODO: build CI for tracy
+// TODO: extend error logging via tracy
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
 use serde::{Deserialize, Serialize};
 use toml;
+use tracing::{instrument, span, Level};
+
 //
 #[derive(PartialEq, Debug, Clone)]
 enum SelectionState {
@@ -1571,18 +1577,19 @@ fn save_config(
     storage.set("config", toml_string.as_ref());
 }
 
-fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
-    let storage = &mut quad_storage::STORAGE.lock().unwrap();
+fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool),String> {
+    let storage = &mut quad_storage::STORAGE.lock().map_err(|_| format!("Failed to lock storage"))?;
     let maybe_content = storage.get("config");
     match maybe_content {
         Some(content) => {
-            let config: Config = toml::from_str(&content.clone()).expect("Unable to parse config");
-            (
+            let config: Config = toml::from_str(&content.clone()).map_err(|e| "Unable to parse config")?;
+            tracing::trace!("Config loaded and deserialized from storage.");
+            Ok((
                 config.certificate,
                 config.contests,
                 config.exams,
                 config.completed_tutorial,
-            )
+            ))
         }
         None => {
             let exam_results = ExamResults {
@@ -1614,19 +1621,19 @@ fn get_config() -> (CertificateResults, Contest, ExamResults, bool) {
                 certificate: certs,
                 completed_tutorial: false,
             };
-            let toml_string = toml::to_string(&config).unwrap();
+            let toml_string = toml::to_string(&config).map_err(|_| format!("Failed to serialize config"))?;
             storage.set("config", toml_string.as_ref());
-            (
+            tracing::trace!("Config serialized and saved to storage.");
+            Ok((
                 config.certificate,
                 config.contests,
                 config.exams,
                 config.completed_tutorial,
-            )
+            ))
         }
     }
 }
 
-//cities[selected_city].get_schools().first().unwrap()
 fn process_profil(
     ui: &mut egui_macroquad::egui::Ui,
     font_size: f32,
@@ -2190,12 +2197,39 @@ fn tablet10_window_conf() -> Conf {
     }
 }
 
+fn init_tracing() {
+
+    #[cfg(feature = "tracy")]
+    {
+        use tracing_subscriber::{layer::SubscriberExt, Registry};
+        use tracing_tracy::TracyLayer;
+        // Tracy subscriber
+        tracing::subscriber::set_global_default(
+            tracing_subscriber::registry().with(tracing_tracy::TracyLayer::default()),
+        )
+        .expect("setup tracy layer");
+    }
+    #[cfg(all(feature = "subscriber", not(feature = "tracy")))]
+    {
+        use tracing_subscriber::{fmt, filter::EnvFilter};
+        fmt().with_env_filter(EnvFilter::from_default_env()).init();
+    }
+    tracing::info!("Tracing started!");
+}
+
+
 //#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
+    let _guard = init_tracing();
     let mut initialization = true;
 
-    let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = get_config();
+    let maybe_config = get_config();
+    let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = match maybe_config {
+        Ok((certs, contests, exam_points, completed_tutorial)) => (certs, contests, exam_points, completed_tutorial),
+        Err(e) => {tracing::error!("Error: {e}"); println!("Error: {e}"); return; },
+    };
+    
 
     let schools_gdansk: Schools =
         toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml");

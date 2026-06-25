@@ -7,7 +7,7 @@ edition = "2021"
 assets = "assets/"  
 res = "android_res"
 icon = "@mipmap/ic_launcher"
-version_code = 15
+version_code = 1
 version_name = "Initial"
 min_sdk_version = 21
 build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
@@ -20,6 +20,11 @@ build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linu
 name = "android.hardware.touchscreen"
 required = false
 
+[features]
+default = ["subscriber"]
+subscriber = ["tracing-subscriber"]
+tracy = ["tracing-tracy", "tracing-subscriber"]
+
 [dependencies]
 egui-macroquad = "0.17.3"
 egui_plot = "0.32.1"
@@ -29,3 +34,6 @@ image = { version = "0.25.10", default-features = false, features = ["png"] }
 serde = { version = "1.0.228", features = ["derive"] }
 toml = "1.1.2"
 quad-storage = "0.1.3"
+tracing = "0.1.41"
+tracing-tracy = { version = "0.11.4", optional = true }
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"],optional = true }
