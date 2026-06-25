@@ -2231,6 +2231,7 @@ async fn main() {
     };
     
 
+    // TODO: how to make this error reported via tracing in elegant way
     let schools_gdansk: Schools =
         toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml");
     let schools_poznan: Schools =
