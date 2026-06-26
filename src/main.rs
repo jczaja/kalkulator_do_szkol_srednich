@@ -2258,6 +2258,7 @@ async fn main() {
         }
     };
 
+
     let k1 = vec![Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
     let schools_koszalin = vec![School::new("LO I im. St. Dubois Koszalin", k1)];
 
@@ -2267,6 +2268,8 @@ async fn main() {
         City::Poznan(&schools_poznan.schools),
         City::Warszawa(&schools_warszawa.schools),
     ];
+    tracing::info!("Profiles data loaded")
+
     let mut gamestate = if completed_tutorial {
         SelectionState::None
     } else {
