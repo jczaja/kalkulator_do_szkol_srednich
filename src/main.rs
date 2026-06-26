@@ -2268,7 +2268,7 @@ async fn main() {
         City::Poznan(&schools_poznan.schools),
         City::Warszawa(&schools_warszawa.schools),
     ];
-    tracing::info!("Profiles data loaded")
+    tracing::info!("Profiles data loaded");
 
     let mut gamestate = if completed_tutorial {
         SelectionState::None
