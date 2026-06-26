@@ -11,7 +11,6 @@
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
 
-// TODO: build CI for tracy
 // TODO: extend error logging via tracy
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
@@ -1577,13 +1576,16 @@ fn save_config(
     storage.set("config", toml_string.as_ref());
 }
 
-fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool),String> {
-    let storage = &mut quad_storage::STORAGE.lock().map_err(|_| format!("Failed to lock storage"))?;
+fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), String> {
+    let storage = &mut quad_storage::STORAGE
+        .lock()
+        .map_err(|_| format!("Failed to lock storage"))?;
     let maybe_content = storage.get("config");
     match maybe_content {
         Some(content) => {
-            let config: Config = toml::from_str(&content.clone()).map_err(|e| "Unable to parse config")?;
-            tracing::trace!("Config loaded and deserialized from storage.");
+            let config: Config =
+                toml::from_str(&content.clone()).map_err(|e| "Unable to parse config")?;
+            tracing::info!("Config loaded and deserialized from storage.");
             Ok((
                 config.certificate,
                 config.contests,
@@ -1621,9 +1623,10 @@ fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool),Strin
                 certificate: certs,
                 completed_tutorial: false,
             };
-            let toml_string = toml::to_string(&config).map_err(|_| format!("Failed to serialize config"))?;
+            let toml_string =
+                toml::to_string(&config).map_err(|_| format!("Failed to serialize config"))?;
             storage.set("config", toml_string.as_ref());
-            tracing::trace!("Config serialized and saved to storage.");
+            tracing::info!("Config serialized and saved to storage.");
             Ok((
                 config.certificate,
                 config.contests,
@@ -2198,7 +2201,6 @@ fn tablet10_window_conf() -> Conf {
 }
 
 fn init_tracing() {
-
     #[cfg(feature = "tracy")]
     {
         use tracing_subscriber::{layer::SubscriberExt, Registry};
@@ -2211,12 +2213,11 @@ fn init_tracing() {
     }
     #[cfg(all(feature = "subscriber", not(feature = "tracy")))]
     {
-        use tracing_subscriber::{fmt, filter::EnvFilter};
+        use tracing_subscriber::{filter::EnvFilter, fmt};
         fmt().with_env_filter(EnvFilter::from_default_env()).init();
     }
     tracing::info!("Tracing started!");
 }
-
 
 //#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
@@ -2226,18 +2227,36 @@ async fn main() {
 
     let maybe_config = get_config();
     let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = match maybe_config {
-        Ok((certs, contests, exam_points, completed_tutorial)) => (certs, contests, exam_points, completed_tutorial),
-        Err(e) => {tracing::error!("Error: {e}"); println!("Error: {e}"); return; },
+        Ok((certs, contests, exam_points, completed_tutorial)) => {
+            (certs, contests, exam_points, completed_tutorial)
+        }
+        Err(e) => {
+            tracing::error!("Error: {e}");
+            println!("Error: {e}");
+            return;
+        }
     };
-    
 
-    // TODO: how to make this error reported via tracing in elegant way
-    let schools_gdansk: Schools =
-        toml::from_str(include_str!("../assets/gdansk.toml")).expect("Unable to load gdansk.toml");
-    let schools_poznan: Schools =
-        toml::from_str(include_str!("../assets/poznan.toml")).expect("Unable to load poznan.toml");
-    let schools_warszawa: Schools = toml::from_str(include_str!("../assets/warszawa.toml"))
-        .expect("Unable to load warszawa.toml");
+    let load_data = || -> Result<(Schools, Schools, Schools), &str> {
+        // TODO: how to make this error reported via tracing in elegant way
+        let schools_gdansk: Schools = toml::from_str(include_str!("../assets/gdansk.toml"))
+            .map_err(|_| "Unable to load gdansk.toml")?;
+        let schools_poznan: Schools = toml::from_str(include_str!("../assets/poznan.toml"))
+            .map_err(|_| "Unable to load poznan.toml")?;
+        let schools_warszawa: Schools = toml::from_str(include_str!("../assets/warszawa.toml"))
+            .map_err(|_| "Unable to load warszawa.toml")?;
+        Ok((schools_gdansk, schools_poznan, schools_warszawa))
+    };
+
+    let (schools_gdansk, schools_poznan, schools_warszawa) = match load_data() {
+        Ok((schools_gdansk, schools_poznan, schools_warszawa)) => {
+            (schools_gdansk, schools_poznan, schools_warszawa)
+        }
+        Err(e) => {
+            tracing::error!("Error: {e}");
+            panic!("{e}");
+        }
+    };
 
     let k1 = vec![Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
     let schools_koszalin = vec![School::new("LO I im. St. Dubois Koszalin", k1)];
