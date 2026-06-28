@@ -1577,11 +1577,11 @@ fn save_config(
 }
 
 fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), String> {
-    trace::info!("Before locking");
+    tracing::info!("Before locking");
     let storage = &mut quad_storage::STORAGE
         .lock()
         .map_err(|_| format!("Failed to lock storage"))?;
-    trace::info!("After locking");
+    tracing::info!("After locking");
     let maybe_content = storage.get("config");
     match maybe_content {
         Some(content) => {
