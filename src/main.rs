@@ -1628,9 +1628,12 @@ fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), Stri
                 certificate: certs,
                 completed_tutorial: false,
             };
+            tracing::info!("Before serializing");
             let toml_string =
                 toml::to_string(&config).map_err(|_| format!("Failed to serialize config"))?;
+            tracing::info!("Before storage.set");
             storage.set("config", toml_string.as_ref());
+            tracing::info!("After storage.set");
             tracing::info!("Config serialized and saved to storage.");
             Ok((
                 config.certificate,
