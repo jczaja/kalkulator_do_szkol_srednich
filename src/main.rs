@@ -1583,8 +1583,10 @@ fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), Stri
         .map_err(|_| format!("Failed to lock storage"))?;
     tracing::info!("After locking");
     let maybe_content = storage.get("config");
+    tracing::info!("After storage.get");
     match maybe_content {
         Some(content) => {
+            tracing::info!("Some(content)");
             let config: Config =
                 toml::from_str(&content.clone()).map_err(|e| "Unable to parse config")?;
             tracing::info!("Config loaded and deserialized from storage.");
@@ -1596,6 +1598,7 @@ fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), Stri
             ))
         }
         None => {
+            tracing::info!("None");
             let exam_results = ExamResults {
                 polish: (50, "Polish".to_string()),
                 math: (50, "Math".to_owned()),
