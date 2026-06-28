@@ -20,8 +20,8 @@ build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linu
 name = "android.hardware.touchscreen"
 required = false
 
-[[package.metadata.android.permission]]
-name = "android.permission.INTERNET"
+#[[package.metadata.android.permission]]
+#name = "android.permission.INTERNET"
 
 [features]
 default = ["subscriber"]

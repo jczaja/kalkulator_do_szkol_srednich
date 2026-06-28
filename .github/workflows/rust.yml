@@ -76,6 +76,12 @@ jobs:
            export NDK_HOME=$ANDROID_NDK_ROOT
            cargo quad-apk build --release --verbose --nosign
            
+       - name: Enable INTERNET permission for tracy build
+         run: |
+           sed -i 's/#\[\[package.metadata.android.permission\]\]/[[package.metadata.android.permission]]/g' Cargo.toml
+           sed -i 's/#name = "android.permission.INTERNET"/name = "android.permission.INTERNET"/g' Cargo.toml
+           cat Cargo.toml | grep -A1 "package.metadata.android.permission"
+           
        - name: Build (with tracy, signed)
          run: |
            export ANDROID_SDK_ROOT=$PWD

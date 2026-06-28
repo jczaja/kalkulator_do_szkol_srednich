@@ -1577,9 +1577,11 @@ fn save_config(
 }
 
 fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), String> {
+    trace::info!("Before locking");
     let storage = &mut quad_storage::STORAGE
         .lock()
         .map_err(|_| format!("Failed to lock storage"))?;
+    trace::info!("After locking");
     let maybe_content = storage.get("config");
     match maybe_content {
         Some(content) => {
@@ -2236,6 +2238,7 @@ async fn main() {
             return;
         }
     };
+    tracing::info!("Config Loaded");
 
     let load_data = || -> Result<(Schools, Schools, Schools), &str> {
         // TODO: how to make this error reported via tracing in elegant way
