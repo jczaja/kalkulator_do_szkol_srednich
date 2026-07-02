@@ -10,8 +10,7 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
-
-// TODO: extend error logging via tracy
+// TODO: test on android TV
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -1564,7 +1563,7 @@ fn save_config(
     contests: Contest,
     exams: ExamResults,
     completed_tutorial: bool,
-) {
+) -> Result<(), String> {
     let config = Config {
         certificate: certs,
         contests,
@@ -1572,18 +1571,23 @@ fn save_config(
         completed_tutorial,
     };
     let toml_string = toml::to_string(&config).unwrap();
-    let storage = &mut quad_storage::STORAGE.lock().unwrap();
-    storage.set("config", toml_string.as_ref());
+    let storage_dir = get_storage_dir();
+    let mut storage = storage_dir.clone();
+    storage.push("config.toml");
+    std::fs::create_dir_all(&storage_dir)
+        .map_err(|e| format!("Unable to create storage dir : {storage_dir:?} Error: {e}"))?;
+    std::fs::write(&storage, toml_string)
+        .map_err(|e| format!("Unable to write config into : {storage:?} Error : {e}"))?;
+    tracing::info!("Config Saved");
+    Ok(())
 }
 
 fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), String> {
-    tracing::info!("Before locking");
-    let storage = &mut quad_storage::STORAGE
-        .lock()
-        .map_err(|_| format!("Failed to lock storage"))?;
-    tracing::info!("After locking");
-    let maybe_content = storage.get("config");
-    tracing::info!("After storage.get");
+    let storage_dir = get_storage_dir();
+    let mut storage = storage_dir.clone();
+    storage.push("config.toml");
+    let maybe_content = std::fs::read_to_string(&storage).ok(); // Read config
+    tracing::info!("After storage read");
     match maybe_content {
         Some(content) => {
             tracing::info!("Some(content)");
@@ -1632,8 +1636,13 @@ fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), Stri
             let toml_string =
                 toml::to_string(&config).map_err(|_| format!("Failed to serialize config"))?;
             tracing::info!("Before storage.set");
-            storage.set("config", toml_string.as_ref());
-            tracing::info!("After storage.set");
+
+            std::fs::create_dir_all(&storage_dir).map_err(|e| {
+                format!("Unable to create storage dir : {storage_dir:?} Error: {e}")
+            })?;
+            std::fs::write(&storage, toml_string)
+                .map_err(|e| format!("Unable to write config into : {storage:?} Error : {e}"))?;
+
             tracing::info!("Config serialized and saved to storage.");
             Ok((
                 config.certificate,
@@ -2227,6 +2236,37 @@ fn init_tracing() {
     tracing::info!("Tracing started!");
 }
 
+fn get_storage_dir() -> std::path::PathBuf {
+    let mut storage_dir = std::path::PathBuf::default();
+    // For android let's get internal cache of app
+    #[cfg(target_os = "android")]
+    {
+        storage_dir = std::env::temp_dir()
+    }
+    // For other platforms (linux) XDG config path fallbacking to home is our option
+    #[cfg(not(target_os = "android"))]
+    {
+        // 1. First check XDG_CONFIG_HOME
+        if let Some(xdg_config) = std::env::var_os("XDG_CONFIG_HOME").map(std::path::PathBuf::from)
+        {
+            storage_dir = xdg_config;
+            storage_dir.push("kalkulator_do_szkol_srednich");
+        }
+        // 2. If no XDG_CONFIG_HOME then lets build our own
+        else if let Some(mut home) = std::env::var_os("HOME").map(std::path::PathBuf::from) {
+            storage_dir.push(home);
+            storage_dir.push(".config");
+            storage_dir.push("kalkulator_do_szkol_srednich");
+        }
+        // 3. No HOME? then use current working directory
+        else {
+            storage_dir = std::path::PathBuf::from(".")
+        }
+    }
+    tracing::info!("Storage Dir : {storage_dir:?}");
+    storage_dir
+}
+
 //#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
@@ -2267,7 +2307,6 @@ async fn main() {
         }
     };
 
-
     let k1 = vec![Threshold::new("Klasa 1A (mat-fiz-inf)", 145.0, "Fizyka")];
     let schools_koszalin = vec![School::new("LO I im. St. Dubois Koszalin", k1)];
 
@@ -2296,7 +2335,11 @@ async fn main() {
     loop {
         match gamestate {
             SelectionState::Exit => {
-                save_config(certs, contests, exam_points, completed_tutorial);
+                match save_config(certs, contests, exam_points, completed_tutorial) {
+                    Ok(_) => (),
+                    Err(e) => tracing::error!({ e }),
+                }
+
                 #[cfg(target_os = "android")]
                 {
                     // This is needed for android to exit without leaving black screen
