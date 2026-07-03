@@ -10,7 +10,7 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
-// TODO: test on android TV
+// TODO: android storage path does not work
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -1744,6 +1744,7 @@ fn process_profil(
         };
     });
 
+    tracing::info!("Selected profil: {}", selected_profil);
     state
 }
 
@@ -2584,7 +2585,6 @@ async fn main() {
                             prev_gamestate = gamestate.clone();
                         } else if let SelectionState::None = gamestate {
                             prev_gamestate = SelectionState::Profil(1);
-                            selected = 0;
                         }
                     }
                     SelectionState::Tutorial(slide_num) => {
