@@ -2244,7 +2244,7 @@ fn get_storage_dir() -> std::path::PathBuf {
     {
         //storage_dir = std::env::temp_dir() // This gives on Android TV : Permission denied
         tracing::info!("Mój obecny katalog roboczy to: {:?}", std::env::current_dir());
-        storage_dir = std::env::current_dir() // This gives on Android TV : Permission denied
+        storage_dir = std::env::current_dir().expect("CWD: insufficient permission") // This gives on Android TV : Permission denied
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
     #[cfg(not(target_os = "android"))]
