@@ -2242,7 +2242,9 @@ fn get_storage_dir() -> std::path::PathBuf {
     // For android let's get internal cache of app
     #[cfg(target_os = "android")]
     {
-        storage_dir = std::env::temp_dir()
+        //storage_dir = std::env::temp_dir() // This gives on Android TV : Permission denied
+        tracing::info!("Mój obecny katalog roboczy to: {:?}", std::env::current_dir());
+        storage_dir = std::env::current_dir() // This gives on Android TV : Permission denied
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
     #[cfg(not(target_os = "android"))]
