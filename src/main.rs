@@ -2242,9 +2242,20 @@ fn get_storage_dir() -> std::path::PathBuf {
     // For android let's get internal cache of app
     #[cfg(target_os = "android")]
     {
-        //storage_dir = std::env::temp_dir() // This gives on Android TV : Permission denied
-        tracing::info!("Mój obecny katalog roboczy to: {:?}", std::env::var_os("HOME").map(std::path::PathBuf::from));
-        storage_dir.push("./");
+        let ctx = ndk_context::android_context();
+        let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }?;
+        let mut env = vm.attach_current_thread()?;
+        let ctx = unsafe { jni::objects::JObject::from_raw(ctx.context().cast()) };
+        let cache_dir = env
+            .call_method(ctx, "getFilesDir", "()Ljava/io/File;", &[])?
+            .l()?;
+        let cache_dir: jni::objects::JString = env
+            .call_method(&cache_dir, "toString", "()Ljava/lang/String;", &[])?
+            .l()?
+            .try_into()?;
+        let cache_dir = env.get_string(&cache_dir)?;
+        let cache_dir = cache_dir.to_str()?;
+        storage.push(cache_dir);
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
     #[cfg(not(target_os = "android"))]
