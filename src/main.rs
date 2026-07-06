@@ -2255,7 +2255,7 @@ fn get_storage_dir() -> std::path::PathBuf {
             .try_into()?;
         let cache_dir = env.get_string(&cache_dir)?;
         let cache_dir = cache_dir.to_str()?;
-        storage.push(cache_dir);
+        storage_dir.push(cache_dir);
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
     #[cfg(not(target_os = "android"))]
