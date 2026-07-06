@@ -1583,7 +1583,7 @@ fn save_config(
 }
 
 fn get_config() -> Result<(CertificateResults, Contest, ExamResults, bool), String> {
-    let storage_dir = get_storage_dir();
+    let storage_dir = get_storage_dir()?;
     let mut storage = storage_dir.clone();
     storage.push("config.toml");
     let maybe_content = std::fs::read_to_string(&storage).ok(); // Read config
