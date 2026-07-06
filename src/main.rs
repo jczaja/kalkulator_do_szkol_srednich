@@ -1571,7 +1571,7 @@ fn save_config(
         completed_tutorial,
     };
     let toml_string = toml::to_string(&config).unwrap();
-    let storage_dir = get_storage_dir();
+    let storage_dir = get_storage_dir()?;
     let mut storage = storage_dir.clone();
     storage.push("config.toml");
     std::fs::create_dir_all(&storage_dir)
@@ -2237,24 +2237,24 @@ fn init_tracing() {
     tracing::info!("Tracing started!");
 }
 
-fn get_storage_dir() -> std::path::PathBuf {
+fn get_storage_dir() -> Result<std::path::PathBuf,String> {
     let mut storage_dir = std::path::PathBuf::default();
     // For android let's get internal cache of app
     #[cfg(target_os = "android")]
     {
         let ctx = ndk_context::android_context();
-        let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }?;
-        let mut env = vm.attach_current_thread()?;
+        let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast().map_err(|_| format!("JavaVM::from_raw failed"))) }?;
+        let mut env = vm.attach_current_thread().map_err(|e| format!("JavaVM::attach_current_thread failed"))?;
         let ctx = unsafe { jni::objects::JObject::from_raw(ctx.context().cast()) };
         let cache_dir = env
-            .call_method(ctx, "getFilesDir", "()Ljava/io/File;", &[])?
-            .l()?;
+            .call_method(ctx, "getFilesDir", "()Ljava/io/File;", &[]).map_err(|_| format!("JavaVM::getFailesDir failed"))?
+            .l().map_err(|_| format!("JavaVM::l failed"))?;
         let cache_dir: jni::objects::JString = env
-            .call_method(&cache_dir, "toString", "()Ljava/lang/String;", &[])?
-            .l()?
-            .try_into()?;
+            .call_method(&cache_dir, "toString", "()Ljava/lang/String;", &[]).map_err(|_| format!("JavaVM::toString failed"))?
+            .l().map_err(|_| format!("JavaVM::l failed"))?
+            .try_into().map_err(|_| format!("try_info failed"))?;
         let cache_dir = env.get_string(&cache_dir)?;
-        let cache_dir = cache_dir.to_str()?;
+        let cache_dir = cache_dir.to_str().map_err(|_| format!("to_str failed"))?;
         storage_dir.push(cache_dir);
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
@@ -2267,7 +2267,7 @@ fn get_storage_dir() -> std::path::PathBuf {
             storage_dir.push("kalkulator_do_szkol_srednich");
         }
         // 2. If no XDG_CONFIG_HOME then lets build our own
-        else if let Some(mut home) = std::env::var_os("HOME").map(std::path::PathBuf::from) {
+        else if let Some(home) = std::env::var_os("HOME").map(std::path::PathBuf::from) {
             storage_dir.push(home);
             storage_dir.push(".config");
             storage_dir.push("kalkulator_do_szkol_srednich");
@@ -2278,7 +2278,7 @@ fn get_storage_dir() -> std::path::PathBuf {
         }
     }
     tracing::info!("Storage Dir : {storage_dir:?}");
-    storage_dir
+    Ok(storage_dir)
 }
 
 //#[macroquad::main(tablet10_window_conf)]
