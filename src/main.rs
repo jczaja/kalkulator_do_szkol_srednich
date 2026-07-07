@@ -16,7 +16,6 @@ use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
 use serde::{Deserialize, Serialize};
 use toml;
-use tracing::{instrument, span, Level};
 
 //
 #[derive(PartialEq, Debug, Clone)]
@@ -2242,20 +2241,39 @@ fn get_storage_dir() -> Result<std::path::PathBuf,String> {
     // For android let's get internal cache of app
     #[cfg(target_os = "android")]
     {
+        use jni::sys::{jobject, JavaVM as RawJavaVM};
+        use jni::strings::JNIString;
+        use jni::signature::RuntimeMethodSignature;
+        
         let ctx = ndk_context::android_context();
-        let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast().map_err(|_| format!("JavaVM::from_raw failed"))) }?;
-        let mut env = vm.attach_current_thread().map_err(|e| format!("JavaVM::attach_current_thread failed"))?;
-        let ctx = unsafe { jni::objects::JObject::from_raw(ctx.context().cast()) };
-        let cache_dir = env
-            .call_method(ctx, "getFilesDir", "()Ljava/io/File;", &[]).map_err(|_| format!("JavaVM::getFailesDir failed"))?
-            .l().map_err(|_| format!("JavaVM::l failed"))?;
-        let cache_dir: jni::objects::JString = env
-            .call_method(&cache_dir, "toString", "()Ljava/lang/String;", &[]).map_err(|_| format!("JavaVM::toString failed"))?
-            .l().map_err(|_| format!("JavaVM::l failed"))?
-            .try_into().map_err(|_| format!("try_info failed"))?;
-        let cache_dir = env.get_string(&cache_dir)?;
-        let cache_dir = cache_dir.to_str().map_err(|_| format!("to_str failed"))?;
-        storage_dir.push(cache_dir);
+        let vm_ptr = ctx.vm() as *mut RawJavaVM;
+        let vm = unsafe { jni::JavaVM::from_raw(vm_ptr) };
+        
+        let getfiles_sig = RuntimeMethodSignature::from_str("()Ljava/io/File;")
+            .map_err(|e| format!("Failed to parse getFilesDir signature: {}", e))?;
+        let tostring_sig = RuntimeMethodSignature::from_str("()Ljava/lang/String;")
+            .map_err(|e| format!("Failed to parse toString signature: {}", e))?;
+        
+        let path = vm.attach_current_thread(|env| -> Result<String, jni::errors::Error> {
+            let ctx_ptr = ctx.context() as jobject;
+            let ctx = unsafe { jni::objects::JObject::from_raw(env, ctx_ptr) };
+            
+            let cache_dir = env
+                .call_method(ctx, JNIString::from("getFilesDir"), getfiles_sig.method_signature(), &[])?
+                .l()?;
+                
+            let cache_dir_string_obj = env
+                .call_method(&cache_dir, JNIString::from("toString"), tostring_sig.method_signature(), &[])?
+                .l()?;
+                
+            // Cast JObject to JString - we know it's a String from the signature
+            let cache_dir_jstring = unsafe { jni::objects::JString::from_raw(env, cache_dir_string_obj.as_raw()) };
+            let cache_dir_str = cache_dir_jstring.try_to_string(env)?;
+            
+            Ok(cache_dir_str)
+        }).map_err(|e| format!("attach_current_thread failed: {}", e))?;
+        
+        storage_dir.push(path);
     }
     // For other platforms (linux) XDG config path fallbacking to home is our option
     #[cfg(not(target_os = "android"))]
