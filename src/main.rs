@@ -10,7 +10,7 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
-// TODO: android storage path does not work
+// TODO: Test on android TV
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -2245,30 +2245,38 @@ fn get_storage_dir() -> Result<std::path::PathBuf,String> {
         use jni::strings::JNIString;
         use jni::signature::RuntimeMethodSignature;
         
+        tracing::info!("Get Storage Dir : 1");
         let ctx = ndk_context::android_context();
+        tracing::info!("Get Storage Dir : 2");
         let vm_ptr = ctx.vm() as *mut RawJavaVM;
         let vm = unsafe { jni::JavaVM::from_raw(vm_ptr) };
+        tracing::info!("Get Storage Dir : 3");
         
         let getfiles_sig = RuntimeMethodSignature::from_str("()Ljava/io/File;")
             .map_err(|e| format!("Failed to parse getFilesDir signature: {}", e))?;
         let tostring_sig = RuntimeMethodSignature::from_str("()Ljava/lang/String;")
             .map_err(|e| format!("Failed to parse toString signature: {}", e))?;
+        tracing::info!("Get Storage Dir : 4");
         
         let path = vm.attach_current_thread(|env| -> Result<String, jni::errors::Error> {
             let ctx_ptr = ctx.context() as jobject;
             let ctx = unsafe { jni::objects::JObject::from_raw(env, ctx_ptr) };
             
+            tracing::info!("Get Storage Dir : 5");
             let cache_dir = env
                 .call_method(ctx, JNIString::from("getFilesDir"), getfiles_sig.method_signature(), &[])?
                 .l()?;
                 
+            tracing::info!("Get Storage Dir : 6");
             let cache_dir_string_obj = env
                 .call_method(&cache_dir, JNIString::from("toString"), tostring_sig.method_signature(), &[])?
                 .l()?;
+            tracing::info!("Get Storage Dir : 7");
                 
             // Cast JObject to JString - we know it's a String from the signature
             let cache_dir_jstring = unsafe { jni::objects::JString::from_raw(env, cache_dir_string_obj.as_raw()) };
             let cache_dir_str = cache_dir_jstring.try_to_string(env)?;
+            tracing::info!("Get Storage Dir : 8");
             
             Ok(cache_dir_str)
         }).map_err(|e| format!("attach_current_thread failed: {}", e))?;
