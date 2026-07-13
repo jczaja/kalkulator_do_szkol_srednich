@@ -2329,7 +2329,7 @@ fn init_ndk_context() {
             .GetJavaVM
             .unwrap()(env, &mut vm);
 
-        assert_eq!(result, ndk_sys::JNI_OK);
+        assert_eq!(result, ndk_sys::JNI_OK.try_into().unwrap());
         assert!(!vm.is_null());
         assert!(!ACTIVITY.is_null());
 
