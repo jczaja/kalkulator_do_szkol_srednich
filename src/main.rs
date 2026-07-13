@@ -2307,11 +2307,47 @@ fn get_storage_dir() -> Result<std::path::PathBuf,String> {
     Ok(storage_dir)
 }
 
+#[cfg(target_os = "android")]
+fn init_ndk_context() {
+    use std::{ffi::c_void, ptr, sync::Once};
+
+    use macroquad::miniquad::native::android::{
+        attach_jni_env,
+        ndk_sys,
+        ACTIVITY,
+    };
+
+    static INIT: Once = Once::new();
+
+    INIT.call_once(|| unsafe {
+        let env = attach_jni_env();
+        assert!(!env.is_null());
+
+        let mut vm: *mut ndk_sys::JavaVM = ptr::null_mut();
+
+        let result = (**env)
+            .GetJavaVM
+            .unwrap()(env, &mut vm);
+
+        assert_eq!(result, ndk_sys::JNI_OK);
+        assert!(!vm.is_null());
+        assert!(!ACTIVITY.is_null());
+
+        ndk_context::initialize_android_context(
+            vm.cast::<c_void>(),
+            ACTIVITY.cast::<c_void>(),
+        );
+    });
+}
+
 //#[macroquad::main(tablet10_window_conf)]
 #[macroquad::main("kalkulator punktów do szkoły średniej")]
 async fn main() {
     let _guard = init_tracing();
     let mut initialization = true;
+
+    #[cfg(target_os = "android")]
+    init_ndk_context();
 
     let maybe_config = get_config();
     let (mut certs, mut contests, mut exam_points, mut completed_tutorial) = match maybe_config {
