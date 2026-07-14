@@ -10,7 +10,7 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
-// TODO: Test on android TV
+// TODO: Poradnik on screen five 
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -1438,6 +1438,7 @@ fn process_school(
         });
     });
     ui.horizontal(|ui| {
+        let mut focus_on_rozpocznij = false;
         ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
         let back_button = if slide_num > 1 {
             ui.add(egui_macroquad::egui::Button::new(
@@ -1452,16 +1453,17 @@ fn process_school(
             )
         };
         if back_button.clicked() {
+            if slide_num == 2 {
+                // Here if we had a focus on it 
+                // then we should set focus on Rozpocznij
+                focus_on_rozpocznij = true;
+            }
             state = SelectionState::School(if slide_num > 1 { slide_num - 1 } else { 1 });
         };
 
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
         if ok_button.clicked() {
             state = SelectionState::None;
             *initialization = true;
@@ -1480,12 +1482,22 @@ fn process_school(
         };
 
         if forward_button.clicked() {
+            if slide_num == num_slides - 1 {
+                // Here if we had a focus on it 
+                // then we should set focus on Rozpocznij
+                focus_on_rozpocznij = true;
+            }
             state = SelectionState::School(if slide_num < num_slides {
                 slide_num + 1
             } else {
                 num_slides
             });
         };
+
+        if *initialization || focus_on_rozpocznij {
+            ok_button.request_focus();
+            *initialization = false;
+        }
     });
 
     state
@@ -2041,6 +2053,7 @@ fn process_none(
                     .clicked()
                 {
                     state = SelectionState::Tutorial(1);
+                    *initialization = true;
                 };
 
                 if ui
@@ -2135,6 +2148,7 @@ fn process_tutorial(
         ));
 
         ui.horizontal(|ui| {
+            let mut focus_on_rozpocznij = false;
             ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
             let back_button = if slide_num > 1 {
                 ui.add(egui_macroquad::egui::Button::new(
@@ -2149,16 +2163,18 @@ fn process_tutorial(
                 )
             };
             if back_button.clicked() {
+                if slide_num == 2 {
+                    // Here if we had a focus on it 
+                    // then we should set focus on Rozpocznij
+                    focus_on_rozpocznij = true;
+                }
+
                 gamestate = SelectionState::Tutorial(if slide_num > 1 { slide_num - 1 } else { 1 });
             };
 
             let rozpocznij_button = ui.add(egui_macroquad::egui::Button::new(
                 egui_macroquad::egui::RichText::new(format!("Rozpocznij")).size(font_size),
             ));
-            if *initialization {
-                rozpocznij_button.request_focus();
-                *initialization = false;
-            }
 
             if rozpocznij_button.clicked() {
                 gamestate = SelectionState::None;
@@ -2179,12 +2195,24 @@ fn process_tutorial(
             };
 
             if forward_button.clicked() {
+
+                if slide_num == NUM_SLIDES - 1 {
+                    // Here if we had a focus on it 
+                    // then we should set focus on Rozpocznij
+                    focus_on_rozpocznij = true;
+                }
+
                 gamestate = SelectionState::Tutorial(if slide_num < NUM_SLIDES {
                     slide_num + 1
                 } else {
                     NUM_SLIDES
                 });
             };
+
+            if *initialization || focus_on_rozpocznij {
+                rozpocznij_button.request_focus();
+                *initialization = false;
+            }
         });
     });
     gamestate
