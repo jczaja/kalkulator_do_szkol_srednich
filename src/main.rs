@@ -1464,10 +1464,6 @@ fn process_school(
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
-        if ok_button.clicked() {
-            state = SelectionState::None;
-            *initialization = true;
-        };
         let forward_button = if slide_num < num_slides {
             ui.add(egui_macroquad::egui::Button::new(
                 egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
@@ -1498,6 +1494,10 @@ fn process_school(
             ok_button.request_focus();
             *initialization = false;
         }
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
+        };
     });
 
     state
@@ -1703,6 +1703,7 @@ fn process_profil(
         });
     });
     ui.horizontal(|ui| {
+        let mut focus_on_rozpocznij = false;
         //ui.add_space(20.0);
         ui.add_space(ui.available_width() / 2.0 - 0.5 * widget_width);
 
@@ -1719,20 +1720,17 @@ fn process_profil(
             )
         };
         if back_button.clicked() {
+            if slide_num == 2 {
+                // Here if we had a focus on it 
+                // then we should set focus on Rozpocznij
+                focus_on_rozpocznij = true;
+            }
             state = SelectionState::Profil(if slide_num > 1 { slide_num - 1 } else { 1 });
         };
 
         let ok_button = ui.add(egui_macroquad::egui::Button::new(
             egui_macroquad::egui::RichText::new(format!("OK")).size(font_size),
         ));
-        if *initialization {
-            ok_button.request_focus();
-            *initialization = false;
-        }
-        if ok_button.clicked() {
-            state = SelectionState::None;
-            *initialization = true;
-        };
         let forward_button = if slide_num < num_slides {
             ui.add(egui_macroquad::egui::Button::new(
                 egui_macroquad::egui::RichText::new(format!(">>")).size(font_size),
@@ -1747,11 +1745,25 @@ fn process_profil(
         };
 
         if forward_button.clicked() {
+            if slide_num == num_slides - 1 {
+                // Here if we had a focus on it 
+                // then we should set focus on Rozpocznij
+                focus_on_rozpocznij = true;
+            }
             state = SelectionState::Profil(if slide_num < num_slides {
                 slide_num + 1
             } else {
                 num_slides
             });
+        };
+
+        if *initialization || focus_on_rozpocznij {
+            ok_button.request_focus();
+            *initialization = false;
+        }
+        if ok_button.clicked() {
+            state = SelectionState::None;
+            *initialization = true;
         };
     });
 
@@ -2046,11 +2058,14 @@ fn process_none(
             });
 
             ui.horizontal(|ui| {
-                if ui
-                    .add(egui_macroquad::egui::Button::new(
+                 let tutorial_button = ui.add(egui_macroquad::egui::Button::new(
                         egui_macroquad::egui::RichText::new(format!("Poradnik")).size(font_size),
-                    ))
-                    .clicked()
+                    ));
+                 
+                if let SelectionState::Tutorial(_) = prev_gamestate {
+                    set_focus(&tutorial_button, initialization);
+                }
+                if tutorial_button.clicked()
                 {
                     state = SelectionState::Tutorial(1);
                     *initialization = true;
@@ -2176,10 +2191,6 @@ fn process_tutorial(
                 egui_macroquad::egui::RichText::new(format!("Rozpocznij")).size(font_size),
             ));
 
-            if rozpocznij_button.clicked() {
-                gamestate = SelectionState::None;
-                *initialization = true;
-            };
 
             let forward_button = if slide_num < 5 {
                 ui.add(egui_macroquad::egui::Button::new(
@@ -2213,6 +2224,10 @@ fn process_tutorial(
                 rozpocznij_button.request_focus();
                 *initialization = false;
             }
+            if rozpocznij_button.clicked() {
+                gamestate = SelectionState::None;
+                *initialization = true;
+            };
         });
     });
     gamestate
