@@ -75,6 +75,8 @@ jobs:
            export ANDROID_NDK_ROOT=$PWD/android-ndk-r25c
            export NDK_HOME=$ANDROID_NDK_ROOT
            cargo quad-apk build --release --verbose --nosign
+           mkdir -p target/android-artifacts-unsigned
+           mv target/android-artifacts/release/apk/*.apk target/android-artifacts-unsigned/
            
        - name: Enable INTERNET permission for tracy build
          run: |
@@ -97,7 +99,7 @@ jobs:
          uses: actions/upload-artifact@v4
          with:
           name: kalkulator-do-szkol-srednich-standard
-          path: target/android-artifacts/release/apk/*.apk
+          path: target/android-artifacts-unsigned/*.apk
           
        - name: Upload APK (tracy)
          uses: actions/upload-artifact@v4
