@@ -10,7 +10,7 @@
 // punkty https://www.vlo.gda.pl/zasady_przyznawania_punktow/
 // https://isap.sejm.gov.pl/isap.nsf/download.xsp/WDU20190001737/O/D20191737.pdf
 //
-// TODO: Poradnik on screen five 
+// TODO: Info about A-levels next to profiles / schools
 
 use egui_plot::{Bar, BarChart, Line, Plot, PlotPoints};
 use macroquad::prelude::*; // Import necessary components
@@ -2073,7 +2073,7 @@ fn process_none(
 
                 if ui
                     .add(egui_macroquad::egui::Button::new(
-                        egui_macroquad::egui::RichText::new(format!("Exit")).size(font_size),
+                        egui_macroquad::egui::RichText::new(format!("Save & Exit")).size(font_size),
                     ))
                     .clicked()
                 {
